@@ -25,3 +25,10 @@ using (new JavaScriptContext.Scope(runtime.CreateContext()))
 }
 ```
 Output: 'hello from script!'
+
+# Goals
+- You can use exists js code
+- You can extend your C# app by use script
+- You can control script execution (you can terminate dead loop and limit memory consumption, tnx MS)
+- You can build your own script system (game,config system and etc.)
+- Speed, Chakra is very fast 
