@@ -21,19 +21,16 @@ namespace Sample.Json
                   {
                      Console.WriteLine("-- dump --");
                      Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
-                     Console.WriteLine();
                      return JObject.Parse("{status:'ok',error:-1}").ToJavaScriptValue();
                   },
                   IntPtr.Zero),
                true);
 
             Console.WriteLine("-- executing --");
-            Console.WriteLine();
             var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});", JavaScriptSourceContext.FromIntPtr(IntPtr.Zero), "");
 
             Console.WriteLine("-- result --");
             Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
-            Console.WriteLine();
          }
          Console.WriteLine("Finished... Press enter to exit...");
          Console.ReadLine();
