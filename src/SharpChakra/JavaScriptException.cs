@@ -10,26 +10,26 @@ namespace SharpChakra
         /// <summary>
         /// The error code.
         /// </summary>
-        private readonly JavaScriptErrorCode code;
+        private readonly JavaScriptErrorCode p_code;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptException"/> class. 
         /// </summary>
-        /// <param name="code">The error code returned.</param>
-        public JavaScriptException(JavaScriptErrorCode code) :
-            this(code, "A fatal exception has occurred in a JavaScript runtime")
+        /// <param name="_code">The error code returned.</param>
+        public JavaScriptException(JavaScriptErrorCode _code) :
+            this(_code, "A fatal exception has occurred in a JavaScript runtime")
         {
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptException"/> class. 
         /// </summary>
-        /// <param name="code">The error code returned.</param>
+        /// <param name="_code">The error code returned.</param>
         /// <param name="message">The error message.</param>
-        public JavaScriptException(JavaScriptErrorCode code, string message) :
+        public JavaScriptException(JavaScriptErrorCode _code, string message) :
             base(message)
         {
-            this.code = code;
+            this.p_code = _code;
         }
 
         /// <summary>
@@ -37,12 +37,12 @@ namespace SharpChakra
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
-        protected JavaScriptException(string message, Exception innerException) :
-            base(message, innerException)
+        protected JavaScriptException(string message, Exception _innerException) :
+            base(message, _innerException)
         {
             if (message != null)
             {
-                code = (JavaScriptErrorCode) base.HResult;
+                p_code = (JavaScriptErrorCode) base.HResult;
             }
         }
 
@@ -63,7 +63,7 @@ namespace SharpChakra
         /// </summary>
         public JavaScriptErrorCode ErrorCode
         {
-            get { return code; }
+            get { return p_code; }
         }
     }
 }

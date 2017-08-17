@@ -7,7 +7,7 @@ namespace Sample
 {
    class Program
    {
-      static void Main(string[] args)
+      static void Main(string[] _args)
       {
          using (var runtime = JavaScriptRuntime.Create())
          {

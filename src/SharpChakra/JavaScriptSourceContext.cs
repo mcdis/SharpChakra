@@ -10,15 +10,15 @@ namespace SharpChakra
         /// <summary>
         /// The context.
         /// </summary>
-        private readonly IntPtr context;
+        private readonly IntPtr p_context;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptSourceContext"/> struct.
         /// </summary>
-        /// <param name="context">The context.</param>
-        private JavaScriptSourceContext(IntPtr context)
+        /// <param name="_context">The context.</param>
+        private JavaScriptSourceContext(IntPtr _context)
         {
-            this.context = context;
+            this.p_context = _context;
         }
 
         /// <summary>
@@ -32,144 +32,144 @@ namespace SharpChakra
         /// <summary>
         ///     The equality operator for source contexts.
         /// </summary>
-        /// <param name="left">The first source context to compare.</param>
-        /// <param name="right">The second source context to compare.</param>
+        /// <param name="_left">The first source context to compare.</param>
+        /// <param name="_right">The second source context to compare.</param>
         /// <returns>Whether the two source contexts are the same.</returns>
-        public static bool operator ==(JavaScriptSourceContext left, JavaScriptSourceContext right)
+        public static bool operator ==(JavaScriptSourceContext _left, JavaScriptSourceContext _right)
         {
-            return left.Equals(right);
+            return _left.Equals(_right);
         }
 
         /// <summary>
         ///     The inequality operator for source contexts.
         /// </summary>
-        /// <param name="left">The first source context to compare.</param>
-        /// <param name="right">The second source context to compare.</param>
+        /// <param name="_left">The first source context to compare.</param>
+        /// <param name="_right">The second source context to compare.</param>
         /// <returns>Whether the two source contexts are not the same.</returns>
-        public static bool operator !=(JavaScriptSourceContext left, JavaScriptSourceContext right)
+        public static bool operator !=(JavaScriptSourceContext _left, JavaScriptSourceContext _right)
         {
-            return !left.Equals(right);
+            return !_left.Equals(_right);
         }
 
         /// <summary>
         ///     Subtracts an offset from the value of the source context.
         /// </summary>
-        /// <param name="context">The source context to subtract the offset from.</param>
-        /// <param name="offset">The offset to subtract.</param>
+        /// <param name="_context">The source context to subtract the offset from.</param>
+        /// <param name="_offset">The offset to subtract.</param>
         /// <returns>A new source context that reflects the subtraction of the offset from the context.</returns>
-        public static JavaScriptSourceContext operator -(JavaScriptSourceContext context, int offset)
+        public static JavaScriptSourceContext operator -(JavaScriptSourceContext _context, int _offset)
         {
-            return FromIntPtr(context.context - offset);
+            return FromIntPtr(_context.p_context - _offset);
         }
 
         /// <summary>
         ///     Subtracts an offset from the value of the source context.
         /// </summary>
-        /// <param name="left">The source context to subtract the offset from.</param>
-        /// <param name="right">The offset to subtract.</param>
+        /// <param name="_left">The source context to subtract the offset from.</param>
+        /// <param name="_right">The offset to subtract.</param>
         /// <returns>A new source context that reflects the subtraction of the offset from the context.</returns>
-        public static JavaScriptSourceContext Subtract(JavaScriptSourceContext left, int right)
+        public static JavaScriptSourceContext Subtract(JavaScriptSourceContext _left, int _right)
         {
-            return left - right;
+            return _left - _right;
         }
 
         /// <summary>
         ///     Decrements the value of the source context.
         /// </summary>
-        /// <param name="context">The source context to decrement.</param>
+        /// <param name="_context">The source context to decrement.</param>
         /// <returns>A new source context that reflects the decrementing of the context.</returns>
-        public static JavaScriptSourceContext operator --(JavaScriptSourceContext context)
+        public static JavaScriptSourceContext operator --(JavaScriptSourceContext _context)
         {
-            return FromIntPtr(context.context - 1);
+            return FromIntPtr(_context.p_context - 1);
         }
 
         /// <summary>
         ///     Decrements the value of the source context.
         /// </summary>
-        /// <param name="left">The source context to decrement.</param>
+        /// <param name="_left">The source context to decrement.</param>
         /// <returns>A new source context that reflects the decrementing of the context.</returns>
-        public static JavaScriptSourceContext Decrement(JavaScriptSourceContext left)
+        public static JavaScriptSourceContext Decrement(JavaScriptSourceContext _left)
         {
-            return --left;
+            return --_left;
         }
 
         /// <summary>
         ///     Adds an offset from the value of the source context.
         /// </summary>
-        /// <param name="context">The source context to add the offset to.</param>
-        /// <param name="offset">The offset to add.</param>
+        /// <param name="_context">The source context to add the offset to.</param>
+        /// <param name="_offset">The offset to add.</param>
         /// <returns>A new source context that reflects the addition of the offset to the context.</returns>
-        public static JavaScriptSourceContext operator +(JavaScriptSourceContext context, int offset)
+        public static JavaScriptSourceContext operator +(JavaScriptSourceContext _context, int _offset)
         {
-            return FromIntPtr(context.context + offset);
+            return FromIntPtr(_context.p_context + _offset);
         }
 
         /// <summary>
         ///     Adds an offset from the value of the source context.
         /// </summary>
-        /// <param name="left">The source context to add the offset to.</param>
-        /// <param name="right">The offset to add.</param>
+        /// <param name="_left">The source context to add the offset to.</param>
+        /// <param name="_right">The offset to add.</param>
         /// <returns>A new source context that reflects the addition of the offset to the context.</returns>
-        public static JavaScriptSourceContext Add(JavaScriptSourceContext left, int right)
+        public static JavaScriptSourceContext Add(JavaScriptSourceContext _left, int _right)
         {
-            return left + right;
+            return _left + _right;
         }
 
         /// <summary>
         ///     Increments the value of the source context.
         /// </summary>
-        /// <param name="context">The source context to increment.</param>
+        /// <param name="_context">The source context to increment.</param>
         /// <returns>A new source context that reflects the incrementing of the context.</returns>
-        public static JavaScriptSourceContext operator ++(JavaScriptSourceContext context)
+        public static JavaScriptSourceContext operator ++(JavaScriptSourceContext _context)
         {
-            return FromIntPtr(context.context + 1);
+            return FromIntPtr(_context.p_context + 1);
         }
 
         /// <summary>
         ///     Increments the value of the source context.
         /// </summary>
-        /// <param name="left">The source context to increment.</param>
+        /// <param name="_left">The source context to increment.</param>
         /// <returns>A new source context that reflects the incrementing of the context.</returns>
-        public static JavaScriptSourceContext Increment(JavaScriptSourceContext left)
+        public static JavaScriptSourceContext Increment(JavaScriptSourceContext _left)
         {
-            return ++left;
+            return ++_left;
         }
 
         /// <summary>
         ///     Creates a new source context. 
         /// </summary>
-        /// <param name="cookie">
+        /// <param name="_cookie">
         ///     The cookie for the source context.
         /// </param>
         /// <returns>The new source context.</returns>
-        public static JavaScriptSourceContext FromIntPtr(IntPtr cookie)
+        public static JavaScriptSourceContext FromIntPtr(IntPtr _cookie)
         {
-            return new JavaScriptSourceContext(cookie);
+            return new JavaScriptSourceContext(_cookie);
         }
 
         /// <summary>
         ///     Checks for equality between source contexts.
         /// </summary>
-        /// <param name="other">The other source context to compare.</param>
+        /// <param name="_other">The other source context to compare.</param>
         /// <returns>Whether the two source contexts are the same.</returns>
-        public bool Equals(JavaScriptSourceContext other)
+        public bool Equals(JavaScriptSourceContext _other)
         {
-            return context == other.context;
+            return p_context == _other.p_context;
         }
 
         /// <summary>
         ///     Checks for equality between source contexts.
         /// </summary>
-        /// <param name="obj">The other source context to compare.</param>
+        /// <param name="_obj">The other source context to compare.</param>
         /// <returns>Whether the two source contexts are the same.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object _obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, _obj))
             {
                 return false;
             }
 
-            return obj is JavaScriptSourceContext && Equals((JavaScriptSourceContext)obj);
+            return _obj is JavaScriptSourceContext && Equals((JavaScriptSourceContext)_obj);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace SharpChakra
         /// <returns>The hash code of the source context.</returns>
         public override int GetHashCode()
         {
-            return context.ToInt32();
+            return p_context.ToInt32();
         }
     }
 }

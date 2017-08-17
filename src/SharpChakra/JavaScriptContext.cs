@@ -21,15 +21,15 @@ namespace SharpChakra
         /// <summary>
         ///     The reference.
         /// </summary>
-        private readonly IntPtr reference;
+        private readonly IntPtr p_reference;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptContext"/> struct. 
         /// </summary>
-        /// <param name="reference">The reference.</param>
-        internal JavaScriptContext(IntPtr reference)
+        /// <param name="_reference">The reference.</param>
+        internal JavaScriptContext(IntPtr _reference)
         {
-            this.reference = reference;
+            this.p_reference = _reference;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SharpChakra
         /// </summary>
         public bool IsValid
         {
-            get { return reference != IntPtr.Zero; }
+            get { return p_reference != IntPtr.Zero; }
         }
 
         /// <summary>
@@ -143,16 +143,16 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to parse.</param>
-        /// <param name="sourceContext">
+        /// <param name="_script">The script to parse.</param>
+        /// <param name="_sourceContext">
         ///     A cookie identifying the script that can be used by script contexts that have debugging enabled.
         /// </param>
-        /// <param name="sourceName">The location the script came from.</param>
+        /// <param name="_sourceName">The location the script came from.</param>
         /// <returns>A <c>Function</c> representing the script code.</returns>
-        public static JavaScriptValue ParseScript(string script, JavaScriptSourceContext sourceContext, string sourceName)
+        public static JavaScriptValue ParseScript(string _script, JavaScriptSourceContext _sourceContext, string _sourceName)
         {
             JavaScriptValue result;
-            Native.ThrowIfError(Native.JsParseScript(script, sourceContext, sourceName, out result));
+            Native.ThrowIfError(Native.JsParseScript(_script, _sourceContext, _sourceName, out result));
             return result;
         }
 
@@ -162,17 +162,17 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to parse.</param>
-        /// <param name="buffer">The serialized script.</param>
-        /// <param name="sourceContext">
+        /// <param name="_script">The script to parse.</param>
+        /// <param name="_buffer">The serialized script.</param>
+        /// <param name="_sourceContext">
         ///     A cookie identifying the script that can be used by script contexts that have debugging enabled.
         /// </param>
-        /// <param name="sourceName">The location the script came from.</param>
+        /// <param name="_sourceName">The location the script came from.</param>
         /// <returns>A <c>Function</c> representing the script code.</returns>
-        public static JavaScriptValue ParseScript(string script, byte[] buffer, JavaScriptSourceContext sourceContext, string sourceName)
+        public static JavaScriptValue ParseScript(string _script, byte[] _buffer, JavaScriptSourceContext _sourceContext, string _sourceName)
         {
             JavaScriptValue result;
-            Native.ThrowIfError(Native.JsParseSerializedScript(script, buffer, sourceContext, sourceName, out result));
+            Native.ThrowIfError(Native.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceName, out result));
             return result;
         }
 
@@ -182,11 +182,11 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to parse.</param>
+        /// <param name="_script">The script to parse.</param>
         /// <returns>A <c>Function</c> representing the script code.</returns>
-        public static JavaScriptValue ParseScript(string script)
+        public static JavaScriptValue ParseScript(string _script)
         {
-            return ParseScript(script, JavaScriptSourceContext.None, string.Empty);
+            return ParseScript(_script, JavaScriptSourceContext.None, string.Empty);
         }
 
         /// <summary>
@@ -195,12 +195,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to parse.</param>
-        /// <param name="buffer">The serialized script.</param>
+        /// <param name="_script">The script to parse.</param>
+        /// <param name="_buffer">The serialized script.</param>
         /// <returns>A <c>Function</c> representing the script code.</returns>
-        public static JavaScriptValue ParseScript(string script, byte[] buffer)
+        public static JavaScriptValue ParseScript(string _script, byte[] _buffer)
         {
-            return ParseScript(script, buffer, JavaScriptSourceContext.None, string.Empty);
+            return ParseScript(_script, _buffer, JavaScriptSourceContext.None, string.Empty);
         }
 
         /// <summary>
@@ -209,16 +209,16 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to run.</param>
-        /// <param name="sourceContext">
+        /// <param name="_script">The script to run.</param>
+        /// <param name="_sourceContext">
         ///     A cookie identifying the script that can be used by script contexts that have debugging enabled.
         /// </param>
-        /// <param name="sourceName">The location the script came from.</param>
+        /// <param name="_sourceName">The location the script came from.</param>
         /// <returns>The result of the script, if any.</returns>
-        public static JavaScriptValue RunScript(string script, JavaScriptSourceContext sourceContext, string sourceName)
+        public static JavaScriptValue RunScript(string _script, JavaScriptSourceContext _sourceContext, string _sourceName)
         {
             JavaScriptValue result;
-            Native.ThrowIfError(Native.JsRunScript(script, sourceContext, sourceName, out result));
+            Native.ThrowIfError(Native.JsRunScript(_script, _sourceContext, _sourceName, out result));
             return result;
         }
 
@@ -228,17 +228,17 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The source code of the serialized script.</param>
-        /// <param name="buffer">The serialized script.</param>
-        /// <param name="sourceContext">
+        /// <param name="_script">The source code of the serialized script.</param>
+        /// <param name="_buffer">The serialized script.</param>
+        /// <param name="_sourceContext">
         ///     A cookie identifying the script that can be used by script contexts that have debugging enabled.
         /// </param>
-        /// <param name="sourceName">The location the script came from.</param>
+        /// <param name="_sourceName">The location the script came from.</param>
         /// <returns>The result of the script, if any.</returns>
-        public static JavaScriptValue RunScript(string script, byte[] buffer, JavaScriptSourceContext sourceContext, string sourceName)
+        public static JavaScriptValue RunScript(string _script, byte[] _buffer, JavaScriptSourceContext _sourceContext, string _sourceName)
         {
             JavaScriptValue result;
-            Native.ThrowIfError(Native.JsRunSerializedScript(script, buffer, sourceContext, sourceName, out result));
+            Native.ThrowIfError(Native.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceName, out result));
             return result;
         }
 
@@ -248,11 +248,11 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The script to run.</param>
+        /// <param name="_script">The script to run.</param>
         /// <returns>The result of the script, if any.</returns>
-        public static JavaScriptValue RunScript(string script)
+        public static JavaScriptValue RunScript(string _script)
         {
-            return RunScript(script, JavaScriptSourceContext.None, string.Empty);
+            return RunScript(_script, JavaScriptSourceContext.None, string.Empty);
         }
 
         /// <summary>
@@ -261,12 +261,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="script">The source code of the serialized script.</param>
-        /// <param name="buffer">The serialized script.</param>
+        /// <param name="_script">The source code of the serialized script.</param>
+        /// <param name="_buffer">The serialized script.</param>
         /// <returns>The result of the script, if any.</returns>
-        public static JavaScriptValue RunScript(string script, byte[] buffer)
+        public static JavaScriptValue RunScript(string _script, byte[] _buffer)
         {
-            return RunScript(script, buffer, JavaScriptSourceContext.None, string.Empty);
+            return RunScript(_script, _buffer, JavaScriptSourceContext.None, string.Empty);
         }
 
         /// <summary>
@@ -282,15 +282,15 @@ namespace SharpChakra
         ///     Requires an active script context.
         ///     </para>
         /// </remarks>
-        /// <param name="script">The script to serialize.</param>
-        /// <param name="buffer">The buffer to put the serialized script into. Can be null.</param>
+        /// <param name="_script">The script to serialize.</param>
+        /// <param name="_buffer">The buffer to put the serialized script into. Can be null.</param>
         /// <returns>
         ///     The size of the buffer, in bytes, required to hold the serialized script.
         /// </returns>
-        public static ulong SerializeScript(string script, byte[] buffer)
+        public static ulong SerializeScript(string _script, byte[] _buffer)
         {
-            var bufferSize = (ulong)buffer.Length;
-            Native.ThrowIfError(Native.JsSerializeScript(script, buffer, ref bufferSize));
+            var bufferSize = (ulong)_buffer.Length;
+            Native.ThrowIfError(Native.JsSerializeScript(_script, _buffer, ref bufferSize));
             return bufferSize;
         }
 
@@ -330,12 +330,12 @@ namespace SharpChakra
         ///     Requires an active script context.
         ///     </para>
         /// </remarks>
-        /// <param name="exception">
+        /// <param name="_exception">
         ///     The JavaScript exception to set for the runtime of the current context.
         /// </param>
-        public static void SetException(JavaScriptValue exception)
+        public static void SetException(JavaScriptValue _exception)
         {
-            Native.ThrowIfError(Native.JsSetException(exception));
+            Native.ThrowIfError(Native.JsSetException(_exception));
         }
 
         /// <summary>
@@ -375,22 +375,22 @@ namespace SharpChakra
             /// <summary>
             ///     The previous context.
             /// </summary>
-            private readonly JavaScriptContext previousContext;
+            private readonly JavaScriptContext p_previousContext;
 
             /// <summary>
             ///     Whether the structure has been disposed.
             /// </summary>
-            private bool disposed;
+            private bool p_disposed;
 
             /// <summary>
             ///     Initializes a new instance of the <see cref="Scope"/> struct. 
             /// </summary>
-            /// <param name="context">The context to create the scope for.</param>
-            public Scope(JavaScriptContext context)
+            /// <param name="_context">The context to create the scope for.</param>
+            public Scope(JavaScriptContext _context)
             {
-                disposed = false;
-                previousContext = Current;
-                Current = context;
+                p_disposed = false;
+                p_previousContext = Current;
+                Current = _context;
             }
 
             /// <summary>
@@ -398,13 +398,13 @@ namespace SharpChakra
             /// </summary>
             public void Dispose()
             {
-                if (disposed)
+                if (p_disposed)
                 {
                     return;
                 }
 
-                Current = previousContext;
-                disposed = true;
+                Current = p_previousContext;
+                p_disposed = true;
             }
         }
     }

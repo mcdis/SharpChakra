@@ -10,5 +10,5 @@ namespace SharpChakra
     /// </remarks>
     /// <param name="ref">The object to be collected.</param>
     /// <param name="callbackState">The state passed to <c>JsSetObjectBeforeCollectCallback</c>.</param>
-    public delegate void JavaScriptObjectBeforeCollectCallback(JavaScriptValue reference, IntPtr callbackState);
+    public delegate void JavaScriptObjectBeforeCollectCallback(JavaScriptValue _reference, IntPtr _callbackState);
 }

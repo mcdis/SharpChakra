@@ -13,302 +13,302 @@ namespace SharpChakra
       /// <summary>
       /// Throws if a native method returns an error code.
       /// </summary>
-      /// <param name="error">The error.</param>
-      public static void ThrowIfError(JavaScriptErrorCode error)
+      /// <param name="_error">The error.</param>
+      public static void ThrowIfError(JavaScriptErrorCode _error)
       {
          if (Is32)
-            Native32.ThrowIfError(error);
+            Native32.ThrowIfError(_error);
          else
-            Native64.ThrowIfError(error);
+            Native64.ThrowIfError(_error);
       }
-      internal static JavaScriptErrorCode JsCreateRuntime(JavaScriptRuntimeAttributes attributes,
-         JavaScriptThreadServiceCallback threadService,
-         out JavaScriptRuntime runtime)
-         => Is32 ? Native32.JsCreateRuntime(attributes, threadService, out runtime) : Native64.JsCreateRuntime(attributes, threadService, out runtime);
-      public static JavaScriptErrorCode JsCollectGarbage(JavaScriptRuntime handle)
-         => Is32? Native32.JsCollectGarbage(handle):Native64.JsCollectGarbage(handle);
-      public static JavaScriptErrorCode JsDisposeRuntime(JavaScriptRuntime handle)
-         => Is32 ? Native32.JsDisposeRuntime(handle) : Native64.JsDisposeRuntime(handle);
-      public static JavaScriptErrorCode JsGetRuntimeMemoryUsage(JavaScriptRuntime runtime, out UIntPtr memoryUsage)
-         => Is32 ? Native32.JsGetRuntimeMemoryUsage(runtime,out memoryUsage) : Native64.JsGetRuntimeMemoryUsage(runtime, out memoryUsage);
-      public static JavaScriptErrorCode JsGetRuntimeMemoryLimit(JavaScriptRuntime runtime, out UIntPtr memoryLimit)
-         => Is32 ? Native32.JsGetRuntimeMemoryLimit(runtime, out memoryLimit) : Native64.JsGetRuntimeMemoryLimit(runtime, out memoryLimit);
-      public static JavaScriptErrorCode JsSetRuntimeMemoryLimit(JavaScriptRuntime runtime, UIntPtr memoryLimit)
-         => Is32 ? Native32.JsSetRuntimeMemoryLimit(runtime, memoryLimit) : Native64.JsSetRuntimeMemoryLimit(runtime, memoryLimit);
-      public static JavaScriptErrorCode JsSetRuntimeMemoryAllocationCallback(JavaScriptRuntime runtime,
-         IntPtr callbackState,
-         JavaScriptMemoryAllocationCallback allocationCallback)
-         => Is32 ? Native32.JsSetRuntimeMemoryAllocationCallback(runtime, callbackState, allocationCallback) : Native64.JsSetRuntimeMemoryAllocationCallback(runtime, callbackState, allocationCallback);
-      public static JavaScriptErrorCode JsSetRuntimeBeforeCollectCallback(JavaScriptRuntime runtime,
-         IntPtr callbackState,
-         JavaScriptBeforeCollectCallback beforeCollectCallback)
-         => Is32 ? Native32.JsSetRuntimeBeforeCollectCallback(runtime, callbackState, beforeCollectCallback) : Native64.JsSetRuntimeBeforeCollectCallback(runtime, callbackState, beforeCollectCallback);
-      public static JavaScriptErrorCode JsContextAddRef(JavaScriptContext reference, out uint count)
-         => Is32 ? Native32.JsContextAddRef(reference, out count) : Native64.JsContextAddRef(reference, out count);
-      public static JavaScriptErrorCode JsAddRef(JavaScriptValue reference, out uint count)
-         => Is32 ? Native32.JsAddRef(reference, out count) : Native64.JsAddRef(reference, out count);
-      public static JavaScriptErrorCode JsContextRelease(JavaScriptContext reference, out uint count)
-         => Is32 ? Native32.JsContextRelease(reference, out count) : Native64.JsContextRelease(reference, out count);
-      public static JavaScriptErrorCode JsRelease(JavaScriptValue reference, out uint count)
-         => Is32 ? Native32.JsRelease(reference, out count) : Native64.JsRelease(reference, out count);
-      public static JavaScriptErrorCode JsCreateContext(JavaScriptRuntime runtime, out JavaScriptContext newContext)
-         => Is32 ? Native32.JsCreateContext(runtime, out newContext) : Native64.JsCreateContext(runtime, out newContext);
-      public static JavaScriptErrorCode JsGetCurrentContext(out JavaScriptContext currentContext)
-         => Is32 ? Native32.JsGetCurrentContext(out currentContext) : Native64.JsGetCurrentContext(out currentContext);
-      public static JavaScriptErrorCode JsSetCurrentContext(JavaScriptContext context)
-         => Is32 ? Native32.JsSetCurrentContext(context) : Native64.JsSetCurrentContext(context);
-      public static JavaScriptErrorCode JsGetRuntime(JavaScriptContext context, out JavaScriptRuntime runtime)
-         => Is32 ? Native32.JsGetRuntime(context,out runtime) : Native64.JsGetRuntime(context,out runtime);
-      public static JavaScriptErrorCode JsIdle(out uint nextIdleTick)
-         => Is32 ? Native32.JsIdle(out nextIdleTick) : Native64.JsIdle(out nextIdleTick);
-      public static JavaScriptErrorCode JsParseScript(string script,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsParseScript(script, sourceContext, sourceUrl,out result) : Native64.JsParseScript(script, sourceContext, sourceUrl, out result);
-      public static JavaScriptErrorCode JsRunScript(string script,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsRunScript(script, sourceContext, sourceUrl, out result) : Native64.JsRunScript(script, sourceContext, sourceUrl, out result);
-      public static JavaScriptErrorCode JsSerializeScript(string script, byte[] buffer, ref ulong bufferSize)
-         => Is32 ? Native32.JsSerializeScript(script, buffer, ref bufferSize) : Native64.JsSerializeScript(script, buffer, ref bufferSize);
-      public static JavaScriptErrorCode JsParseSerializedScript(string script,
-         byte[] buffer,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsParseSerializedScript(script, buffer, sourceContext, sourceUrl,out result) : Native64.JsParseSerializedScript(script, buffer, sourceContext, sourceUrl, out result);
-      public static JavaScriptErrorCode JsRunSerializedScript(string script,
-         byte[] buffer,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsRunSerializedScript(script, buffer, sourceContext, sourceUrl, out result) : Native64.JsRunSerializedScript(script, buffer, sourceContext, sourceUrl, out result);
-      public static JavaScriptErrorCode JsGetPropertyIdFromName(string name, out JavaScriptPropertyId propertyId)
-         => Is32 ? Native32.JsGetPropertyIdFromName(name, out propertyId) : Native64.JsGetPropertyIdFromName(name, out propertyId);
-      public static JavaScriptErrorCode JsGetPropertyNameFromId(JavaScriptPropertyId propertyId, out string name)
-         => Is32 ? Native32.JsGetPropertyNameFromId(propertyId, out name) : Native64.JsGetPropertyNameFromId(propertyId, out name);
-      public static JavaScriptErrorCode JsGetUndefinedValue(out JavaScriptValue undefinedValue)
-         => Is32 ? Native32.JsGetUndefinedValue(out undefinedValue) : Native64.JsGetUndefinedValue(out undefinedValue);
-      public static JavaScriptErrorCode JsGetNullValue(out JavaScriptValue nullValue)
-         => Is32 ? Native32.JsGetNullValue(out nullValue) : Native64.JsGetNullValue(out nullValue);
-      public static JavaScriptErrorCode JsGetTrueValue(out JavaScriptValue trueValue)
-         => Is32 ? Native32.JsGetTrueValue(out trueValue) : Native64.JsGetTrueValue(out trueValue);
-      public static JavaScriptErrorCode JsGetFalseValue(out JavaScriptValue falseValue)
-         => Is32 ? Native32.JsGetFalseValue(out falseValue) : Native64.JsGetFalseValue(out falseValue);
-      public static JavaScriptErrorCode JsBoolToBoolean(bool value, out JavaScriptValue booleanValue)
-         => Is32 ? Native32.JsBoolToBoolean(value,out booleanValue) : Native64.JsBoolToBoolean(value, out booleanValue);
-      public static JavaScriptErrorCode JsBooleanToBool(JavaScriptValue booleanValue, out bool boolValue)
-         => Is32 ? Native32.JsBooleanToBool(booleanValue, out boolValue) : Native64.JsBooleanToBool(booleanValue, out boolValue);
-      public static JavaScriptErrorCode JsConvertValueToBoolean(JavaScriptValue value, out JavaScriptValue booleanValue)
-         => Is32 ? Native32.JsConvertValueToBoolean(value, out booleanValue) : Native64.JsConvertValueToBoolean(value, out booleanValue);
-      public static JavaScriptErrorCode JsGetValueType(JavaScriptValue value, out JavaScriptValueType type)
-         => Is32 ? Native32.JsGetValueType(value, out type) : Native64.JsGetValueType(value, out type);
-      public static JavaScriptErrorCode JsDoubleToNumber(double doubleValue, out JavaScriptValue value)
-         => Is32 ? Native32.JsDoubleToNumber(doubleValue, out value) : Native64.JsDoubleToNumber(doubleValue, out value);
-      public static JavaScriptErrorCode JsIntToNumber(int intValue, out JavaScriptValue value)
-         => Is32 ? Native32.JsDoubleToNumber(intValue, out value) : Native64.JsDoubleToNumber(intValue, out value);
-      public static JavaScriptErrorCode JsNumberToDouble(JavaScriptValue value, out double doubleValue)
-         => Is32 ? Native32.JsNumberToDouble(value, out doubleValue) : Native64.JsNumberToDouble(value, out doubleValue);
-      public static JavaScriptErrorCode JsConvertValueToNumber(JavaScriptValue value, out JavaScriptValue numberValue)
-         => Is32 ? Native32.JsConvertValueToNumber(value, out numberValue) : Native64.JsConvertValueToNumber(value, out numberValue);
-      public static JavaScriptErrorCode JsGetStringLength(JavaScriptValue sringValue, out int length)
-         => Is32 ? Native32.JsGetStringLength(sringValue, out length) : Native64.JsGetStringLength(sringValue, out length);
-      public static JavaScriptErrorCode JsPointerToString(string value, UIntPtr stringLength, out JavaScriptValue stringValue)
-         => Is32 ? Native32.JsPointerToString(value, stringLength, out stringValue) : Native64.JsPointerToString(value, stringLength, out stringValue);
-      public static JavaScriptErrorCode JsStringToPointer(JavaScriptValue value, out IntPtr stringValue, out UIntPtr stringLength)
-         => Is32 ? Native32.JsStringToPointer(value, out stringValue, out stringLength) : Native64.JsStringToPointer(value, out stringValue, out stringLength);
-      public static JavaScriptErrorCode JsConvertValueToString(JavaScriptValue value, out JavaScriptValue stringValue)
-         => Is32 ? Native32.JsConvertValueToString(value, out stringValue) : Native64.JsConvertValueToString(value, out stringValue);
-      public static JavaScriptErrorCode JsGetGlobalObject(out JavaScriptValue globalObject)
-         => Is32 ? Native32.JsGetGlobalObject(out globalObject) : Native64.JsGetGlobalObject(out globalObject);
-      public static JavaScriptErrorCode JsCreateObject(out JavaScriptValue obj)
-         => Is32 ? Native32.JsCreateObject(out obj) : Native64.JsCreateObject(out obj);
+      internal static JavaScriptErrorCode JsCreateRuntime(JavaScriptRuntimeAttributes _attributes,
+         JavaScriptThreadServiceCallback _threadService,
+         out JavaScriptRuntime _runtime)
+         => Is32 ? Native32.JsCreateRuntime(_attributes, _threadService, out _runtime) : Native64.JsCreateRuntime(_attributes, _threadService, out _runtime);
+      public static JavaScriptErrorCode JsCollectGarbage(JavaScriptRuntime _handle)
+         => Is32? Native32.JsCollectGarbage(_handle):Native64.JsCollectGarbage(_handle);
+      public static JavaScriptErrorCode JsDisposeRuntime(JavaScriptRuntime _handle)
+         => Is32 ? Native32.JsDisposeRuntime(_handle) : Native64.JsDisposeRuntime(_handle);
+      public static JavaScriptErrorCode JsGetRuntimeMemoryUsage(JavaScriptRuntime _runtime, out UIntPtr _memoryUsage)
+         => Is32 ? Native32.JsGetRuntimeMemoryUsage(_runtime,out _memoryUsage) : Native64.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+      public static JavaScriptErrorCode JsGetRuntimeMemoryLimit(JavaScriptRuntime _runtime, out UIntPtr _memoryLimit)
+         => Is32 ? Native32.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit) : Native64.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
+      public static JavaScriptErrorCode JsSetRuntimeMemoryLimit(JavaScriptRuntime _runtime, UIntPtr _memoryLimit)
+         => Is32 ? Native32.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit) : Native64.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
+      public static JavaScriptErrorCode JsSetRuntimeMemoryAllocationCallback(JavaScriptRuntime _runtime,
+         IntPtr _callbackState,
+         JavaScriptMemoryAllocationCallback _allocationCallback)
+         => Is32 ? Native32.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback) : Native64.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
+      public static JavaScriptErrorCode JsSetRuntimeBeforeCollectCallback(JavaScriptRuntime _runtime,
+         IntPtr _callbackState,
+         JavaScriptBeforeCollectCallback _beforeCollectCallback)
+         => Is32 ? Native32.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback) : Native64.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
+      public static JavaScriptErrorCode JsContextAddRef(JavaScriptContext _reference, out uint _count)
+         => Is32 ? Native32.JsContextAddRef(_reference, out _count) : Native64.JsContextAddRef(_reference, out _count);
+      public static JavaScriptErrorCode JsAddRef(JavaScriptValue _reference, out uint _count)
+         => Is32 ? Native32.JsAddRef(_reference, out _count) : Native64.JsAddRef(_reference, out _count);
+      public static JavaScriptErrorCode JsContextRelease(JavaScriptContext _reference, out uint _count)
+         => Is32 ? Native32.JsContextRelease(_reference, out _count) : Native64.JsContextRelease(_reference, out _count);
+      public static JavaScriptErrorCode JsRelease(JavaScriptValue _reference, out uint _count)
+         => Is32 ? Native32.JsRelease(_reference, out _count) : Native64.JsRelease(_reference, out _count);
+      public static JavaScriptErrorCode JsCreateContext(JavaScriptRuntime _runtime, out JavaScriptContext _newContext)
+         => Is32 ? Native32.JsCreateContext(_runtime, out _newContext) : Native64.JsCreateContext(_runtime, out _newContext);
+      public static JavaScriptErrorCode JsGetCurrentContext(out JavaScriptContext _currentContext)
+         => Is32 ? Native32.JsGetCurrentContext(out _currentContext) : Native64.JsGetCurrentContext(out _currentContext);
+      public static JavaScriptErrorCode JsSetCurrentContext(JavaScriptContext _context)
+         => Is32 ? Native32.JsSetCurrentContext(_context) : Native64.JsSetCurrentContext(_context);
+      public static JavaScriptErrorCode JsGetRuntime(JavaScriptContext _context, out JavaScriptRuntime _runtime)
+         => Is32 ? Native32.JsGetRuntime(_context,out _runtime) : Native64.JsGetRuntime(_context,out _runtime);
+      public static JavaScriptErrorCode JsIdle(out uint _nextIdleTick)
+         => Is32 ? Native32.JsIdle(out _nextIdleTick) : Native64.JsIdle(out _nextIdleTick);
+      public static JavaScriptErrorCode JsParseScript(string _script,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsParseScript(_script, _sourceContext, _sourceUrl,out _result) : Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+      public static JavaScriptErrorCode JsRunScript(string _script,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsRunScript(_script, _sourceContext, _sourceUrl, out _result) : Native64.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+      public static JavaScriptErrorCode JsSerializeScript(string _script, byte[] _buffer, ref ulong _bufferSize)
+         => Is32 ? Native32.JsSerializeScript(_script, _buffer, ref _bufferSize) : Native64.JsSerializeScript(_script, _buffer, ref _bufferSize);
+      public static JavaScriptErrorCode JsParseSerializedScript(string _script,
+         byte[] _buffer,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl,out _result) : Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+      public static JavaScriptErrorCode JsRunSerializedScript(string _script,
+         byte[] _buffer,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+      public static JavaScriptErrorCode JsGetPropertyIdFromName(string _name, out JavaScriptPropertyId _propertyId)
+         => Is32 ? Native32.JsGetPropertyIdFromName(_name, out _propertyId) : Native64.JsGetPropertyIdFromName(_name, out _propertyId);
+      public static JavaScriptErrorCode JsGetPropertyNameFromId(JavaScriptPropertyId _propertyId, out string _name)
+         => Is32 ? Native32.JsGetPropertyNameFromId(_propertyId, out _name) : Native64.JsGetPropertyNameFromId(_propertyId, out _name);
+      public static JavaScriptErrorCode JsGetUndefinedValue(out JavaScriptValue _undefinedValue)
+         => Is32 ? Native32.JsGetUndefinedValue(out _undefinedValue) : Native64.JsGetUndefinedValue(out _undefinedValue);
+      public static JavaScriptErrorCode JsGetNullValue(out JavaScriptValue _nullValue)
+         => Is32 ? Native32.JsGetNullValue(out _nullValue) : Native64.JsGetNullValue(out _nullValue);
+      public static JavaScriptErrorCode JsGetTrueValue(out JavaScriptValue _trueValue)
+         => Is32 ? Native32.JsGetTrueValue(out _trueValue) : Native64.JsGetTrueValue(out _trueValue);
+      public static JavaScriptErrorCode JsGetFalseValue(out JavaScriptValue _falseValue)
+         => Is32 ? Native32.JsGetFalseValue(out _falseValue) : Native64.JsGetFalseValue(out _falseValue);
+      public static JavaScriptErrorCode JsBoolToBoolean(bool _value, out JavaScriptValue _booleanValue)
+         => Is32 ? Native32.JsBoolToBoolean(_value,out _booleanValue) : Native64.JsBoolToBoolean(_value, out _booleanValue);
+      public static JavaScriptErrorCode JsBooleanToBool(JavaScriptValue _booleanValue, out bool _boolValue)
+         => Is32 ? Native32.JsBooleanToBool(_booleanValue, out _boolValue) : Native64.JsBooleanToBool(_booleanValue, out _boolValue);
+      public static JavaScriptErrorCode JsConvertValueToBoolean(JavaScriptValue _value, out JavaScriptValue _booleanValue)
+         => Is32 ? Native32.JsConvertValueToBoolean(_value, out _booleanValue) : Native64.JsConvertValueToBoolean(_value, out _booleanValue);
+      public static JavaScriptErrorCode JsGetValueType(JavaScriptValue _value, out JavaScriptValueType _type)
+         => Is32 ? Native32.JsGetValueType(_value, out _type) : Native64.JsGetValueType(_value, out _type);
+      public static JavaScriptErrorCode JsDoubleToNumber(double _doubleValue, out JavaScriptValue _value)
+         => Is32 ? Native32.JsDoubleToNumber(_doubleValue, out _value) : Native64.JsDoubleToNumber(_doubleValue, out _value);
+      public static JavaScriptErrorCode JsIntToNumber(int _intValue, out JavaScriptValue _value)
+         => Is32 ? Native32.JsDoubleToNumber(_intValue, out _value) : Native64.JsDoubleToNumber(_intValue, out _value);
+      public static JavaScriptErrorCode JsNumberToDouble(JavaScriptValue _value, out double _doubleValue)
+         => Is32 ? Native32.JsNumberToDouble(_value, out _doubleValue) : Native64.JsNumberToDouble(_value, out _doubleValue);
+      public static JavaScriptErrorCode JsConvertValueToNumber(JavaScriptValue _value, out JavaScriptValue _numberValue)
+         => Is32 ? Native32.JsConvertValueToNumber(_value, out _numberValue) : Native64.JsConvertValueToNumber(_value, out _numberValue);
+      public static JavaScriptErrorCode JsGetStringLength(JavaScriptValue _sringValue, out int _length)
+         => Is32 ? Native32.JsGetStringLength(_sringValue, out _length) : Native64.JsGetStringLength(_sringValue, out _length);
+      public static JavaScriptErrorCode JsPointerToString(string _value, UIntPtr _stringLength, out JavaScriptValue _stringValue)
+         => Is32 ? Native32.JsPointerToString(_value, _stringLength, out _stringValue) : Native64.JsPointerToString(_value, _stringLength, out _stringValue);
+      public static JavaScriptErrorCode JsStringToPointer(JavaScriptValue _value, out IntPtr _stringValue, out UIntPtr _stringLength)
+         => Is32 ? Native32.JsStringToPointer(_value, out _stringValue, out _stringLength) : Native64.JsStringToPointer(_value, out _stringValue, out _stringLength);
+      public static JavaScriptErrorCode JsConvertValueToString(JavaScriptValue _value, out JavaScriptValue _stringValue)
+         => Is32 ? Native32.JsConvertValueToString(_value, out _stringValue) : Native64.JsConvertValueToString(_value, out _stringValue);
+      public static JavaScriptErrorCode JsGetGlobalObject(out JavaScriptValue _globalObject)
+         => Is32 ? Native32.JsGetGlobalObject(out _globalObject) : Native64.JsGetGlobalObject(out _globalObject);
+      public static JavaScriptErrorCode JsCreateObject(out JavaScriptValue _obj)
+         => Is32 ? Native32.JsCreateObject(out _obj) : Native64.JsCreateObject(out _obj);
       public static JavaScriptErrorCode
-         JsCreateExternalObject(IntPtr data, JavaScriptObjectFinalizeCallback finalizeCallback, out JavaScriptValue obj)
-         => Is32 ? Native32.JsCreateExternalObject(data, finalizeCallback,out obj) : Native64.JsCreateExternalObject(data, finalizeCallback, out obj);
-      public static JavaScriptErrorCode JsConvertValueToObject(JavaScriptValue value, out JavaScriptValue obj)
-         => Is32 ? Native32.JsConvertValueToObject(value, out obj) : Native64.JsConvertValueToObject(value, out obj);
-      public static JavaScriptErrorCode JsGetPrototype(JavaScriptValue obj, out JavaScriptValue prototypeObject)
-         => Is32 ? Native32.JsGetPrototype(obj, out prototypeObject) : Native64.JsGetPrototype(obj, out prototypeObject);
-      public static JavaScriptErrorCode JsSetPrototype(JavaScriptValue obj, JavaScriptValue prototypeObject)
-         => Is32 ? Native32.JsSetPrototype(obj, prototypeObject) : Native64.JsSetPrototype(obj, prototypeObject);
-      public static JavaScriptErrorCode JsGetExtensionAllowed(JavaScriptValue obj, out bool value)
-         => Is32 ? Native32.JsGetExtensionAllowed(obj, out value) : Native64.JsGetExtensionAllowed(obj, out value);
-      public static JavaScriptErrorCode JsPreventExtension(JavaScriptValue obj)
-         => Is32 ? Native32.JsPreventExtension(obj) : Native64.JsPreventExtension(obj);
-      public static JavaScriptErrorCode JsGetProperty(JavaScriptValue obj, JavaScriptPropertyId propertyId, out JavaScriptValue value)
-         => Is32 ? Native32.JsGetProperty(obj, propertyId,out value) : Native64.JsGetProperty(obj, propertyId, out value);
-      public static JavaScriptErrorCode JsGetOwnPropertyDescriptor(JavaScriptValue obj,
-         JavaScriptPropertyId propertyId,
-         out JavaScriptValue propertyDescriptor)
-         => Is32 ? Native32.JsGetOwnPropertyDescriptor(obj, propertyId, out propertyDescriptor) : Native64.JsGetOwnPropertyDescriptor(obj, propertyId, out propertyDescriptor);
-      public static JavaScriptErrorCode JsGetOwnPropertyNames(JavaScriptValue obj, out JavaScriptValue propertyNames)
-         => Is32 ? Native32.JsGetOwnPropertyNames(obj, out propertyNames) : Native64.JsGetOwnPropertyNames(obj, out propertyNames);
+         JsCreateExternalObject(IntPtr _data, JavaScriptObjectFinalizeCallback _finalizeCallback, out JavaScriptValue _obj)
+         => Is32 ? Native32.JsCreateExternalObject(_data, _finalizeCallback,out _obj) : Native64.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+      public static JavaScriptErrorCode JsConvertValueToObject(JavaScriptValue _value, out JavaScriptValue _obj)
+         => Is32 ? Native32.JsConvertValueToObject(_value, out _obj) : Native64.JsConvertValueToObject(_value, out _obj);
+      public static JavaScriptErrorCode JsGetPrototype(JavaScriptValue _obj, out JavaScriptValue _prototypeObject)
+         => Is32 ? Native32.JsGetPrototype(_obj, out _prototypeObject) : Native64.JsGetPrototype(_obj, out _prototypeObject);
+      public static JavaScriptErrorCode JsSetPrototype(JavaScriptValue _obj, JavaScriptValue _prototypeObject)
+         => Is32 ? Native32.JsSetPrototype(_obj, _prototypeObject) : Native64.JsSetPrototype(_obj, _prototypeObject);
+      public static JavaScriptErrorCode JsGetExtensionAllowed(JavaScriptValue _obj, out bool _value)
+         => Is32 ? Native32.JsGetExtensionAllowed(_obj, out _value) : Native64.JsGetExtensionAllowed(_obj, out _value);
+      public static JavaScriptErrorCode JsPreventExtension(JavaScriptValue _obj)
+         => Is32 ? Native32.JsPreventExtension(_obj) : Native64.JsPreventExtension(_obj);
+      public static JavaScriptErrorCode JsGetProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, out JavaScriptValue _value)
+         => Is32 ? Native32.JsGetProperty(_obj, _propertyId,out _value) : Native64.JsGetProperty(_obj, _propertyId, out _value);
+      public static JavaScriptErrorCode JsGetOwnPropertyDescriptor(JavaScriptValue _obj,
+         JavaScriptPropertyId _propertyId,
+         out JavaScriptValue _propertyDescriptor)
+         => Is32 ? Native32.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor) : Native64.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
+      public static JavaScriptErrorCode JsGetOwnPropertyNames(JavaScriptValue _obj, out JavaScriptValue _propertyNames)
+         => Is32 ? Native32.JsGetOwnPropertyNames(_obj, out _propertyNames) : Native64.JsGetOwnPropertyNames(_obj, out _propertyNames);
       public static JavaScriptErrorCode
-         JsSetProperty(JavaScriptValue obj, JavaScriptPropertyId propertyId, JavaScriptValue value, bool useStrictRules)
-         => Is32 ? Native32.JsSetProperty(obj, propertyId, value, useStrictRules) : Native64.JsSetProperty(obj, propertyId, value, useStrictRules);
-      public static JavaScriptErrorCode JsHasProperty(JavaScriptValue obj, JavaScriptPropertyId propertyId, out bool hasProperty)
-         => Is32 ? Native32.JsHasProperty(obj, propertyId, out hasProperty) : Native64.JsHasProperty(obj, propertyId, out hasProperty);
-      public static JavaScriptErrorCode JsDeleteProperty(JavaScriptValue obj,
-         JavaScriptPropertyId propertyId,
-         bool useStrictRules,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsDeleteProperty(obj, propertyId, useStrictRules, out result) : Native64.JsDeleteProperty(obj, propertyId, useStrictRules, out result);
-      public static JavaScriptErrorCode JsDefineProperty(JavaScriptValue obj,
-         JavaScriptPropertyId propertyId,
-         JavaScriptValue propertyDescriptor,
-         out bool result)
-         => Is32 ? Native32.JsDefineProperty(obj, propertyId, propertyDescriptor, out result) : Native64.JsDefineProperty(obj, propertyId, propertyDescriptor, out result);
-      public static JavaScriptErrorCode JsHasIndexedProperty(JavaScriptValue obj, JavaScriptValue index, out bool result)
-         => Is32 ? Native32.JsHasIndexedProperty(obj, index,out result) : Native64.JsHasIndexedProperty(obj, index, out result);
-      public static JavaScriptErrorCode JsGetIndexedProperty(JavaScriptValue obj, JavaScriptValue index, out JavaScriptValue result)
-         => Is32 ? Native32.JsGetIndexedProperty(obj, index, out result) : Native64.JsGetIndexedProperty(obj, index, out result);
-      public static JavaScriptErrorCode JsSetIndexedProperty(JavaScriptValue obj, JavaScriptValue index, JavaScriptValue value)
-         => Is32 ? Native32.JsSetIndexedProperty(obj, index, value) : Native64.JsSetIndexedProperty(obj, index, value);
-      public static JavaScriptErrorCode JsDeleteIndexedProperty(JavaScriptValue obj, JavaScriptValue index)
-         => Is32 ? Native32.JsDeleteIndexedProperty(obj, index) : Native64.JsDeleteIndexedProperty(obj, index);
-      public static JavaScriptErrorCode JsEquals(JavaScriptValue obj1, JavaScriptValue obj2, out bool result)
-         => Is32 ? Native32.JsEquals(obj1, obj2,out result) : Native64.JsEquals(obj1, obj2, out result);
-      public static JavaScriptErrorCode JsStrictEquals(JavaScriptValue obj1, JavaScriptValue obj2, out bool result)
-         => Is32 ? Native32.JsStrictEquals(obj1, obj2, out result) : Native64.JsEquals(obj1, obj2, out result);
-      public static JavaScriptErrorCode JsHasExternalData(JavaScriptValue obj, out bool value)
-         => Is32 ? Native32.JsHasExternalData(obj, out value) : Native64.JsHasExternalData(obj, out value);
-      public static JavaScriptErrorCode JsGetExternalData(JavaScriptValue obj, out IntPtr externalData)
-         => Is32 ? Native32.JsGetExternalData(obj, out externalData) : Native64.JsGetExternalData(obj, out externalData);
-      public static JavaScriptErrorCode JsSetExternalData(JavaScriptValue obj, IntPtr externalData)
-         => Is32 ? Native32.JsSetExternalData(obj, externalData) : Native64.JsSetExternalData(obj, externalData);
-      public static JavaScriptErrorCode JsCreateArray(uint length, out JavaScriptValue result)
-         => Is32 ? Native32.JsCreateArray(length, out result) : Native64.JsCreateArray(length, out result);
-      public static JavaScriptErrorCode JsCallFunction(JavaScriptValue function,
-         JavaScriptValue[] arguments,
-         ushort argumentCount,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsCallFunction(function,arguments, argumentCount,out result) : Native64.JsCallFunction(function,arguments, argumentCount, out result);
-      public static JavaScriptErrorCode JsConstructObject(JavaScriptValue function,
-         JavaScriptValue[] arguments,
-         ushort argumentCount,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsConstructObject(function, arguments, argumentCount, out result) : Native64.JsConstructObject(function, arguments, argumentCount, out result);
-      public static JavaScriptErrorCode JsCreateFunction(JavaScriptNativeFunction nativeFunction, IntPtr externalData, out JavaScriptValue function)
-         => Is32 ? Native32.JsCreateFunction(nativeFunction, externalData, out function) : Native64.JsCreateFunction(nativeFunction, externalData, out function);
-      public static JavaScriptErrorCode JsCreateError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateError(message, out error) : Native64.JsCreateError(message, out error);
-      public static JavaScriptErrorCode JsCreateRangeError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateRangeError(message, out error) : Native64.JsCreateRangeError(message, out error);
-      public static JavaScriptErrorCode JsCreateReferenceError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateReferenceError(message, out error) : Native64.JsCreateReferenceError(message, out error);
-      public static JavaScriptErrorCode JsCreateSyntaxError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateSyntaxError(message, out error) : Native64.JsCreateSyntaxError(message, out error);
-      public static JavaScriptErrorCode JsCreateTypeError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateTypeError(message, out error) : Native64.JsCreateTypeError(message, out error);
-      public static JavaScriptErrorCode JsCreateURIError(JavaScriptValue message, out JavaScriptValue error)
-         => Is32 ? Native32.JsCreateURIError(message, out error) : Native64.JsCreateURIError(message, out error);
-      public static JavaScriptErrorCode JsHasException(out bool hasException)
-         => Is32 ? Native32.JsHasException(out hasException) : Native64.JsHasException(out hasException);
-      public static JavaScriptErrorCode JsGetAndClearException(out JavaScriptValue exception)
-         => Is32 ? Native32.JsGetAndClearException(out exception) : Native64.JsGetAndClearException(out exception);
-      public static JavaScriptErrorCode JsSetException(JavaScriptValue exception)
-         => Is32 ? Native32.JsSetException(exception) : Native64.JsSetException(exception);
-      public static JavaScriptErrorCode JsDisableRuntimeExecution(JavaScriptRuntime runtime)
-         => Is32 ? Native32.JsDisableRuntimeExecution(runtime) : Native64.JsDisableRuntimeExecution(runtime);
-      public static JavaScriptErrorCode JsEnableRuntimeExecution(JavaScriptRuntime runtime)
-         => Is32 ? Native32.JsEnableRuntimeExecution(runtime) : Native64.JsEnableRuntimeExecution(runtime);
-      public static JavaScriptErrorCode JsIsRuntimeExecutionDisabled(JavaScriptRuntime runtime, out bool isDisabled)
-         => Is32 ? Native32.JsIsRuntimeExecutionDisabled(runtime, out isDisabled) : Native64.JsIsRuntimeExecutionDisabled(runtime, out isDisabled);
-      public static JavaScriptErrorCode JsSetObjectBeforeCollectCallback(JavaScriptValue reference,
-         IntPtr callbackState,
-         JavaScriptObjectBeforeCollectCallback beforeCollectCallback)
-         => Is32 ? Native32.JsSetObjectBeforeCollectCallback(reference, callbackState, beforeCollectCallback) : Native64.JsSetObjectBeforeCollectCallback(reference, callbackState, beforeCollectCallback);
-      public static JavaScriptErrorCode JsCreateNamedFunction(JavaScriptValue name,
-         JavaScriptNativeFunction nativeFunction,
-         IntPtr callbackState,
-         out JavaScriptValue function)
-         => Is32 ? Native32.JsCreateNamedFunction(name, nativeFunction, callbackState,out function) : Native64.JsCreateNamedFunction(name, nativeFunction, callbackState, out function);
-      public static JavaScriptErrorCode JsSetPromiseContinuationCallback(JavaScriptPromiseContinuationCallback promiseContinuationCallback,
-         IntPtr callbackState)
-         => Is32 ? Native32.JsSetPromiseContinuationCallback(promiseContinuationCallback, callbackState) : Native64.JsSetPromiseContinuationCallback(promiseContinuationCallback, callbackState);
-      public static JavaScriptErrorCode JsCreateArrayBuffer(uint byteLength, out JavaScriptValue result)
-         => Is32 ? Native32.JsCreateArrayBuffer(byteLength, out result) : Native64.JsCreateArrayBuffer(byteLength, out result);
-      public static JavaScriptErrorCode JsCreateTypedArray(JavaScriptTypedArrayType arrayType,
-         JavaScriptValue arrayBuffer,
-         uint byteOffset,
-         uint elementLength,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsCreateTypedArray(arrayType, arrayBuffer, byteOffset, elementLength, out result) : Native64.JsCreateTypedArray(arrayType, arrayBuffer, byteOffset, elementLength, out result);
-      public static JavaScriptErrorCode JsCreateDataView(JavaScriptValue arrayBuffer,
-         uint byteOffset,
-         uint byteOffsetLength,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsCreateDataView(arrayBuffer, byteOffset, byteOffsetLength,out result) : Native64.JsCreateDataView(arrayBuffer, byteOffset, byteOffsetLength, out result);
-      public static JavaScriptErrorCode JsGetArrayBufferStorage(JavaScriptValue arrayBuffer, out IntPtr buffer, out uint bufferLength)
-         => Is32 ? Native32.JsGetArrayBufferStorage(arrayBuffer, out buffer, out bufferLength) : Native64.JsGetArrayBufferStorage(arrayBuffer, out buffer, out bufferLength);
-      public static JavaScriptErrorCode JsGetTypedArrayStorage(JavaScriptValue typedArray,
-         out IntPtr buffer,
-         out uint bufferLength,
-         out JavaScriptTypedArrayType arrayType,
-         out int elementSize)
-         => Is32 ? Native32.JsGetTypedArrayStorage(typedArray, out buffer, out bufferLength,out arrayType,out elementSize) : Native64.JsGetTypedArrayStorage(typedArray, out buffer, out bufferLength, out arrayType, out elementSize);
-      public static JavaScriptErrorCode JsGetDataViewStorage(JavaScriptValue dataView, out IntPtr buffer, out uint bufferLength)
-         => Is32 ? Native32.JsGetDataViewStorage(dataView, out buffer, out bufferLength) : Native64.JsGetDataViewStorage(dataView, out buffer, out bufferLength);
-      public static JavaScriptErrorCode JsGetPropertyIdType(JavaScriptPropertyId propertyId, out JavaScriptPropertyIdType propertyIdType)
-         => Is32 ? Native32.JsGetPropertyIdType(propertyId, out propertyIdType) : Native64.JsGetPropertyIdType(propertyId, out propertyIdType);
-      public static JavaScriptErrorCode JsCreateSymbol(JavaScriptValue description, out JavaScriptValue symbol)
-         => Is32 ? Native32.JsCreateSymbol(description, out symbol) : Native64.JsCreateSymbol(description, out symbol);
-      public static JavaScriptErrorCode JsGetSymbolFromPropertyId(JavaScriptPropertyId propertyId, out JavaScriptValue symbol)
-         => Is32 ? Native32.JsGetSymbolFromPropertyId(propertyId, out symbol) : Native64.JsGetSymbolFromPropertyId(propertyId, out symbol);
-      public static JavaScriptErrorCode JsGetPropertyIdFromSymbol(JavaScriptValue symbol, out JavaScriptPropertyId propertyId)
-         => Is32 ? Native32.JsGetPropertyIdFromSymbol(symbol, out propertyId) : Native64.JsGetPropertyIdFromSymbol(symbol, out propertyId);
-      public static JavaScriptErrorCode JsGetOwnPropertySymbols(JavaScriptValue obj, out JavaScriptValue propertySymbols)
-         => Is32 ? Native32.JsGetOwnPropertySymbols(obj, out propertySymbols) : Native64.JsGetOwnPropertySymbols(obj, out propertySymbols);
-      public static JavaScriptErrorCode JsNumberToInt(JavaScriptValue value, out int intValue)
-         => Is32 ? Native32.JsNumberToInt(value, out intValue) : Native64.JsNumberToInt(value, out intValue);
-      public static JavaScriptErrorCode JsSetIndexedPropertiesToExternalData(JavaScriptValue obj,
-         IntPtr data,
-         JavaScriptTypedArrayType arrayType,
-         uint elementLength)
-         => Is32 ? Native32.JsSetIndexedPropertiesToExternalData(obj, data, arrayType, elementLength) : Native64.JsSetIndexedPropertiesToExternalData(obj, data, arrayType, elementLength);
-      public static JavaScriptErrorCode JsGetIndexedPropertiesExternalData(JavaScriptValue obj,
-         IntPtr data,
-         out JavaScriptTypedArrayType arrayType,
-         out uint elementLength)
-         => Is32 ? Native32.JsGetIndexedPropertiesExternalData(obj, data, out arrayType, out elementLength) : Native64.JsGetIndexedPropertiesExternalData(obj, data, out arrayType, out elementLength);
-      public static JavaScriptErrorCode JsHasIndexedPropertiesExternalData(JavaScriptValue obj, out bool value)
-         => Is32 ? Native32.JsHasIndexedPropertiesExternalData(obj, out value) : Native64.JsHasIndexedPropertiesExternalData(obj, out value);
-      public static JavaScriptErrorCode JsInstanceOf(JavaScriptValue obj, JavaScriptValue constructor, out bool result)
-         => Is32 ? Native32.JsInstanceOf(obj, constructor,out result) : Native64.JsInstanceOf(obj, constructor, out result);
-      public static JavaScriptErrorCode JsCreateExternalArrayBuffer(IntPtr data,
-         uint byteLength,
-         JavaScriptObjectFinalizeCallback finalizeCallback,
-         IntPtr callbackState,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsCreateExternalArrayBuffer(data, byteLength, finalizeCallback, callbackState, out result) : Native64.JsCreateExternalArrayBuffer(data, byteLength, finalizeCallback, callbackState, out result);
-      public static JavaScriptErrorCode JsGetTypedArrayInfo(JavaScriptValue typedArray,
-         out JavaScriptTypedArrayType arrayType,
-         out JavaScriptValue arrayBuffer,
-         out uint byteOffset,
-         out uint byteLength)
-         => Is32 ? Native32.JsGetTypedArrayInfo(typedArray, out arrayType, out arrayBuffer, out byteOffset, out byteLength) : Native64.JsGetTypedArrayInfo(typedArray, out arrayType, out arrayBuffer, out byteOffset, out byteLength);
-      public static JavaScriptErrorCode JsGetContextOfObject(JavaScriptValue obj, out JavaScriptContext context)
-         => Is32 ? Native32.JsGetContextOfObject(obj, out context) : Native64.JsGetContextOfObject(obj, out context);
-      public static JavaScriptErrorCode JsGetContextData(JavaScriptContext context, out IntPtr data)
-         => Is32 ? Native32.JsGetContextData(context, out data) : Native64.JsGetContextData(context, out data);
-      public static JavaScriptErrorCode JsSetContextData(JavaScriptContext context, IntPtr data)
-         => Is32 ? Native32.JsSetContextData(context, data) : Native64.JsSetContextData(context, data);
-      public static JavaScriptErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback scriptLoadCallback,
-         JavaScriptSerializedScriptUnloadCallback scriptUnloadCallback,
-         byte[] buffer,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsParseSerializedScriptWithCallback(scriptLoadCallback, scriptUnloadCallback, buffer, sourceContext, sourceUrl,out result) : Native64.JsParseSerializedScriptWithCallback(scriptLoadCallback, scriptUnloadCallback, buffer, sourceContext, sourceUrl, out result);
-      public static JavaScriptErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback scriptLoadCallback,
-         JavaScriptSerializedScriptUnloadCallback scriptUnloadCallback,
-         byte[] buffer,
-         JavaScriptSourceContext sourceContext,
-         string sourceUrl,
-         out JavaScriptValue result)
-         => Is32 ? Native32.JsRunSerializedScriptWithCallback(scriptLoadCallback, scriptUnloadCallback, buffer, sourceContext, sourceUrl, out result) : Native64.JsRunSerializedScriptWithCallback(scriptLoadCallback, scriptUnloadCallback, buffer, sourceContext, sourceUrl, out result);
+         JsSetProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, JavaScriptValue _value, bool _useStrictRules)
+         => Is32 ? Native32.JsSetProperty(_obj, _propertyId, _value, _useStrictRules) : Native64.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
+      public static JavaScriptErrorCode JsHasProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, out bool _hasProperty)
+         => Is32 ? Native32.JsHasProperty(_obj, _propertyId, out _hasProperty) : Native64.JsHasProperty(_obj, _propertyId, out _hasProperty);
+      public static JavaScriptErrorCode JsDeleteProperty(JavaScriptValue _obj,
+         JavaScriptPropertyId _propertyId,
+         bool _useStrictRules,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result) : Native64.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
+      public static JavaScriptErrorCode JsDefineProperty(JavaScriptValue _obj,
+         JavaScriptPropertyId _propertyId,
+         JavaScriptValue _propertyDescriptor,
+         out bool _result)
+         => Is32 ? Native32.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result) : Native64.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
+      public static JavaScriptErrorCode JsHasIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out bool _result)
+         => Is32 ? Native32.JsHasIndexedProperty(_obj, _index,out _result) : Native64.JsHasIndexedProperty(_obj, _index, out _result);
+      public static JavaScriptErrorCode JsGetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out JavaScriptValue _result)
+         => Is32 ? Native32.JsGetIndexedProperty(_obj, _index, out _result) : Native64.JsGetIndexedProperty(_obj, _index, out _result);
+      public static JavaScriptErrorCode JsSetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, JavaScriptValue _value)
+         => Is32 ? Native32.JsSetIndexedProperty(_obj, _index, _value) : Native64.JsSetIndexedProperty(_obj, _index, _value);
+      public static JavaScriptErrorCode JsDeleteIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index)
+         => Is32 ? Native32.JsDeleteIndexedProperty(_obj, _index) : Native64.JsDeleteIndexedProperty(_obj, _index);
+      public static JavaScriptErrorCode JsEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result)
+         => Is32 ? Native32.JsEquals(_obj1, _obj2,out _result) : Native64.JsEquals(_obj1, _obj2, out _result);
+      public static JavaScriptErrorCode JsStrictEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result)
+         => Is32 ? Native32.JsStrictEquals(_obj1, _obj2, out _result) : Native64.JsEquals(_obj1, _obj2, out _result);
+      public static JavaScriptErrorCode JsHasExternalData(JavaScriptValue _obj, out bool _value)
+         => Is32 ? Native32.JsHasExternalData(_obj, out _value) : Native64.JsHasExternalData(_obj, out _value);
+      public static JavaScriptErrorCode JsGetExternalData(JavaScriptValue _obj, out IntPtr _externalData)
+         => Is32 ? Native32.JsGetExternalData(_obj, out _externalData) : Native64.JsGetExternalData(_obj, out _externalData);
+      public static JavaScriptErrorCode JsSetExternalData(JavaScriptValue _obj, IntPtr _externalData)
+         => Is32 ? Native32.JsSetExternalData(_obj, _externalData) : Native64.JsSetExternalData(_obj, _externalData);
+      public static JavaScriptErrorCode JsCreateArray(uint _length, out JavaScriptValue _result)
+         => Is32 ? Native32.JsCreateArray(_length, out _result) : Native64.JsCreateArray(_length, out _result);
+      public static JavaScriptErrorCode JsCallFunction(JavaScriptValue _function,
+         JavaScriptValue[] _arguments,
+         ushort _argumentCount,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsCallFunction(_function,_arguments, _argumentCount,out _result) : Native64.JsCallFunction(_function,_arguments, _argumentCount, out _result);
+      public static JavaScriptErrorCode JsConstructObject(JavaScriptValue _function,
+         JavaScriptValue[] _arguments,
+         ushort _argumentCount,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsConstructObject(_function, _arguments, _argumentCount, out _result) : Native64.JsConstructObject(_function, _arguments, _argumentCount, out _result);
+      public static JavaScriptErrorCode JsCreateFunction(JavaScriptNativeFunction _nativeFunction, IntPtr _externalData, out JavaScriptValue _function)
+         => Is32 ? Native32.JsCreateFunction(_nativeFunction, _externalData, out _function) : Native64.JsCreateFunction(_nativeFunction, _externalData, out _function);
+      public static JavaScriptErrorCode JsCreateError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateError(_message, out _error) : Native64.JsCreateError(_message, out _error);
+      public static JavaScriptErrorCode JsCreateRangeError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateRangeError(_message, out _error) : Native64.JsCreateRangeError(_message, out _error);
+      public static JavaScriptErrorCode JsCreateReferenceError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateReferenceError(_message, out _error) : Native64.JsCreateReferenceError(_message, out _error);
+      public static JavaScriptErrorCode JsCreateSyntaxError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateSyntaxError(_message, out _error) : Native64.JsCreateSyntaxError(_message, out _error);
+      public static JavaScriptErrorCode JsCreateTypeError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateTypeError(_message, out _error) : Native64.JsCreateTypeError(_message, out _error);
+      public static JavaScriptErrorCode JsCreateUriError(JavaScriptValue _message, out JavaScriptValue _error)
+         => Is32 ? Native32.JsCreateURIError(_message, out _error) : Native64.JsCreateURIError(_message, out _error);
+      public static JavaScriptErrorCode JsHasException(out bool _hasException)
+         => Is32 ? Native32.JsHasException(out _hasException) : Native64.JsHasException(out _hasException);
+      public static JavaScriptErrorCode JsGetAndClearException(out JavaScriptValue _exception)
+         => Is32 ? Native32.JsGetAndClearException(out _exception) : Native64.JsGetAndClearException(out _exception);
+      public static JavaScriptErrorCode JsSetException(JavaScriptValue _exception)
+         => Is32 ? Native32.JsSetException(_exception) : Native64.JsSetException(_exception);
+      public static JavaScriptErrorCode JsDisableRuntimeExecution(JavaScriptRuntime _runtime)
+         => Is32 ? Native32.JsDisableRuntimeExecution(_runtime) : Native64.JsDisableRuntimeExecution(_runtime);
+      public static JavaScriptErrorCode JsEnableRuntimeExecution(JavaScriptRuntime _runtime)
+         => Is32 ? Native32.JsEnableRuntimeExecution(_runtime) : Native64.JsEnableRuntimeExecution(_runtime);
+      public static JavaScriptErrorCode JsIsRuntimeExecutionDisabled(JavaScriptRuntime _runtime, out bool _isDisabled)
+         => Is32 ? Native32.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled) : Native64.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
+      public static JavaScriptErrorCode JsSetObjectBeforeCollectCallback(JavaScriptValue _reference,
+         IntPtr _callbackState,
+         JavaScriptObjectBeforeCollectCallback _beforeCollectCallback)
+         => Is32 ? Native32.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback) : Native64.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
+      public static JavaScriptErrorCode JsCreateNamedFunction(JavaScriptValue _name,
+         JavaScriptNativeFunction _nativeFunction,
+         IntPtr _callbackState,
+         out JavaScriptValue _function)
+         => Is32 ? Native32.JsCreateNamedFunction(_name, _nativeFunction, _callbackState,out _function) : Native64.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+      public static JavaScriptErrorCode JsSetPromiseContinuationCallback(JavaScriptPromiseContinuationCallback _promiseContinuationCallback,
+         IntPtr _callbackState)
+         => Is32 ? Native32.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState) : Native64.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
+      public static JavaScriptErrorCode JsCreateArrayBuffer(uint _byteLength, out JavaScriptValue _result)
+         => Is32 ? Native32.JsCreateArrayBuffer(_byteLength, out _result) : Native64.JsCreateArrayBuffer(_byteLength, out _result);
+      public static JavaScriptErrorCode JsCreateTypedArray(JavaScriptTypedArrayType _arrayType,
+         JavaScriptValue _arrayBuffer,
+         uint _byteOffset,
+         uint _elementLength,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result) : Native64.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
+      public static JavaScriptErrorCode JsCreateDataView(JavaScriptValue _arrayBuffer,
+         uint _byteOffset,
+         uint _byteOffsetLength,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength,out _result) : Native64.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+      public static JavaScriptErrorCode JsGetArrayBufferStorage(JavaScriptValue _arrayBuffer, out IntPtr _buffer, out uint _bufferLength)
+         => Is32 ? Native32.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength) : Native64.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
+      public static JavaScriptErrorCode JsGetTypedArrayStorage(JavaScriptValue _typedArray,
+         out IntPtr _buffer,
+         out uint _bufferLength,
+         out JavaScriptTypedArrayType _arrayType,
+         out int _elementSize)
+         => Is32 ? Native32.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength,out _arrayType,out _elementSize) : Native64.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+      public static JavaScriptErrorCode JsGetDataViewStorage(JavaScriptValue _dataView, out IntPtr _buffer, out uint _bufferLength)
+         => Is32 ? Native32.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength) : Native64.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
+      public static JavaScriptErrorCode JsGetPropertyIdType(JavaScriptPropertyId _propertyId, out JavaScriptPropertyIdType _propertyIdType)
+         => Is32 ? Native32.JsGetPropertyIdType(_propertyId, out _propertyIdType) : Native64.JsGetPropertyIdType(_propertyId, out _propertyIdType);
+      public static JavaScriptErrorCode JsCreateSymbol(JavaScriptValue _description, out JavaScriptValue _symbol)
+         => Is32 ? Native32.JsCreateSymbol(_description, out _symbol) : Native64.JsCreateSymbol(_description, out _symbol);
+      public static JavaScriptErrorCode JsGetSymbolFromPropertyId(JavaScriptPropertyId _propertyId, out JavaScriptValue _symbol)
+         => Is32 ? Native32.JsGetSymbolFromPropertyId(_propertyId, out _symbol) : Native64.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
+      public static JavaScriptErrorCode JsGetPropertyIdFromSymbol(JavaScriptValue _symbol, out JavaScriptPropertyId _propertyId)
+         => Is32 ? Native32.JsGetPropertyIdFromSymbol(_symbol, out _propertyId) : Native64.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
+      public static JavaScriptErrorCode JsGetOwnPropertySymbols(JavaScriptValue _obj, out JavaScriptValue _propertySymbols)
+         => Is32 ? Native32.JsGetOwnPropertySymbols(_obj, out _propertySymbols) : Native64.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
+      public static JavaScriptErrorCode JsNumberToInt(JavaScriptValue _value, out int _intValue)
+         => Is32 ? Native32.JsNumberToInt(_value, out _intValue) : Native64.JsNumberToInt(_value, out _intValue);
+      public static JavaScriptErrorCode JsSetIndexedPropertiesToExternalData(JavaScriptValue _obj,
+         IntPtr _data,
+         JavaScriptTypedArrayType _arrayType,
+         uint _elementLength)
+         => Is32 ? Native32.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength) : Native64.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
+      public static JavaScriptErrorCode JsGetIndexedPropertiesExternalData(JavaScriptValue _obj,
+         IntPtr _data,
+         out JavaScriptTypedArrayType _arrayType,
+         out uint _elementLength)
+         => Is32 ? Native32.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength) : Native64.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
+      public static JavaScriptErrorCode JsHasIndexedPropertiesExternalData(JavaScriptValue _obj, out bool _value)
+         => Is32 ? Native32.JsHasIndexedPropertiesExternalData(_obj, out _value) : Native64.JsHasIndexedPropertiesExternalData(_obj, out _value);
+      public static JavaScriptErrorCode JsInstanceOf(JavaScriptValue _obj, JavaScriptValue _constructor, out bool _result)
+         => Is32 ? Native32.JsInstanceOf(_obj, _constructor,out _result) : Native64.JsInstanceOf(_obj, _constructor, out _result);
+      public static JavaScriptErrorCode JsCreateExternalArrayBuffer(IntPtr _data,
+         uint _byteLength,
+         JavaScriptObjectFinalizeCallback _finalizeCallback,
+         IntPtr _callbackState,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result) : Native64.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
+      public static JavaScriptErrorCode JsGetTypedArrayInfo(JavaScriptValue _typedArray,
+         out JavaScriptTypedArrayType _arrayType,
+         out JavaScriptValue _arrayBuffer,
+         out uint _byteOffset,
+         out uint _byteLength)
+         => Is32 ? Native32.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength) : Native64.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
+      public static JavaScriptErrorCode JsGetContextOfObject(JavaScriptValue _obj, out JavaScriptContext _context)
+         => Is32 ? Native32.JsGetContextOfObject(_obj, out _context) : Native64.JsGetContextOfObject(_obj, out _context);
+      public static JavaScriptErrorCode JsGetContextData(JavaScriptContext _context, out IntPtr _data)
+         => Is32 ? Native32.JsGetContextData(_context, out _data) : Native64.JsGetContextData(_context, out _data);
+      public static JavaScriptErrorCode JsSetContextData(JavaScriptContext _context, IntPtr _data)
+         => Is32 ? Native32.JsSetContextData(_context, _data) : Native64.JsSetContextData(_context, _data);
+      public static JavaScriptErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
+         JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
+         byte[] _buffer,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl,out _result) : Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+      public static JavaScriptErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
+         JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
+         byte[] _buffer,
+         JavaScriptSourceContext _sourceContext,
+         string _sourceUrl,
+         out JavaScriptValue _result)
+         => Is32 ? Native32.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
    }
 }

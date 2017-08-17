@@ -14,15 +14,15 @@ namespace SharpChakra
         /// <summary>
         /// The id.
         /// </summary>
-        private readonly IntPtr id;
+        private readonly IntPtr p_id;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptPropertyId"/> struct. 
         /// </summary>
-        /// <param name="id">The ID.</param>
-        internal JavaScriptPropertyId(IntPtr id)
+        /// <param name="_id">The ID.</param>
+        internal JavaScriptPropertyId(IntPtr _id)
         {
-            this.id = id;
+            this.p_id = _id;
         }
 
         /// <summary>
@@ -62,62 +62,62 @@ namespace SharpChakra
         ///     Requires an active script context.
         ///     </para>
         /// </remarks>
-        /// <param name="name">
+        /// <param name="_name">
         ///     The name of the property ID to get or create. The name may consist of only digits.
         /// </param>
         /// <returns>The property ID in this runtime for the given name.</returns>
-        public static JavaScriptPropertyId FromString(string name)
+        public static JavaScriptPropertyId FromString(string _name)
         {
             JavaScriptPropertyId id;
-            Native.ThrowIfError(Native.JsGetPropertyIdFromName(name, out id));
+            Native.ThrowIfError(Native.JsGetPropertyIdFromName(_name, out id));
             return id;
         }
 
         /// <summary>
         ///     The equality operator for property IDs.
         /// </summary>
-        /// <param name="left">The first property ID to compare.</param>
-        /// <param name="right">The second property ID to compare.</param>
+        /// <param name="_left">The first property ID to compare.</param>
+        /// <param name="_right">The second property ID to compare.</param>
         /// <returns>Whether the two property IDs are the same.</returns>
-        public static bool operator ==(JavaScriptPropertyId left, JavaScriptPropertyId right)
+        public static bool operator ==(JavaScriptPropertyId _left, JavaScriptPropertyId _right)
         {
-            return left.Equals(right);
+            return _left.Equals(_right);
         }
 
         /// <summary>
         ///     The inequality operator for property IDs.
         /// </summary>
-        /// <param name="left">The first property ID to compare.</param>
-        /// <param name="right">The second property ID to compare.</param>
+        /// <param name="_left">The first property ID to compare.</param>
+        /// <param name="_right">The second property ID to compare.</param>
         /// <returns>Whether the two property IDs are not the same.</returns>
-        public static bool operator !=(JavaScriptPropertyId left, JavaScriptPropertyId right)
+        public static bool operator !=(JavaScriptPropertyId _left, JavaScriptPropertyId _right)
         {
-            return !left.Equals(right);
+            return !_left.Equals(_right);
         }
 
         /// <summary>
         ///     Checks for equality between property IDs.
         /// </summary>
-        /// <param name="other">The other property ID to compare.</param>
+        /// <param name="_other">The other property ID to compare.</param>
         /// <returns>Whether the two property IDs are the same.</returns>
-        public bool Equals(JavaScriptPropertyId other)
+        public bool Equals(JavaScriptPropertyId _other)
         {
-            return id == other.id;
+            return p_id == _other.p_id;
         }
 
         /// <summary>
         ///     Checks for equality between property IDs.
         /// </summary>
-        /// <param name="obj">The other property ID to compare.</param>
+        /// <param name="_obj">The other property ID to compare.</param>
         /// <returns>Whether the two property IDs are the same.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object _obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (ReferenceEquals(null, _obj))
             {
                 return false;
             }
 
-            return obj is JavaScriptPropertyId && Equals((JavaScriptPropertyId)obj);
+            return _obj is JavaScriptPropertyId && Equals((JavaScriptPropertyId)_obj);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace SharpChakra
         /// <returns>The hash code of the property ID.</returns>
         public override int GetHashCode()
         {
-            return id.ToInt32();
+            return p_id.ToInt32();
         }
 
         /// <summary>

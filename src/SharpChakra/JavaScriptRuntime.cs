@@ -25,14 +25,14 @@ namespace SharpChakra
         /// <summary>
         /// The handle.
         /// </summary>
-        private IntPtr handle;
+        private IntPtr p_handle;
 
         /// <summary>
         ///     Gets a value indicating whether the runtime is valid.
         /// </summary>
         public bool IsValid
         {
-            get { return handle != IntPtr.Zero; }
+            get { return p_handle != IntPtr.Zero; }
         }
 
         /// <summary>
@@ -97,26 +97,26 @@ namespace SharpChakra
         /// <summary>
         ///     Creates a new runtime.
         /// </summary>
-        /// <param name="attributes">The attributes of the runtime to be created.</param>
-        /// <param name="version">The version of the runtime to be created.</param>
-        /// <param name="threadServiceCallback">The thread service for the runtime. Can be null.</param>
+        /// <param name="_attributes">The attributes of the runtime to be created.</param>
+        /// <param name="_version">The version of the runtime to be created.</param>
+        /// <param name="_threadServiceCallback">The thread service for the runtime. Can be null.</param>
         /// <returns>The runtime created.</returns>
-        public static JavaScriptRuntime Create(JavaScriptRuntimeAttributes attributes, JavaScriptRuntimeVersion version, JavaScriptThreadServiceCallback threadServiceCallback)
+        public static JavaScriptRuntime Create(JavaScriptRuntimeAttributes _attributes, JavaScriptRuntimeVersion _version, JavaScriptThreadServiceCallback _threadServiceCallback)
         {
             JavaScriptRuntime handle;
-            Native.ThrowIfError(Native.JsCreateRuntime(attributes, threadServiceCallback, out handle));
+            Native.ThrowIfError(Native.JsCreateRuntime(_attributes, _threadServiceCallback, out handle));
             return handle;
         }
 
         /// <summary>
         ///     Creates a new runtime.
         /// </summary>
-        /// <param name="attributes">The attributes of the runtime to be created.</param>
-        /// <param name="version">The version of the runtime to be created.</param>
+        /// <param name="_attributes">The attributes of the runtime to be created.</param>
+        /// <param name="_version">The version of the runtime to be created.</param>
         /// <returns>The runtime created.</returns>
-        public static JavaScriptRuntime Create(JavaScriptRuntimeAttributes attributes, JavaScriptRuntimeVersion version)
+        public static JavaScriptRuntime Create(JavaScriptRuntimeAttributes _attributes, JavaScriptRuntimeVersion _version)
         {
-            return Create(attributes, version, null);
+            return Create(_attributes, _version, null);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace SharpChakra
                 Native.ThrowIfError(Native.JsDisposeRuntime(this));
             }
 
-            handle = IntPtr.Zero;
+            p_handle = IntPtr.Zero;
         }
 
         /// <summary>
@@ -174,15 +174,15 @@ namespace SharpChakra
         ///     prevent the runtime from invoking the callback again later for new memory allocations.
         ///     </para>
         /// </remarks>
-        /// <param name="callbackState">
+        /// <param name="_callbackState">
         ///     User provided state that will be passed back to the callback.
         /// </param>
-        /// <param name="allocationCallback">
+        /// <param name="_allocationCallback">
         ///     Memory allocation callback to be called for memory allocation events.
         /// </param>
-        public void SetMemoryAllocationCallback(IntPtr callbackState, JavaScriptMemoryAllocationCallback allocationCallback)
+        public void SetMemoryAllocationCallback(IntPtr _callbackState, JavaScriptMemoryAllocationCallback _allocationCallback)
         {
-            Native.ThrowIfError(Native.JsSetRuntimeMemoryAllocationCallback(this, callbackState, allocationCallback));
+            Native.ThrowIfError(Native.JsSetRuntimeMemoryAllocationCallback(this, _callbackState, _allocationCallback));
         }
 
         /// <summary>
@@ -198,13 +198,13 @@ namespace SharpChakra
         ///     releasing unnecessary references on Chakra objects.
         ///     </para>
         /// </remarks>
-        /// <param name="callbackState">
+        /// <param name="_callbackState">
         ///     User provided state that will be passed back to the callback.
         /// </param>
-        /// <param name="beforeCollectCallback">The callback function being set.</param>
-        public void SetBeforeCollectCallback(IntPtr callbackState, JavaScriptBeforeCollectCallback beforeCollectCallback)
+        /// <param name="_beforeCollectCallback">The callback function being set.</param>
+        public void SetBeforeCollectCallback(IntPtr _callbackState, JavaScriptBeforeCollectCallback _beforeCollectCallback)
         {
-            Native.ThrowIfError(Native.JsSetRuntimeBeforeCollectCallback(this, callbackState, beforeCollectCallback));
+            Native.ThrowIfError(Native.JsSetRuntimeBeforeCollectCallback(this, _callbackState, _beforeCollectCallback));
         }
 
         /// <summary>

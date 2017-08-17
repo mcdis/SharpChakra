@@ -6,6 +6,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChakra", "SharpChakra\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{22595B6C-38A8-4EC2-82B2-2AECAAF1516B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpChakra.Json", "SharpChakra.Json\SharpChakra.Json.csproj", "{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Json", "Sample.Json\Sample.Json.csproj", "{89EA28DC-E314-4BD5-8D6B-AE934B699016}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +24,14 @@ Global
 		{22595B6C-38A8-4EC2-82B2-2AECAAF1516B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22595B6C-38A8-4EC2-82B2-2AECAAF1516B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22595B6C-38A8-4EC2-82B2-2AECAAF1516B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

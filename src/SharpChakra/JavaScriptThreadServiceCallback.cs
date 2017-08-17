@@ -14,5 +14,5 @@ namespace SharpChakra
     /// <param name="callbackFunction">The callback for the background work item.</param>
     /// <param name="callbackData">The data argument to be passed to the callback.</param>
     /// <returns>Whether the thread service will execute the callback.</returns>
-    public delegate bool JavaScriptThreadServiceCallback(JavaScriptBackgroundWorkItemCallback callbackFunction, IntPtr callbackData);
+    public delegate bool JavaScriptThreadServiceCallback(JavaScriptBackgroundWorkItemCallback _callbackFunction, IntPtr _callbackData);
 }

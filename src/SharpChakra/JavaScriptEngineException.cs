@@ -10,19 +10,19 @@ namespace SharpChakra
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptEngineException"/> class. 
         /// </summary>
-        /// <param name="code">The error code returned.</param>
-        public JavaScriptEngineException(JavaScriptErrorCode code) :
-            this(code, "A fatal exception has occurred in a JavaScript runtime")
+        /// <param name="_code">The error code returned.</param>
+        public JavaScriptEngineException(JavaScriptErrorCode _code) :
+            this(_code, "A fatal exception has occurred in a JavaScript runtime")
         {
         }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptEngineException"/> class. 
         /// </summary>
-        /// <param name="code">The error code returned.</param>
+        /// <param name="_code">The error code returned.</param>
         /// <param name="message">The error message.</param>
-        public JavaScriptEngineException(JavaScriptErrorCode code, string message) :
-            base(code, message)
+        public JavaScriptEngineException(JavaScriptErrorCode _code, string message) :
+            base(_code, message)
         {
         }
 
@@ -31,8 +31,8 @@ namespace SharpChakra
         /// </summary>
         /// <param name="info">The serialization info.</param>
         /// <param name="context">The streaming context.</param>
-        private JavaScriptEngineException(string message, Exception innerException) :
-            base(message, innerException)
+        private JavaScriptEngineException(string message, Exception _innerException) :
+            base(message, _innerException)
         {
         }
     }

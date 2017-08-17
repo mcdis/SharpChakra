@@ -15,15 +15,15 @@ namespace SharpChakra
         /// <summary>
         /// The reference.
         /// </summary>
-        private readonly IntPtr reference;
+        private readonly IntPtr p_reference;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="JavaScriptValue"/> struct.
         /// </summary>
-        /// <param name="reference">The reference.</param>
-        private JavaScriptValue(IntPtr reference)
+        /// <param name="_reference">The reference.</param>
+        private JavaScriptValue(IntPtr _reference)
         {
-            this.reference = reference;
+            this.p_reference = _reference;
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace SharpChakra
         /// </summary>
         public bool IsValid
         {
-            get { return reference != IntPtr.Zero; }
+            get { return p_reference != IntPtr.Zero; }
         }
 
         /// <summary>
@@ -236,12 +236,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="value">The value to be converted.</param>
+        /// <param name="_value">The value to be converted.</param>
         /// <returns>The converted value.</returns>
-        public static JavaScriptValue FromBoolean(bool value)
+        public static JavaScriptValue FromBoolean(bool _value)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsBoolToBoolean(value, out reference));
+            Native.ThrowIfError(Native.JsBoolToBoolean(_value, out reference));
             return reference;
         }
 
@@ -251,12 +251,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="value">The value to be converted.</param>
+        /// <param name="_value">The value to be converted.</param>
         /// <returns>The new <c>Number</c> value.</returns>
-        public static JavaScriptValue FromDouble(double value)
+        public static JavaScriptValue FromDouble(double _value)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsDoubleToNumber(value, out reference));
+            Native.ThrowIfError(Native.JsDoubleToNumber(_value, out reference));
             return reference;
         }
 
@@ -266,12 +266,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="value">The value to be converted.</param>
+        /// <param name="_value">The value to be converted.</param>
         /// <returns>The new <c>Number</c> value.</returns>
-        public static JavaScriptValue FromInt32(int value)
+        public static JavaScriptValue FromInt32(int _value)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsIntToNumber(value, out reference));
+            Native.ThrowIfError(Native.JsIntToNumber(_value, out reference));
             return reference;
         }
 
@@ -281,12 +281,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="value">The string  to convert to a <c>String</c> value.</param>
+        /// <param name="_value">The string  to convert to a <c>String</c> value.</param>
         /// <returns>The new <c>String</c> value.</returns>
-        public static JavaScriptValue FromString(string value)
+        public static JavaScriptValue FromString(string _value)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsPointerToString(value, new UIntPtr((uint)value.Length), out reference));
+            Native.ThrowIfError(Native.JsPointerToString(_value, new UIntPtr((uint)_value.Length), out reference));
             return reference;
         }
 
@@ -310,15 +310,15 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="data">External data that the object will represent. May be null.</param>
-        /// <param name="finalizer">
+        /// <param name="_data">External data that the object will represent. May be null.</param>
+        /// <param name="_finalizer">
         ///     A callback for when the object is finalized. May be null.
         /// </param>
         /// <returns>The new <c>Object</c>.</returns>
-        public static JavaScriptValue CreateExternalObject(IntPtr data, JavaScriptObjectFinalizeCallback finalizer)
+        public static JavaScriptValue CreateExternalObject(IntPtr _data, JavaScriptObjectFinalizeCallback _finalizer)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateExternalObject(data, finalizer, out reference));
+            Native.ThrowIfError(Native.JsCreateExternalObject(_data, _finalizer, out reference));
             return reference;
         }
 
@@ -328,12 +328,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="function">The method to call when the function is invoked.</param>
+        /// <param name="_function">The method to call when the function is invoked.</param>
         /// <returns>The new function object.</returns>
-        public static JavaScriptValue CreateFunction(JavaScriptNativeFunction function)
+        public static JavaScriptValue CreateFunction(JavaScriptNativeFunction _function)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out reference));
+            Native.ThrowIfError(Native.JsCreateFunction(_function, IntPtr.Zero, out reference));
             return reference;
         }
 
@@ -343,13 +343,13 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="function">The method to call when the function is invoked.</param>
-        /// <param name="callbackData">Data to be provided to all function callbacks.</param>
+        /// <param name="_function">The method to call when the function is invoked.</param>
+        /// <param name="_callbackData">Data to be provided to all function callbacks.</param>
         /// <returns>The new function object.</returns>
-        public static JavaScriptValue CreateFunction(JavaScriptNativeFunction function, IntPtr callbackData)
+        public static JavaScriptValue CreateFunction(JavaScriptNativeFunction _function, IntPtr _callbackData)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out reference));
+            Native.ThrowIfError(Native.JsCreateFunction(_function, _callbackData, out reference));
             return reference;
         }
 
@@ -359,12 +359,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="length">The initial length of the array.</param>
+        /// <param name="_length">The initial length of the array.</param>
         /// <returns>The new array object.</returns>
-        public static JavaScriptValue CreateArray(uint length)
+        public static JavaScriptValue CreateArray(uint _length)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateArray(length, out reference));
+            Native.ThrowIfError(Native.JsCreateArray(_length, out reference));
             return reference;
         }
 
@@ -374,12 +374,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateError(JavaScriptValue message)
+        public static JavaScriptValue CreateError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateError(_message, out reference));
             return reference;
         }
 
@@ -389,12 +389,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateRangeError(JavaScriptValue message)
+        public static JavaScriptValue CreateRangeError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateRangeError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateRangeError(_message, out reference));
             return reference;
         }
 
@@ -404,12 +404,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateReferenceError(JavaScriptValue message)
+        public static JavaScriptValue CreateReferenceError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateReferenceError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateReferenceError(_message, out reference));
             return reference;
         }
 
@@ -419,12 +419,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateSyntaxError(JavaScriptValue message)
+        public static JavaScriptValue CreateSyntaxError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateSyntaxError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateSyntaxError(_message, out reference));
             return reference;
         }
 
@@ -434,12 +434,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateTypeError(JavaScriptValue message)
+        public static JavaScriptValue CreateTypeError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateTypeError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateTypeError(_message, out reference));
             return reference;
         }
 
@@ -449,12 +449,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="message">Message for the error object.</param>
+        /// <param name="_message">Message for the error object.</param>
         /// <returns>The new error object.</returns>
-        public static JavaScriptValue CreateUriError(JavaScriptValue message)
+        public static JavaScriptValue CreateUriError(JavaScriptValue _message)
         {
             JavaScriptValue reference;
-            Native.ThrowIfError(Native.JsCreateURIError(message, out reference));
+            Native.ThrowIfError(Native.JsCreateUriError(_message, out reference));
             return reference;
         }
 
@@ -636,12 +636,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="propertyId">The ID of the property.</param>
+        /// <param name="_propertyId">The ID of the property.</param>
         /// <returns>The property descriptor.</returns>
-        public JavaScriptValue GetOwnPropertyDescriptor(JavaScriptPropertyId propertyId)
+        public JavaScriptValue GetOwnPropertyDescriptor(JavaScriptPropertyId _propertyId)
         {
             JavaScriptValue descriptorReference;
-            Native.ThrowIfError(Native.JsGetOwnPropertyDescriptor(this, propertyId, out descriptorReference));
+            Native.ThrowIfError(Native.JsGetOwnPropertyDescriptor(this, _propertyId, out descriptorReference));
             return descriptorReference;
         }
 
@@ -665,12 +665,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="propertyId">The ID of the property.</param>
+        /// <param name="_propertyId">The ID of the property.</param>
         /// <returns>Whether the object (or a prototype) has the property.</returns>
-        public bool HasProperty(JavaScriptPropertyId propertyId)
+        public bool HasProperty(JavaScriptPropertyId _propertyId)
         {
             bool hasProperty;
-            Native.ThrowIfError(Native.JsHasProperty(this, propertyId, out hasProperty));
+            Native.ThrowIfError(Native.JsHasProperty(this, _propertyId, out hasProperty));
             return hasProperty;
         }
 
@@ -680,12 +680,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="id">The ID of the property.</param>
+        /// <param name="_id">The ID of the property.</param>
         /// <returns>The value of the property.</returns>
-        public JavaScriptValue GetProperty(JavaScriptPropertyId id)
+        public JavaScriptValue GetProperty(JavaScriptPropertyId _id)
         {
             JavaScriptValue propertyReference;
-            Native.ThrowIfError(Native.JsGetProperty(this, id, out propertyReference));
+            Native.ThrowIfError(Native.JsGetProperty(this, _id, out propertyReference));
             return propertyReference;
         }
 
@@ -695,12 +695,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="id">The ID of the property.</param>
-        /// <param name="value">The new value of the property.</param>
-        /// <param name="useStrictRules">The property set should follow strict mode rules.</param>
-        public void SetProperty(JavaScriptPropertyId id, JavaScriptValue value, bool useStrictRules)
+        /// <param name="_id">The ID of the property.</param>
+        /// <param name="_value">The new value of the property.</param>
+        /// <param name="_useStrictRules">The property set should follow strict mode rules.</param>
+        public void SetProperty(JavaScriptPropertyId _id, JavaScriptValue _value, bool _useStrictRules)
         {
-            Native.ThrowIfError(Native.JsSetProperty(this, id, value, useStrictRules));
+            Native.ThrowIfError(Native.JsSetProperty(this, _id, _value, _useStrictRules));
         }
 
         /// <summary>
@@ -709,13 +709,13 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="propertyId">The ID of the property.</param>
-        /// <param name="useStrictRules">The property set should follow strict mode rules.</param>
+        /// <param name="_propertyId">The ID of the property.</param>
+        /// <param name="_useStrictRules">The property set should follow strict mode rules.</param>
         /// <returns>Whether the property was deleted.</returns>
-        public JavaScriptValue DeleteProperty(JavaScriptPropertyId propertyId, bool useStrictRules)
+        public JavaScriptValue DeleteProperty(JavaScriptPropertyId _propertyId, bool _useStrictRules)
         {
             JavaScriptValue returnReference;
-            Native.ThrowIfError(Native.JsDeleteProperty(this, propertyId, useStrictRules, out returnReference));
+            Native.ThrowIfError(Native.JsDeleteProperty(this, _propertyId, _useStrictRules, out returnReference));
             return returnReference;
         }
 
@@ -725,13 +725,13 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="propertyId">The ID of the property.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="_propertyId">The ID of the property.</param>
+        /// <param name="_propertyDescriptor">The property descriptor.</param>
         /// <returns>Whether the property was defined.</returns>
-        public bool DefineProperty(JavaScriptPropertyId propertyId, JavaScriptValue propertyDescriptor)
+        public bool DefineProperty(JavaScriptPropertyId _propertyId, JavaScriptValue _propertyDescriptor)
         {
             bool result;
-            Native.ThrowIfError(Native.JsDefineProperty(this, propertyId, propertyDescriptor, out result));
+            Native.ThrowIfError(Native.JsDefineProperty(this, _propertyId, _propertyDescriptor, out result));
             return result;
         }
 
@@ -741,12 +741,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="index">The index to test.</param>
+        /// <param name="_index">The index to test.</param>
         /// <returns>Whether the object has an value at the specified index.</returns>
-        public bool HasIndexedProperty(JavaScriptValue index)
+        public bool HasIndexedProperty(JavaScriptValue _index)
         {
             bool hasProperty;
-            Native.ThrowIfError(Native.JsHasIndexedProperty(this, index, out hasProperty));
+            Native.ThrowIfError(Native.JsHasIndexedProperty(this, _index, out hasProperty));
             return hasProperty;
         }
 
@@ -756,12 +756,12 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="index">The index to retrieve.</param>
+        /// <param name="_index">The index to retrieve.</param>
         /// <returns>The retrieved value.</returns>
-        public JavaScriptValue GetIndexedProperty(JavaScriptValue index)
+        public JavaScriptValue GetIndexedProperty(JavaScriptValue _index)
         {
             JavaScriptValue propertyReference;
-            Native.ThrowIfError(Native.JsGetIndexedProperty(this, index, out propertyReference));
+            Native.ThrowIfError(Native.JsGetIndexedProperty(this, _index, out propertyReference));
             return propertyReference;
         }
 
@@ -771,11 +771,11 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="index">The index to set.</param>
-        /// <param name="value">The value to set.</param>
-        public void SetIndexedProperty(JavaScriptValue index, JavaScriptValue value)
+        /// <param name="_index">The index to set.</param>
+        /// <param name="_value">The value to set.</param>
+        public void SetIndexedProperty(JavaScriptValue _index, JavaScriptValue _value)
         {
-            Native.ThrowIfError(Native.JsSetIndexedProperty(this, index, value));
+            Native.ThrowIfError(Native.JsSetIndexedProperty(this, _index, _value));
         }
 
         /// <summary>
@@ -784,10 +784,10 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="index">The index to delete.</param>
-        public void DeleteIndexedProperty(JavaScriptValue index)
+        /// <param name="_index">The index to delete.</param>
+        public void DeleteIndexedProperty(JavaScriptValue _index)
         {
-            Native.ThrowIfError(Native.JsDeleteIndexedProperty(this, index));
+            Native.ThrowIfError(Native.JsDeleteIndexedProperty(this, _index));
         }
 
         /// <summary>
@@ -801,12 +801,12 @@ namespace SharpChakra
         ///     Requires an active script context.
         ///     </para>
         /// </remarks>
-        /// <param name="other">The object to compare.</param>
+        /// <param name="_other">The object to compare.</param>
         /// <returns>Whether the values are equal.</returns>
-        public bool Equals(JavaScriptValue other)
+        public bool Equals(JavaScriptValue _other)
         {
             bool equals;
-            Native.ThrowIfError(Native.JsEquals(this, other, out equals));
+            Native.ThrowIfError(Native.JsEquals(this, _other, out equals));
             return equals;
         }
 
@@ -821,12 +821,12 @@ namespace SharpChakra
         ///     Requires an active script context.
         ///     </para>
         /// </remarks>
-        /// <param name="other">The object to compare.</param>
+        /// <param name="_other">The object to compare.</param>
         /// <returns>Whether the values are strictly equal.</returns>
-        public bool StrictEquals(JavaScriptValue other)
+        public bool StrictEquals(JavaScriptValue _other)
         {
             bool equals;
-            Native.ThrowIfError(Native.JsStrictEquals(this, other, out equals));
+            Native.ThrowIfError(Native.JsStrictEquals(this, _other, out equals));
             return equals;
         }
 
@@ -836,18 +836,18 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="arguments">The arguments to the call.</param>
+        /// <param name="_arguments">The arguments to the call.</param>
         /// <returns>The <c>Value</c> returned from the function invocation, if any.</returns>
-        public JavaScriptValue CallFunction(params JavaScriptValue[] arguments)
+        public JavaScriptValue CallFunction(params JavaScriptValue[] _arguments)
         {
             JavaScriptValue returnReference;
 
-            if (arguments.Length > ushort.MaxValue)
+            if (_arguments.Length > ushort.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("arguments");
+                throw new ArgumentOutOfRangeException("_arguments");
             }
 
-            Native.ThrowIfError(Native.JsCallFunction(this, arguments, (ushort)arguments.Length, out returnReference));
+            Native.ThrowIfError(Native.JsCallFunction(this, _arguments, (ushort)_arguments.Length, out returnReference));
             return returnReference;
         }
 
@@ -857,18 +857,18 @@ namespace SharpChakra
         /// <remarks>
         ///     Requires an active script context.
         /// </remarks>
-        /// <param name="arguments">The arguments to the call.</param>
+        /// <param name="_arguments">The arguments to the call.</param>
         /// <returns>The <c>Value</c> returned from the function invocation.</returns>
-        public JavaScriptValue ConstructObject(params JavaScriptValue[] arguments)
+        public JavaScriptValue ConstructObject(params JavaScriptValue[] _arguments)
         {
             JavaScriptValue returnReference;
 
-            if (arguments.Length > ushort.MaxValue)
+            if (_arguments.Length > ushort.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("arguments");
+                throw new ArgumentOutOfRangeException("_arguments");
             }
 
-            Native.ThrowIfError(Native.JsConstructObject(this, arguments, (ushort)arguments.Length, out returnReference));
+            Native.ThrowIfError(Native.JsConstructObject(this, _arguments, (ushort)_arguments.Length, out returnReference));
             return returnReference;
         }
     }

@@ -9,5 +9,5 @@
     /// <returns>
     ///     true if the operation succeeded, false otherwise.
     /// </returns>
-    public delegate bool JavaScriptSerializedScriptLoadSourceCallback(JavaScriptSourceContext sourceContext, out string scriptBuffer);
+    public delegate bool JavaScriptSerializedScriptLoadSourceCallback(JavaScriptSourceContext _sourceContext, out string _scriptBuffer);
 }
