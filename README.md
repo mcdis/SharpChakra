@@ -3,7 +3,8 @@ Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 Simple auto call proxy to x86/x64 dllimport method based on Microsoft.ChakraCore C# Host Sample
 
 # How to use
-Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
+- Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
+- Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
 
 # Example
 
@@ -25,6 +26,46 @@ using (new JavaScriptContext.Scope(runtime.CreateContext()))
 }
 ```
 Output: 'hello from script!'
+
+# Newtonsoft.Json Interopability example
+```csharp
+using (var runtime = JavaScriptRuntime.Create())
+using (new JavaScriptContext.Scope(runtime.CreateContext()))
+{
+   // Register Global Function
+   JavaScriptValue
+      .GlobalObject
+      .SetProperty(JavaScriptPropertyId.FromString("dump"), // function name
+      JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+         {
+            Console.WriteLine("-- dump --");
+            Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
+            return JObject.Parse("{status:'ok',error:-1}").ToJavaScriptValue();
+         },
+         IntPtr.Zero),
+      true);
+
+   Console.WriteLine("-- executing --");
+   var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});", JavaScriptSourceContext.FromIntPtr(IntPtr.Zero), "");
+
+   Console.WriteLine("-- result --");
+   Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
+}
+```
+Output:
+```
+-- executing --
+-- dump --
+{
+  "id": 4,
+  "name": "chakra"
+}
+-- result --
+{
+  "status": "ok",
+  "error": -1
+}
+```
 
 # Goals
 - You can use exists js code
