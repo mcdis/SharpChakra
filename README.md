@@ -4,7 +4,6 @@ Simple auto call proxy to x86/x64 dllimport method based on Microsoft.ChakraCore
 
 # How to use
 Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
-Use it
 
 # Example
 
