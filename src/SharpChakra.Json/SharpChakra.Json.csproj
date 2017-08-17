@@ -3,8 +3,9 @@
    <PropertyGroup>
       <TargetFrameworks>net45;net46</TargetFrameworks>
       <Product>SharpChakra.Json</Product>
-      <Version>1.7.1.1</Version>
+      <Version>1.7.1.2</Version>
       <PackageProjectUrl>https://github.com/mcdis/SharpChakra</PackageProjectUrl>
+      <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
       <Description>Slim managed any cpu .net wrapper of Microsoft.ChakraCore</Description>
       <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
    </PropertyGroup>
