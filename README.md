@@ -67,9 +67,116 @@ Output:
 }
 ```
 
-# Goals
-- You can use exists js code
-- You can extend your C# app by use script
-- You can control script execution (you can terminate dead loop and limit memory consumption, tnx MS)
-- You can build your own script system (game,config system and etc.)
-- Speed, Chakra is very fast 
+# Api coverage
+
+**ChakraRtInterface.h**
+
+Function | Status
+---------| -------------
+JsCreateRuntime | done
+JsCreateContext | done
+JsSetObjectBeforeCollectCallback | done
+JsSetRuntimeMemoryLimit | done
+JsSetCurrentContext | done
+JsGetCurrentContext | done
+JsDisposeRuntime | done
+JsCreateObject | done
+JsCreateExternalObject | done
+JsCreateFunction | done
+JsCreateNamedFunction | done
+JsSetProperty | done
+JsGetGlobalObject | done
+JsGetUndefinedValue | done
+JsGetNullValue | done
+JsGetTrueValue | done
+JsGetFalseValue | done
+JsConvertValueToString | done
+JsConvertValueToNumber | done
+JsConvertValueToBoolean | done
+JsBooleanToBool | done
+JsGetProperty | done
+JsHasProperty | done
+JsCallFunction | done
+JsNumberToDouble | done
+JsNumberToInt | done
+JsDoubleToNumber | done
+JsGetExternalData | done
+JsSetExternalData | done
+JsCreateArray | done
+JsCreateArrayBuffer | done
+JsCreateSharedArrayBufferWithSharedContent | -
+JsGetSharedArrayBufferContent | -
+JsReleaseSharedArrayBufferContentHandle | -
+JsGetArrayBufferStorage | done
+JsCreateError | done
+JsHasException | done
+JsSetException | done
+JsGetAndClearException | done
+JsGetRuntime | done
+JsRelease | done
+JsAddRef | done
+JsGetValueType | done
+JsSetIndexedProperty | done
+JsSetPromiseContinuationCallback | done
+JsGetContextOfObject | done
+JsDiagStartDebugging | -
+JsDiagStopDebugging | -
+JsDiagGetSource | -
+JsDiagSetBreakpoint | -
+JsDiagGetStackTrace | -
+JsDiagRequestAsyncBreak | -
+JsDiagGetBreakpoints | -
+JsDiagRemoveBreakpoint | -
+JsDiagSetBreakOnException | -
+JsDiagGetBreakOnException | -
+JsDiagSetStepType | -
+JsDiagGetScripts | -
+JsDiagGetFunctionPosition | -
+JsDiagGetStackProperties | -
+JsDiagGetProperties | -
+JsDiagGetObjectFromHandle | -
+JsDiagEvaluate | -
+JsParseModuleSource | -
+JsModuleEvaluation | -
+JsInitializeModuleRecord | -
+JsSetModuleHostInfo | -
+JsGetModuleHostInfo | -
+JsTTDCreateRecordRuntime | -
+JsTTDCreateReplayRuntime | -
+JsTTDCreateContext | -
+JsTTDNotifyContextDestroy | -
+JsTTDStart | -
+JsTTDStop | -
+JsTTDNotifyYield | -
+JsTTDHostExit | -
+JsTTDGetSnapTimeTopLevelEventMove | -
+JsTTDMoveToTopLevelEvent | -
+JsTTDReplayExecution | -
+JsRun | -
+JsParse |- 
+JsSerialize | -
+JsRunSerialized | -
+JsGetStringLength | done
+JsCopyString | -
+JsCreateString | - 
+JsCreateStringUtf16 | - 
+JsCreatePropertyId | - 
+JsCreateExternalArrayBuffer | done
+
+**ChakraCommonWindows.h**
+
+Function | Status
+---------| -------------
+JsParseScript | done
+JsParseScriptWithAttributes | -
+JsRunScript | done
+JsExperimentalApiRunModule | -
+JsSerializeScript | done
+JsParseSerializedScriptWithCallback | done
+JsRunSerializedScriptWithCallback | done
+JsParseSerializedScript | done
+JsRunSerializedScript | done
+JsGetPropertyIdFromName | done
+JsGetPropertyNameFromId | done
+JsPointerToString | done
+JsStringToPointer | done
