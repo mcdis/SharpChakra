@@ -68,94 +68,96 @@ Output:
 ```
 
 # Api coverage
+From ChakraRtInterface.h
+
 Function | Status
 ---------| -------------
-JsCreateRuntime | 
-JsCreateContext | 
-JsSetObjectBeforeCollectCallback | 
-JsSetRuntimeMemoryLimit | 
-JsSetCurrentContext | 
-JsGetCurrentContext | 
-JsDisposeRuntime | 
-JsCreateObject | 
-JsCreateExternalObject | 
-JsCreateFunction | 
-JsCreateNamedFunction | 
-JsSetProperty | 
-JsGetGlobalObject | 
-JsGetUndefinedValue | 
-JsGetNullValue | 
-JsGetTrueValue | 
-JsGetFalseValue | 
-JsConvertValueToString | 
-JsConvertValueToNumber | 
-JsConvertValueToBoolean | 
-JsBooleanToBool | 
-JsGetProperty | 
-JsHasProperty | 
-JsCallFunction | 
-JsNumberToDouble | 
-JsNumberToInt | 
-JsDoubleToNumber | 
-JsGetExternalData | 
-JsSetExternalData | 
-JsCreateArray | 
-JsCreateArrayBuffer | 
-JsCreateSharedArrayBufferWithSharedContent | 
-JsGetSharedArrayBufferContent | 
-JsReleaseSharedArrayBufferContentHandle | 
-JsGetArrayBufferStorage | 
-JsCreateError | 
-JsHasException | 
-JsSetException | 
-JsGetAndClearException | 
-JsGetRuntime | 
-JsRelease | 
-JsAddRef | 
-JsGetValueType | 
-JsSetIndexedProperty | 
-JsSetPromiseContinuationCallback | 
-JsGetContextOfObject | 
-JsDiagStartDebugging | 
-JsDiagStopDebugging | 
-JsDiagGetSource | 
-JsDiagSetBreakpoint | 
-JsDiagGetStackTrace | 
-JsDiagRequestAsyncBreak | 
-JsDiagGetBreakpoints | 
-JsDiagRemoveBreakpoint | 
-JsDiagSetBreakOnException | 
-JsDiagGetBreakOnException | 
-JsDiagSetStepType | 
-JsDiagGetScripts | 
-JsDiagGetFunctionPosition | 
-JsDiagGetStackProperties | 
-JsDiagGetProperties | 
-JsDiagGetObjectFromHandle | 
-JsDiagEvaluate | 
-JsParseModuleSource | 
-JsModuleEvaluation | 
-JsInitializeModuleRecord | 
-JsSetModuleHostInfo | 
-JsGetModuleHostInfo | 
-JsTTDCreateRecordRuntime | 
-JsTTDCreateReplayRuntime | 
-JsTTDCreateContext | 
-JsTTDNotifyContextDestroy | 
-JsTTDStart | 
-JsTTDStop | 
-JsTTDNotifyYield | 
-JsTTDHostExit | 
-JsTTDGetSnapTimeTopLevelEventMove | 
-JsTTDMoveToTopLevelEvent | 
-JsTTDReplayExecution | 
-JsRun | 
-JsParse | 
-JsSerialize | 
-JsRunSerialized | 
-JsGetStringLength | 
-JsCopyString | 
-JsCreateString | 
-JsCreateStringUtf16 | 
-JsCreatePropertyId | 
-JsCreateExternalArrayBuffer | 
+JsCreateRuntime | done
+JsCreateContext | done
+JsSetObjectBeforeCollectCallback | done
+JsSetRuntimeMemoryLimit | done
+JsSetCurrentContext | done
+JsGetCurrentContext | done
+JsDisposeRuntime | done
+JsCreateObject | done
+JsCreateExternalObject | done
+JsCreateFunction | done
+JsCreateNamedFunction | done
+JsSetProperty | done
+JsGetGlobalObject | done
+JsGetUndefinedValue | done
+JsGetNullValue | done
+JsGetTrueValue | done
+JsGetFalseValue | done
+JsConvertValueToString | done
+JsConvertValueToNumber | done
+JsConvertValueToBoolean | done
+JsBooleanToBool | done
+JsGetProperty | done
+JsHasProperty | done
+JsCallFunction | done
+JsNumberToDouble | done
+JsNumberToInt | done
+JsDoubleToNumber | done
+JsGetExternalData | done
+JsSetExternalData | done
+JsCreateArray | done
+JsCreateArrayBuffer | done
+JsCreateSharedArrayBufferWithSharedContent | -
+JsGetSharedArrayBufferContent | -
+JsReleaseSharedArrayBufferContentHandle | -
+JsGetArrayBufferStorage | done
+JsCreateError | done
+JsHasException | done
+JsSetException | done
+JsGetAndClearException | done
+JsGetRuntime | done
+JsRelease | done
+JsAddRef | done
+JsGetValueType | done
+JsSetIndexedProperty | done
+JsSetPromiseContinuationCallback | done
+JsGetContextOfObject | done
+JsDiagStartDebugging | -
+JsDiagStopDebugging | -
+JsDiagGetSource | -
+JsDiagSetBreakpoint | -
+JsDiagGetStackTrace | -
+JsDiagRequestAsyncBreak | -
+JsDiagGetBreakpoints | -
+JsDiagRemoveBreakpoint | -
+JsDiagSetBreakOnException | -
+JsDiagGetBreakOnException | -
+JsDiagSetStepType | -
+JsDiagGetScripts | -
+JsDiagGetFunctionPosition | -
+JsDiagGetStackProperties | -
+JsDiagGetProperties | -
+JsDiagGetObjectFromHandle | -
+JsDiagEvaluate | -
+JsParseModuleSource | -
+JsModuleEvaluation | -
+JsInitializeModuleRecord | -
+JsSetModuleHostInfo | -
+JsGetModuleHostInfo | -
+JsTTDCreateRecordRuntime | -
+JsTTDCreateReplayRuntime | -
+JsTTDCreateContext | -
+JsTTDNotifyContextDestroy | -
+JsTTDStart | -
+JsTTDStop | -
+JsTTDNotifyYield | -
+JsTTDHostExit | -
+JsTTDGetSnapTimeTopLevelEventMove | -
+JsTTDMoveToTopLevelEvent | -
+JsTTDReplayExecution | -
+JsRun | -
+JsParse |- 
+JsSerialize | -
+JsRunSerialized | -
+JsGetStringLength | done
+JsCopyString | -
+JsCreateString | - 
+JsCreateStringUtf16 | - 
+JsCreatePropertyId | - 
+JsCreateExternalArrayBuffer | done
