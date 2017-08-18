@@ -26,11 +26,11 @@ namespace SharpChakra
          out JavaScriptRuntime _runtime)
          => Is32 ? Native32.JsCreateRuntime(_attributes, _threadService, out _runtime) : Native64.JsCreateRuntime(_attributes, _threadService, out _runtime);
       public static JavaScriptErrorCode JsCollectGarbage(JavaScriptRuntime _handle)
-         => Is32? Native32.JsCollectGarbage(_handle):Native64.JsCollectGarbage(_handle);
+         => Is32 ? Native32.JsCollectGarbage(_handle) : Native64.JsCollectGarbage(_handle);
       public static JavaScriptErrorCode JsDisposeRuntime(JavaScriptRuntime _handle)
          => Is32 ? Native32.JsDisposeRuntime(_handle) : Native64.JsDisposeRuntime(_handle);
       public static JavaScriptErrorCode JsGetRuntimeMemoryUsage(JavaScriptRuntime _runtime, out UIntPtr _memoryUsage)
-         => Is32 ? Native32.JsGetRuntimeMemoryUsage(_runtime,out _memoryUsage) : Native64.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+         => Is32 ? Native32.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage) : Native64.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
       public static JavaScriptErrorCode JsGetRuntimeMemoryLimit(JavaScriptRuntime _runtime, out UIntPtr _memoryLimit)
          => Is32 ? Native32.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit) : Native64.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
       public static JavaScriptErrorCode JsSetRuntimeMemoryLimit(JavaScriptRuntime _runtime, UIntPtr _memoryLimit)
@@ -58,37 +58,120 @@ namespace SharpChakra
       public static JavaScriptErrorCode JsSetCurrentContext(JavaScriptContext _context)
          => Is32 ? Native32.JsSetCurrentContext(_context) : Native64.JsSetCurrentContext(_context);
       public static JavaScriptErrorCode JsGetRuntime(JavaScriptContext _context, out JavaScriptRuntime _runtime)
-         => Is32 ? Native32.JsGetRuntime(_context,out _runtime) : Native64.JsGetRuntime(_context,out _runtime);
+         => Is32 ? Native32.JsGetRuntime(_context, out _runtime) : Native64.JsGetRuntime(_context, out _runtime);
       public static JavaScriptErrorCode JsIdle(out uint _nextIdleTick)
          => Is32 ? Native32.JsIdle(out _nextIdleTick) : Native64.JsIdle(out _nextIdleTick);
+
+      /// <summary>
+      /// Parses a script and returns a function representing the script.
+      /// </summary>
+      /// <param name="_script"></param>
+      /// <param name="_sourceContext"></param>
+      /// <param name="_sourceUrl"></param>
+      /// <param name="_result"></param>
+      /// <returns></returns>
       public static JavaScriptErrorCode JsParseScript(string _script,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
-         => Is32 ? Native32.JsParseScript(_script, _sourceContext, _sourceUrl,out _result) : Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+         => Is32 ? Native32.JsParseScript(_script, _sourceContext, _sourceUrl, out _result) : Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+
+      /// <summary>
+      /// Executes a script.
+      /// </summary>
+      /// <param name="_script"></param>
+      /// <param name="_sourceContext"></param>
+      /// <param name="_sourceUrl"></param>
+      /// <param name="_result"></param>
+      /// <returns></returns>
       public static JavaScriptErrorCode JsRunScript(string _script,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsRunScript(_script, _sourceContext, _sourceUrl, out _result) : Native64.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+
+      /// <summary>
+      ///     Serializes a parsed script to a buffer than can be reused.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     <c>JsSerializeScript</c> parses a script and then stores the parsed form of the script in a
+      ///     runtime-independent format. The serialized script then can be deserialized in any
+      ///     runtime without requiring the script to be re-parsed.
+      ///     </para>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsSerializeScript(string _script, byte[] _buffer, ref ulong _bufferSize)
          => Is32 ? Native32.JsSerializeScript(_script, _buffer, ref _bufferSize) : Native64.JsSerializeScript(_script, _buffer, ref _bufferSize);
+
+      /// <summary>
+      ///     Parses a serialized script and returns a function representing the script.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      ///     <para>
+      ///     The runtime will hold on to the buffer until all instances of any functions created from
+      ///     the buffer are garbage collected.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsParseSerializedScript(string _script,
          byte[] _buffer,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
-         => Is32 ? Native32.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl,out _result) : Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         => Is32 ? Native32.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+
+      /// <summary>
+      ///     Runs a serialized script.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      ///     <para>
+      ///     The runtime will hold on to the buffer until all instances of any functions created from
+      ///     the buffer are garbage collected.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsRunSerializedScript(string _script,
          byte[] _buffer,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+
+      /// <summary>
+      ///     Gets the property ID associated with the name.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Property IDs are specific to a context and cannot be used across contexts.
+      ///     </para>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsGetPropertyIdFromName(string _name, out JavaScriptPropertyId _propertyId)
          => Is32 ? Native32.JsGetPropertyIdFromName(_name, out _propertyId) : Native64.JsGetPropertyIdFromName(_name, out _propertyId);
+      
+      /// <summary>
+      ///     Gets the name associated with the property ID.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      ///     <para>
+      ///     The returned buffer is valid as long as the runtime is alive and cannot be used
+      ///     once the runtime has been disposed.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsGetPropertyNameFromId(JavaScriptPropertyId _propertyId, out string _name)
-         => Is32 ? Native32.JsGetPropertyNameFromId(_propertyId, out _name) : Native64.JsGetPropertyNameFromId(_propertyId, out _name);
+        => Is32 ? Native32.JsGetPropertyNameFromId(_propertyId, out _name) : Native64.JsGetPropertyNameFromId(_propertyId, out _name);
       public static JavaScriptErrorCode JsGetUndefinedValue(out JavaScriptValue _undefinedValue)
          => Is32 ? Native32.JsGetUndefinedValue(out _undefinedValue) : Native64.JsGetUndefinedValue(out _undefinedValue);
       public static JavaScriptErrorCode JsGetNullValue(out JavaScriptValue _nullValue)
@@ -98,7 +181,7 @@ namespace SharpChakra
       public static JavaScriptErrorCode JsGetFalseValue(out JavaScriptValue _falseValue)
          => Is32 ? Native32.JsGetFalseValue(out _falseValue) : Native64.JsGetFalseValue(out _falseValue);
       public static JavaScriptErrorCode JsBoolToBoolean(bool _value, out JavaScriptValue _booleanValue)
-         => Is32 ? Native32.JsBoolToBoolean(_value,out _booleanValue) : Native64.JsBoolToBoolean(_value, out _booleanValue);
+         => Is32 ? Native32.JsBoolToBoolean(_value, out _booleanValue) : Native64.JsBoolToBoolean(_value, out _booleanValue);
       public static JavaScriptErrorCode JsBooleanToBool(JavaScriptValue _booleanValue, out bool _boolValue)
          => Is32 ? Native32.JsBooleanToBool(_booleanValue, out _boolValue) : Native64.JsBooleanToBool(_booleanValue, out _boolValue);
       public static JavaScriptErrorCode JsConvertValueToBoolean(JavaScriptValue _value, out JavaScriptValue _booleanValue)
@@ -115,8 +198,31 @@ namespace SharpChakra
          => Is32 ? Native32.JsConvertValueToNumber(_value, out _numberValue) : Native64.JsConvertValueToNumber(_value, out _numberValue);
       public static JavaScriptErrorCode JsGetStringLength(JavaScriptValue _sringValue, out int _length)
          => Is32 ? Native32.JsGetStringLength(_sringValue, out _length) : Native64.JsGetStringLength(_sringValue, out _length);
+
+      /// <summary>
+      ///     Creates a string value from a string pointer.
+      /// </summary>
+      /// <remarks>
+      ///     Requires an active script context.
+      /// </remarks>
       public static JavaScriptErrorCode JsPointerToString(string _value, UIntPtr _stringLength, out JavaScriptValue _stringValue)
          => Is32 ? Native32.JsPointerToString(_value, _stringLength, out _stringValue) : Native64.JsPointerToString(_value, _stringLength, out _stringValue);
+
+      /// <summary>
+      ///     Retrieves the string pointer of a string value.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     This function retrieves the string pointer of a string value. It will fail with
+      ///     <c>JsErrorInvalidArgument</c> if the type of the value is not string. The lifetime
+      ///     of the string returned will be the same as the lifetime of the value it came from, however
+      ///     the string pointer is not considered a reference to the value (and so will not keep it
+      ///     from being collected).
+      ///     </para>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsStringToPointer(JavaScriptValue _value, out IntPtr _stringValue, out UIntPtr _stringLength)
          => Is32 ? Native32.JsStringToPointer(_value, out _stringValue, out _stringLength) : Native64.JsStringToPointer(_value, out _stringValue, out _stringLength);
       public static JavaScriptErrorCode JsConvertValueToString(JavaScriptValue _value, out JavaScriptValue _stringValue)
@@ -127,7 +233,7 @@ namespace SharpChakra
          => Is32 ? Native32.JsCreateObject(out _obj) : Native64.JsCreateObject(out _obj);
       public static JavaScriptErrorCode
          JsCreateExternalObject(IntPtr _data, JavaScriptObjectFinalizeCallback _finalizeCallback, out JavaScriptValue _obj)
-         => Is32 ? Native32.JsCreateExternalObject(_data, _finalizeCallback,out _obj) : Native64.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+         => Is32 ? Native32.JsCreateExternalObject(_data, _finalizeCallback, out _obj) : Native64.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
       public static JavaScriptErrorCode JsConvertValueToObject(JavaScriptValue _value, out JavaScriptValue _obj)
          => Is32 ? Native32.JsConvertValueToObject(_value, out _obj) : Native64.JsConvertValueToObject(_value, out _obj);
       public static JavaScriptErrorCode JsGetPrototype(JavaScriptValue _obj, out JavaScriptValue _prototypeObject)
@@ -139,7 +245,7 @@ namespace SharpChakra
       public static JavaScriptErrorCode JsPreventExtension(JavaScriptValue _obj)
          => Is32 ? Native32.JsPreventExtension(_obj) : Native64.JsPreventExtension(_obj);
       public static JavaScriptErrorCode JsGetProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, out JavaScriptValue _value)
-         => Is32 ? Native32.JsGetProperty(_obj, _propertyId,out _value) : Native64.JsGetProperty(_obj, _propertyId, out _value);
+         => Is32 ? Native32.JsGetProperty(_obj, _propertyId, out _value) : Native64.JsGetProperty(_obj, _propertyId, out _value);
       public static JavaScriptErrorCode JsGetOwnPropertyDescriptor(JavaScriptValue _obj,
          JavaScriptPropertyId _propertyId,
          out JavaScriptValue _propertyDescriptor)
@@ -162,7 +268,7 @@ namespace SharpChakra
          out bool _result)
          => Is32 ? Native32.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result) : Native64.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
       public static JavaScriptErrorCode JsHasIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out bool _result)
-         => Is32 ? Native32.JsHasIndexedProperty(_obj, _index,out _result) : Native64.JsHasIndexedProperty(_obj, _index, out _result);
+         => Is32 ? Native32.JsHasIndexedProperty(_obj, _index, out _result) : Native64.JsHasIndexedProperty(_obj, _index, out _result);
       public static JavaScriptErrorCode JsGetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out JavaScriptValue _result)
          => Is32 ? Native32.JsGetIndexedProperty(_obj, _index, out _result) : Native64.JsGetIndexedProperty(_obj, _index, out _result);
       public static JavaScriptErrorCode JsSetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, JavaScriptValue _value)
@@ -170,7 +276,7 @@ namespace SharpChakra
       public static JavaScriptErrorCode JsDeleteIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index)
          => Is32 ? Native32.JsDeleteIndexedProperty(_obj, _index) : Native64.JsDeleteIndexedProperty(_obj, _index);
       public static JavaScriptErrorCode JsEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result)
-         => Is32 ? Native32.JsEquals(_obj1, _obj2,out _result) : Native64.JsEquals(_obj1, _obj2, out _result);
+         => Is32 ? Native32.JsEquals(_obj1, _obj2, out _result) : Native64.JsEquals(_obj1, _obj2, out _result);
       public static JavaScriptErrorCode JsStrictEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result)
          => Is32 ? Native32.JsStrictEquals(_obj1, _obj2, out _result) : Native64.JsEquals(_obj1, _obj2, out _result);
       public static JavaScriptErrorCode JsHasExternalData(JavaScriptValue _obj, out bool _value)
@@ -185,7 +291,7 @@ namespace SharpChakra
          JavaScriptValue[] _arguments,
          ushort _argumentCount,
          out JavaScriptValue _result)
-         => Is32 ? Native32.JsCallFunction(_function,_arguments, _argumentCount,out _result) : Native64.JsCallFunction(_function,_arguments, _argumentCount, out _result);
+         => Is32 ? Native32.JsCallFunction(_function, _arguments, _argumentCount, out _result) : Native64.JsCallFunction(_function, _arguments, _argumentCount, out _result);
       public static JavaScriptErrorCode JsConstructObject(JavaScriptValue _function,
          JavaScriptValue[] _arguments,
          ushort _argumentCount,
@@ -225,7 +331,7 @@ namespace SharpChakra
          JavaScriptNativeFunction _nativeFunction,
          IntPtr _callbackState,
          out JavaScriptValue _function)
-         => Is32 ? Native32.JsCreateNamedFunction(_name, _nativeFunction, _callbackState,out _function) : Native64.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+         => Is32 ? Native32.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function) : Native64.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
       public static JavaScriptErrorCode JsSetPromiseContinuationCallback(JavaScriptPromiseContinuationCallback _promiseContinuationCallback,
          IntPtr _callbackState)
          => Is32 ? Native32.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState) : Native64.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
@@ -241,7 +347,7 @@ namespace SharpChakra
          uint _byteOffset,
          uint _byteOffsetLength,
          out JavaScriptValue _result)
-         => Is32 ? Native32.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength,out _result) : Native64.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+         => Is32 ? Native32.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result) : Native64.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
       public static JavaScriptErrorCode JsGetArrayBufferStorage(JavaScriptValue _arrayBuffer, out IntPtr _buffer, out uint _bufferLength)
          => Is32 ? Native32.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength) : Native64.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
       public static JavaScriptErrorCode JsGetTypedArrayStorage(JavaScriptValue _typedArray,
@@ -249,7 +355,7 @@ namespace SharpChakra
          out uint _bufferLength,
          out JavaScriptTypedArrayType _arrayType,
          out int _elementSize)
-         => Is32 ? Native32.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength,out _arrayType,out _elementSize) : Native64.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+         => Is32 ? Native32.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize) : Native64.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
       public static JavaScriptErrorCode JsGetDataViewStorage(JavaScriptValue _dataView, out IntPtr _buffer, out uint _bufferLength)
          => Is32 ? Native32.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength) : Native64.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
       public static JavaScriptErrorCode JsGetPropertyIdType(JavaScriptPropertyId _propertyId, out JavaScriptPropertyIdType _propertyIdType)
@@ -277,7 +383,7 @@ namespace SharpChakra
       public static JavaScriptErrorCode JsHasIndexedPropertiesExternalData(JavaScriptValue _obj, out bool _value)
          => Is32 ? Native32.JsHasIndexedPropertiesExternalData(_obj, out _value) : Native64.JsHasIndexedPropertiesExternalData(_obj, out _value);
       public static JavaScriptErrorCode JsInstanceOf(JavaScriptValue _obj, JavaScriptValue _constructor, out bool _result)
-         => Is32 ? Native32.JsInstanceOf(_obj, _constructor,out _result) : Native64.JsInstanceOf(_obj, _constructor, out _result);
+         => Is32 ? Native32.JsInstanceOf(_obj, _constructor, out _result) : Native64.JsInstanceOf(_obj, _constructor, out _result);
       public static JavaScriptErrorCode JsCreateExternalArrayBuffer(IntPtr _data,
          uint _byteLength,
          JavaScriptObjectFinalizeCallback _finalizeCallback,
@@ -296,13 +402,43 @@ namespace SharpChakra
          => Is32 ? Native32.JsGetContextData(_context, out _data) : Native64.JsGetContextData(_context, out _data);
       public static JavaScriptErrorCode JsSetContextData(JavaScriptContext _context, IntPtr _data)
          => Is32 ? Native32.JsSetContextData(_context, _data) : Native64.JsSetContextData(_context, _data);
+
+      /// <summary>
+      ///     Parses a serialized script and returns a function representing the script.
+      ///     Provides the ability to lazy load the script source only if/when it is needed.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      ///     <para>
+      ///     The runtime will hold on to the buffer until all instances of any functions created from
+      ///     the buffer are garbage collected.  It will then call scriptUnloadCallback to inform the
+      ///     caller it is safe to release.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
-         => Is32 ? Native32.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl,out _result) : Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         => Is32 ? Native32.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+
+      /// <summary>
+      ///     Runs a serialized script.
+      ///     Provides the ability to lazy load the script source only if/when it is needed.
+      /// </summary>
+      /// <remarks>
+      ///     <para>
+      ///     Requires an active script context.
+      ///     </para>
+      ///     <para>
+      ///     The runtime will hold on to the buffer until all instances of any functions created from
+      ///     the buffer are garbage collected.  It will then call scriptUnloadCallback to inform the
+      ///     caller it is safe to release.
+      ///     </para>
+      /// </remarks>
       public static JavaScriptErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
