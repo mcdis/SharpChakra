@@ -70,6 +70,7 @@ Output:
 # Api coverage
 
 **JsrtCommonExports.inc**
+
 Function | Status
 ---------| -------------
 JsSetObjectBeforeCollectCallback | done
@@ -177,6 +178,7 @@ JsIdle | done
 JsSetPromiseContinuationCallback | done
 
 **ChakraCore.def**
+
 Function | Status
 ---------| -------------
 JsDiagEvaluate | -
@@ -196,17 +198,14 @@ JsDiagSetBreakpoint | -
 JsDiagSetStepType | -
 JsDiagStartDebugging | -
 JsDiagStopDebugging | -
-
 JsTTDCreateRecordRuntime | -
 JsTTDCreateReplayRuntime | -
 JsTTDCreateContext | -
 JsTTDNotifyContextDestroy | -
 JsTTDStart | -
 JsTTDStop | -
-
 JsTTDPauseTimeTravelBeforeRuntimeOperation | -
 JsTTDReStartTimeTravelAfterRuntimeOperation | -
-
 JsTTDNotifyYield | -
 JsTTDNotifyLongLivedReferenceAdd | -
 JsTTDHostExit | -
@@ -221,14 +220,12 @@ JsTTDGetPreviousSnapshotInterval | -
 JsTTDPreExecuteSnapShotInterval | -
 JsTTDMoveToTopLevelEvent | -
 JsTTDReplayExecution | -
-
 JsInitializeModuleRecord | done
 JsParseModuleSource | done
 JsModuleEvaluation | done
 JsSetModuleHostInfo | done
 JsGetModuleHostInfo | -
 JsInitializeJITServer | -
-
 JsCreateSharedArrayBufferWithSharedContent | -
 JsGetSharedArrayBufferContent | -
 JsReleaseSharedArrayBufferContentHandle | -
