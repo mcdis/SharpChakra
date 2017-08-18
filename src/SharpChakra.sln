@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChakra.Json", "SharpCh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Json", "Sample.Json\Sample.Json.csproj", "{89EA28DC-E314-4BD5-8D6B-AE934B699016}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Modules", "Sample.Modules\Sample.Modules.csproj", "{2BB263B0-0274-4A88-8C7E-3EBC36BBE629}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89EA28DC-E314-4BD5-8D6B-AE934B699016}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BB263B0-0274-4A88-8C7E-3EBC36BBE629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB263B0-0274-4A88-8C7E-3EBC36BBE629}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB263B0-0274-4A88-8C7E-3EBC36BBE629}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB263B0-0274-4A88-8C7E-3EBC36BBE629}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

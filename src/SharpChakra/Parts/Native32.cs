@@ -13,503 +13,429 @@ namespace SharpChakra.Parts
       /// Throws if a native method returns an error code.
       /// </summary>
       /// <param name="_error">The error.</param>
-      internal static void ThrowIfError(JavaScriptErrorCode _error)
+      internal static void ThrowIfError(JsErrorCode _error)
       {
-         if (_error != JavaScriptErrorCode.NoError)
+         if (_error != JsErrorCode.NoError)
          {
             switch (_error)
             {
-               case JavaScriptErrorCode.InvalidArgument:
-                  throw new JavaScriptUsageException(_error, "Invalid argument.");
+               case JsErrorCode.InvalidArgument:
+                  throw new JsUsageException(_error, "Invalid argument.");
 
-               case JavaScriptErrorCode.NullArgument:
-                  throw new JavaScriptUsageException(_error, "Null argument.");
+               case JsErrorCode.NullArgument:
+                  throw new JsUsageException(_error, "Null argument.");
 
-               case JavaScriptErrorCode.NoCurrentContext:
-                  throw new JavaScriptUsageException(_error, "No current context.");
+               case JsErrorCode.NoCurrentContext:
+                  throw new JsUsageException(_error, "No current context.");
 
-               case JavaScriptErrorCode.InExceptionState:
-                  throw new JavaScriptUsageException(_error, "Runtime is in exception state.");
+               case JsErrorCode.InExceptionState:
+                  throw new JsUsageException(_error, "Runtime is in exception state.");
 
-               case JavaScriptErrorCode.NotImplemented:
-                  throw new JavaScriptUsageException(_error, "Method is not implemented.");
+               case JsErrorCode.NotImplemented:
+                  throw new JsUsageException(_error, "Method is not implemented.");
 
-               case JavaScriptErrorCode.WrongThread:
-                  throw new JavaScriptUsageException(_error, "Runtime is active on another thread.");
+               case JsErrorCode.WrongThread:
+                  throw new JsUsageException(_error, "Runtime is active on another thread.");
 
-               case JavaScriptErrorCode.RuntimeInUse:
-                  throw new JavaScriptUsageException(_error, "Runtime is in use.");
+               case JsErrorCode.RuntimeInUse:
+                  throw new JsUsageException(_error, "Runtime is in use.");
 
-               case JavaScriptErrorCode.BadSerializedScript:
-                  throw new JavaScriptUsageException(_error, "Bad serialized script.");
+               case JsErrorCode.BadSerializedScript:
+                  throw new JsUsageException(_error, "Bad serialized script.");
 
-               case JavaScriptErrorCode.InDisabledState:
-                  throw new JavaScriptUsageException(_error, "Runtime is disabled.");
+               case JsErrorCode.InDisabledState:
+                  throw new JsUsageException(_error, "Runtime is disabled.");
 
-               case JavaScriptErrorCode.CannotDisableExecution:
-                  throw new JavaScriptUsageException(_error, "Cannot disable execution.");
+               case JsErrorCode.CannotDisableExecution:
+                  throw new JsUsageException(_error, "Cannot disable execution.");
 
-               case JavaScriptErrorCode.AlreadyDebuggingContext:
-                  throw new JavaScriptUsageException(_error, "Context is already in debug mode.");
+               case JsErrorCode.AlreadyDebuggingContext:
+                  throw new JsUsageException(_error, "Context is already in debug mode.");
 
-               case JavaScriptErrorCode.HeapEnumInProgress:
-                  throw new JavaScriptUsageException(_error, "Heap enumeration is in progress.");
+               case JsErrorCode.HeapEnumInProgress:
+                  throw new JsUsageException(_error, "Heap enumeration is in progress.");
 
-               case JavaScriptErrorCode.ArgumentNotObject:
-                  throw new JavaScriptUsageException(_error, "Argument is not an object.");
+               case JsErrorCode.ArgumentNotObject:
+                  throw new JsUsageException(_error, "Argument is not an object.");
 
-               case JavaScriptErrorCode.InProfileCallback:
-                  throw new JavaScriptUsageException(_error, "In a profile callback.");
+               case JsErrorCode.InProfileCallback:
+                  throw new JsUsageException(_error, "In a profile callback.");
 
-               case JavaScriptErrorCode.InThreadServiceCallback:
-                  throw new JavaScriptUsageException(_error, "In a thread service callback.");
+               case JsErrorCode.InThreadServiceCallback:
+                  throw new JsUsageException(_error, "In a thread service callback.");
 
-               case JavaScriptErrorCode.CannotSerializeDebugScript:
-                  throw new JavaScriptUsageException(_error, "Cannot serialize a debug script.");
+               case JsErrorCode.CannotSerializeDebugScript:
+                  throw new JsUsageException(_error, "Cannot serialize a debug script.");
 
-               case JavaScriptErrorCode.AlreadyProfilingContext:
-                  throw new JavaScriptUsageException(_error, "Already profiling this context.");
+               case JsErrorCode.AlreadyProfilingContext:
+                  throw new JsUsageException(_error, "Already profiling this context.");
 
-               case JavaScriptErrorCode.IdleNotEnabled:
-                  throw new JavaScriptUsageException(_error, "Idle is not enabled.");
+               case JsErrorCode.IdleNotEnabled:
+                  throw new JsUsageException(_error, "Idle is not enabled.");
 
-               case JavaScriptErrorCode.OutOfMemory:
-                  throw new JavaScriptEngineException(_error, "Out of memory.");
+               case JsErrorCode.OutOfMemory:
+                  throw new JsEngineException(_error, "Out of memory.");
 
-               case JavaScriptErrorCode.ScriptException:
-               {
-                  JavaScriptValue errorObject;
-                  var innerError = JsGetAndClearException(out errorObject);
-
-                  if (innerError != JavaScriptErrorCode.NoError)
+               case JsErrorCode.ScriptException:
                   {
-                     throw new JavaScriptFatalException(innerError);
+                     JsValue errorObject;
+                     var innerError = JsGetAndClearException(out errorObject);
+
+                     if (innerError != JsErrorCode.NoError)
+                     {
+                        throw new JsFatalException(innerError);
+                     }
+
+                     throw new JsScriptException(_error, errorObject, "Script threw an exception.");
                   }
 
-                  throw new JavaScriptScriptException(_error, errorObject, "Script threw an exception.");
-               }
-
-               case JavaScriptErrorCode.ScriptCompile:
-               {
-                  JavaScriptValue errorObject;
-                  var innerError = JsGetAndClearException(out errorObject);
-
-                  if (innerError != JavaScriptErrorCode.NoError)
+               case JsErrorCode.ScriptCompile:
                   {
-                     throw new JavaScriptFatalException(innerError);
+                     JsValue errorObject;
+                     var innerError = JsGetAndClearException(out errorObject);
+
+                     if (innerError != JsErrorCode.NoError)
+                     {
+                        throw new JsFatalException(innerError);
+                     }
+
+                     throw new JsScriptException(_error, errorObject, "Compile error.");
                   }
 
-                  throw new JavaScriptScriptException(_error, errorObject, "Compile error.");
-               }
+               case JsErrorCode.ScriptTerminated:
+                  throw new JsScriptException(_error, JsValue.Invalid, "Script was terminated.");
 
-               case JavaScriptErrorCode.ScriptTerminated:
-                  throw new JavaScriptScriptException(_error, JavaScriptValue.Invalid, "Script was terminated.");
+               case JsErrorCode.ScriptEvalDisabled:
+                  throw new JsScriptException(_error, JsValue.Invalid, "Eval of strings is disabled in this runtime.");
 
-               case JavaScriptErrorCode.ScriptEvalDisabled:
-                  throw new JavaScriptScriptException(_error, JavaScriptValue.Invalid, "Eval of strings is disabled in this runtime.");
-
-               case JavaScriptErrorCode.Fatal:
-                  throw new JavaScriptFatalException(_error);
+               case JsErrorCode.Fatal:
+                  throw new JsFatalException(_error);
 
                default:
-                  throw new JavaScriptFatalException(_error);
+                  throw new JsFatalException(_error);
             }
          }
       }
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateRuntime(JavaScriptRuntimeAttributes _attributes,
+      internal static extern JsErrorCode JsCreateRuntime(JsRuntimeAttributes _attributes,
          JavaScriptThreadServiceCallback _threadService,
-         out JavaScriptRuntime _runtime);
-
+         out JsRuntime _runtime);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCollectGarbage(JavaScriptRuntime _handle);
-
+      internal static extern JsErrorCode JsCollectGarbage(JsRuntime _handle);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDisposeRuntime(JavaScriptRuntime _handle);
-
+      internal static extern JsErrorCode JsDisposeRuntime(JsRuntime _handle);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetRuntimeMemoryUsage(JavaScriptRuntime _runtime, out UIntPtr _memoryUsage);
-
+      internal static extern JsErrorCode JsGetRuntimeMemoryUsage(JsRuntime _runtime, out UIntPtr _memoryUsage);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetRuntimeMemoryLimit(JavaScriptRuntime _runtime, out UIntPtr _memoryLimit);
-
+      internal static extern JsErrorCode JsGetRuntimeMemoryLimit(JsRuntime _runtime, out UIntPtr _memoryLimit);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetRuntimeMemoryLimit(JavaScriptRuntime _runtime, UIntPtr _memoryLimit);
-
+      internal static extern JsErrorCode JsSetRuntimeMemoryLimit(JsRuntime _runtime, UIntPtr _memoryLimit);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetRuntimeMemoryAllocationCallback(JavaScriptRuntime _runtime,
+      internal static extern JsErrorCode JsSetRuntimeMemoryAllocationCallback(JsRuntime _runtime,
          IntPtr _callbackState,
-         JavaScriptMemoryAllocationCallback _allocationCallback);
-
+         JsMemoryAllocationCallback _allocationCallback);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetRuntimeBeforeCollectCallback(JavaScriptRuntime _runtime,
+      internal static extern JsErrorCode JsSetRuntimeBeforeCollectCallback(JsRuntime _runtime,
          IntPtr _callbackState,
-         JavaScriptBeforeCollectCallback _beforeCollectCallback);
-
+         JsBeforeCollectCallback _beforeCollectCallback);
       [DllImport(DllName, EntryPoint = "JsAddRef")]
-      internal static extern JavaScriptErrorCode JsContextAddRef(JavaScriptContext _reference, out uint _count);
-
+      internal static extern JsErrorCode JsContextAddRef(JsContext _reference, out uint _count);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsAddRef(JavaScriptValue _reference, out uint _count);
-
+      internal static extern JsErrorCode JsAddRef(JsValue _reference, out uint _count);
       [DllImport(DllName, EntryPoint = "JsRelease")]
-      internal static extern JavaScriptErrorCode JsContextRelease(JavaScriptContext _reference, out uint _count);
-
+      internal static extern JsErrorCode JsContextRelease(JsContext _reference, out uint _count);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsRelease(JavaScriptValue _reference, out uint _count);
-
+      internal static extern JsErrorCode JsRelease(JsValue _reference, out uint _count);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateContext(JavaScriptRuntime _runtime, out JavaScriptContext _newContext);
-
+      internal static extern JsErrorCode JsCreateContext(JsRuntime _runtime, out JsContext _newContext);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetCurrentContext(out JavaScriptContext _currentContext);
-
+      internal static extern JsErrorCode JsGetCurrentContext(out JsContext _currentContext);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetCurrentContext(JavaScriptContext _context);
-
+      internal static extern JsErrorCode JsSetCurrentContext(JsContext _context);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetRuntime(JavaScriptContext _context, out JavaScriptRuntime _runtime);
-
+      internal static extern JsErrorCode JsGetRuntime(JsContext _context, out JsRuntime _runtime);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsIdle(out uint _nextIdleTick);
-
+      internal static extern JsErrorCode JsIdle(out uint _nextIdleTick);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsParseScript(string _script,
-         JavaScriptSourceContext _sourceContext,
+      internal static extern JsErrorCode JsParseScript(string _script,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsRunScript(string _script,
-         JavaScriptSourceContext _sourceContext,
+      internal static extern JsErrorCode JsRunScript(string _script,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsSerializeScript(string _script, byte[] _buffer, ref ulong _bufferSize);
-
+      internal static extern JsErrorCode JsSerializeScript(string _script, byte[] _buffer, ref ulong _bufferSize);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsParseSerializedScript(string _script,
+      internal static extern JsErrorCode JsParseSerializedScript(string _script,
          byte[] _buffer,
-         JavaScriptSourceContext _sourceContext,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsRunSerializedScript(string _script,
+      internal static extern JsErrorCode JsRunSerializedScript(string _script,
          byte[] _buffer,
-         JavaScriptSourceContext _sourceContext,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsGetPropertyIdFromName(string _name, out JavaScriptPropertyId _propertyId);
-
+      internal static extern JsErrorCode JsGetPropertyIdFromName(string _name, out JsPropertyId _propertyId);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsGetPropertyNameFromId(JavaScriptPropertyId _propertyId, out string _name);
-
+      internal static extern JsErrorCode JsGetPropertyNameFromId(JsPropertyId _propertyId, out string _name);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetUndefinedValue(out JavaScriptValue _undefinedValue);
-
+      internal static extern JsErrorCode JsGetUndefinedValue(out JsValue _undefinedValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetNullValue(out JavaScriptValue _nullValue);
-
+      internal static extern JsErrorCode JsGetNullValue(out JsValue _nullValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetTrueValue(out JavaScriptValue _trueValue);
-
+      internal static extern JsErrorCode JsGetTrueValue(out JsValue _trueValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetFalseValue(out JavaScriptValue _falseValue);
-
+      internal static extern JsErrorCode JsGetFalseValue(out JsValue _falseValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsBoolToBoolean(bool _value, out JavaScriptValue _booleanValue);
-
+      internal static extern JsErrorCode JsBoolToBoolean(bool _value, out JsValue _booleanValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsBooleanToBool(JavaScriptValue _booleanValue, out bool _boolValue);
-
+      internal static extern JsErrorCode JsBooleanToBool(JsValue _booleanValue, out bool _boolValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsConvertValueToBoolean(JavaScriptValue _value, out JavaScriptValue _booleanValue);
-
+      internal static extern JsErrorCode JsConvertValueToBoolean(JsValue _value, out JsValue _booleanValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetValueType(JavaScriptValue _value, out JavaScriptValueType _type);
-
+      internal static extern JsErrorCode JsGetValueType(JsValue _value, out JsValueType _type);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDoubleToNumber(double _doubleValue, out JavaScriptValue _value);
-
+      internal static extern JsErrorCode JsDoubleToNumber(double _doubleValue, out JsValue _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsIntToNumber(int _intValue, out JavaScriptValue _value);
-
+      internal static extern JsErrorCode JsIntToNumber(int _intValue, out JsValue _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsNumberToDouble(JavaScriptValue _value, out double _doubleValue);
-
+      internal static extern JsErrorCode JsNumberToDouble(JsValue _value, out double _doubleValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsConvertValueToNumber(JavaScriptValue _value, out JavaScriptValue _numberValue);
-
+      internal static extern JsErrorCode JsConvertValueToNumber(JsValue _value, out JsValue _numberValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetStringLength(JavaScriptValue _sringValue, out int _length);
-
+      internal static extern JsErrorCode JsGetStringLength(JsValue _sringValue, out int _length);
       [DllImport(DllName, CharSet = CharSet.Unicode)]
-      internal static extern JavaScriptErrorCode JsPointerToString(string _value, UIntPtr _stringLength, out JavaScriptValue _stringValue);
-
+      internal static extern JsErrorCode JsPointerToString(string _value, UIntPtr _stringLength, out JsValue _stringValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsStringToPointer(JavaScriptValue _value, out IntPtr _stringValue, out UIntPtr _stringLength);
-
+      internal static extern JsErrorCode JsStringToPointer(JsValue _value, out IntPtr _stringValue, out UIntPtr _stringLength);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsConvertValueToString(JavaScriptValue _value, out JavaScriptValue _stringValue);
-
+      internal static extern JsErrorCode JsConvertValueToString(JsValue _value, out JsValue _stringValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetGlobalObject(out JavaScriptValue _globalObject);
-
+      internal static extern JsErrorCode JsGetGlobalObject(out JsValue _globalObject);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateObject(out JavaScriptValue _obj);
-
+      internal static extern JsErrorCode JsCreateObject(out JsValue _obj);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode
-         JsCreateExternalObject(IntPtr _data, JavaScriptObjectFinalizeCallback _finalizeCallback, out JavaScriptValue _obj);
-
+      internal static extern JsErrorCode
+         JsCreateExternalObject(IntPtr _data, JsObjectFinalizeCallback _finalizeCallback, out JsValue _obj);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsConvertValueToObject(JavaScriptValue _value, out JavaScriptValue _obj);
-
+      internal static extern JsErrorCode JsConvertValueToObject(JsValue _value, out JsValue _obj);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetPrototype(JavaScriptValue _obj, out JavaScriptValue _prototypeObject);
-
+      internal static extern JsErrorCode JsGetPrototype(JsValue _obj, out JsValue _prototypeObject);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetPrototype(JavaScriptValue _obj, JavaScriptValue _prototypeObject);
-
+      internal static extern JsErrorCode JsSetPrototype(JsValue _obj, JsValue _prototypeObject);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetExtensionAllowed(JavaScriptValue _obj, out bool _value);
-
+      internal static extern JsErrorCode JsGetExtensionAllowed(JsValue _obj, out bool _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsPreventExtension(JavaScriptValue _obj);
-
+      internal static extern JsErrorCode JsPreventExtension(JsValue _obj);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, out JavaScriptValue _value);
-
+      internal static extern JsErrorCode JsGetProperty(JsValue _obj, JsPropertyId _propertyId, out JsValue _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetOwnPropertyDescriptor(JavaScriptValue _obj,
-         JavaScriptPropertyId _propertyId,
-         out JavaScriptValue _propertyDescriptor);
-
+      internal static extern JsErrorCode JsGetOwnPropertyDescriptor(JsValue _obj,
+         JsPropertyId _propertyId,
+         out JsValue _propertyDescriptor);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetOwnPropertyNames(JavaScriptValue _obj, out JavaScriptValue _propertyNames);
-
+      internal static extern JsErrorCode JsGetOwnPropertyNames(JsValue _obj, out JsValue _propertyNames);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode
-         JsSetProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, JavaScriptValue _value, bool _useStrictRules);
-
+      internal static extern JsErrorCode
+         JsSetProperty(JsValue _obj, JsPropertyId _propertyId, JsValue _value, bool _useStrictRules);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsHasProperty(JavaScriptValue _obj, JavaScriptPropertyId _propertyId, out bool _hasProperty);
-
+      internal static extern JsErrorCode JsHasProperty(JsValue _obj, JsPropertyId _propertyId, out bool _hasProperty);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDeleteProperty(JavaScriptValue _obj,
-         JavaScriptPropertyId _propertyId,
+      internal static extern JsErrorCode JsDeleteProperty(JsValue _obj,
+         JsPropertyId _propertyId,
          bool _useStrictRules,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDefineProperty(JavaScriptValue _obj,
-         JavaScriptPropertyId _propertyId,
-         JavaScriptValue _propertyDescriptor,
+      internal static extern JsErrorCode JsDefineProperty(JsValue _obj,
+         JsPropertyId _propertyId,
+         JsValue _propertyDescriptor,
          out bool _result);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsHasIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out bool _result);
-
+      internal static extern JsErrorCode JsHasIndexedProperty(JsValue _obj, JsValue _index, out bool _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, out JavaScriptValue _result);
-
+      internal static extern JsErrorCode JsGetIndexedProperty(JsValue _obj, JsValue _index, out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index, JavaScriptValue _value);
-
+      internal static extern JsErrorCode JsSetIndexedProperty(JsValue _obj, JsValue _index, JsValue _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDeleteIndexedProperty(JavaScriptValue _obj, JavaScriptValue _index);
-
+      internal static extern JsErrorCode JsDeleteIndexedProperty(JsValue _obj, JsValue _index);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result);
-
+      internal static extern JsErrorCode JsEquals(JsValue _obj1, JsValue _obj2, out bool _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsStrictEquals(JavaScriptValue _obj1, JavaScriptValue _obj2, out bool _result);
-
+      internal static extern JsErrorCode JsStrictEquals(JsValue _obj1, JsValue _obj2, out bool _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsHasExternalData(JavaScriptValue _obj, out bool _value);
-
+      internal static extern JsErrorCode JsHasExternalData(JsValue _obj, out bool _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetExternalData(JavaScriptValue _obj, out IntPtr _externalData);
-
+      internal static extern JsErrorCode JsGetExternalData(JsValue _obj, out IntPtr _externalData);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetExternalData(JavaScriptValue _obj, IntPtr _externalData);
-
+      internal static extern JsErrorCode JsSetExternalData(JsValue _obj, IntPtr _externalData);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateArray(uint _length, out JavaScriptValue _result);
-
+      internal static extern JsErrorCode JsCreateArray(uint _length, out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCallFunction(JavaScriptValue _function,
-         JavaScriptValue[] _arguments,
+      internal static extern JsErrorCode JsCallFunction(JsValue _function,
+         JsValue[] _arguments,
          ushort _argumentCount,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsConstructObject(JavaScriptValue _function,
-         JavaScriptValue[] _arguments,
+      internal static extern JsErrorCode JsConstructObject(JsValue _function,
+         JsValue[] _arguments,
          ushort _argumentCount,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateFunction(JavaScriptNativeFunction _nativeFunction, IntPtr _externalData, out JavaScriptValue _function);
-
+      internal static extern JsErrorCode JsCreateFunction(JsNativeFunction _nativeFunction, IntPtr _externalData, out JsValue _function);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateRangeError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateRangeError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateReferenceError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateReferenceError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateSyntaxError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateSyntaxError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateTypeError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateTypeError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateURIError(JavaScriptValue _message, out JavaScriptValue _error);
-
+      internal static extern JsErrorCode JsCreateURIError(JsValue _message, out JsValue _error);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsHasException(out bool _hasException);
-
+      internal static extern JsErrorCode JsHasException(out bool _hasException);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetAndClearException(out JavaScriptValue _exception);
-
+      internal static extern JsErrorCode JsGetAndClearException(out JsValue _exception);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetException(JavaScriptValue _exception);
-
+      internal static extern JsErrorCode JsSetException(JsValue _exception);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsDisableRuntimeExecution(JavaScriptRuntime _runtime);
-
+      internal static extern JsErrorCode JsDisableRuntimeExecution(JsRuntime _runtime);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsEnableRuntimeExecution(JavaScriptRuntime _runtime);
-
+      internal static extern JsErrorCode JsEnableRuntimeExecution(JsRuntime _runtime);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsIsRuntimeExecutionDisabled(JavaScriptRuntime _runtime, out bool _isDisabled);
-
+      internal static extern JsErrorCode JsIsRuntimeExecutionDisabled(JsRuntime _runtime, out bool _isDisabled);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetObjectBeforeCollectCallback(JavaScriptValue _reference,
+      internal static extern JsErrorCode JsSetObjectBeforeCollectCallback(JsValue _reference,
          IntPtr _callbackState,
-         JavaScriptObjectBeforeCollectCallback _beforeCollectCallback);
-
+         JsObjectBeforeCollectCallback _beforeCollectCallback);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateNamedFunction(JavaScriptValue _name,
-         JavaScriptNativeFunction _nativeFunction,
+      internal static extern JsErrorCode JsCreateNamedFunction(JsValue _name,
+         JsNativeFunction _nativeFunction,
          IntPtr _callbackState,
-         out JavaScriptValue _function);
-
+         out JsValue _function);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetPromiseContinuationCallback(JavaScriptPromiseContinuationCallback _promiseContinuationCallback,
+      internal static extern JsErrorCode JsSetPromiseContinuationCallback(JsPromiseContinuationCallback _promiseContinuationCallback,
          IntPtr _callbackState);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateArrayBuffer(uint _byteLength, out JavaScriptValue _result);
-
+      internal static extern JsErrorCode JsCreateArrayBuffer(uint _byteLength, out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateTypedArray(JavaScriptTypedArrayType _arrayType,
-         JavaScriptValue _arrayBuffer,
+      internal static extern JsErrorCode JsCreateTypedArray(JavaScriptTypedArrayType _arrayType,
+         JsValue _arrayBuffer,
          uint _byteOffset,
          uint _elementLength,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateDataView(JavaScriptValue _arrayBuffer,
+      internal static extern JsErrorCode JsCreateDataView(JsValue _arrayBuffer,
          uint _byteOffset,
          uint _byteOffsetLength,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetArrayBufferStorage(JavaScriptValue _arrayBuffer, out IntPtr _buffer, out uint _bufferLength);
-
+      internal static extern JsErrorCode JsGetArrayBufferStorage(JsValue _arrayBuffer, out IntPtr _buffer, out uint _bufferLength);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetTypedArrayStorage(JavaScriptValue _typedArray,
+      internal static extern JsErrorCode JsGetTypedArrayStorage(JsValue _typedArray,
          out IntPtr _buffer,
          out uint _bufferLength,
          out JavaScriptTypedArrayType _arrayType,
          out int _elementSize);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetDataViewStorage(JavaScriptValue _dataView, out IntPtr _buffer, out uint _bufferLength);
-
+      internal static extern JsErrorCode JsGetDataViewStorage(JsValue _dataView, out IntPtr _buffer, out uint _bufferLength);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetPropertyIdType(JavaScriptPropertyId _propertyId, out JavaScriptPropertyIdType _propertyIdType);
-
+      internal static extern JsErrorCode JsGetPropertyIdType(JsPropertyId _propertyId, out JsPropertyIdType _propertyIdType);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateSymbol(JavaScriptValue _description, out JavaScriptValue _symbol);
-
+      internal static extern JsErrorCode JsCreateSymbol(JsValue _description, out JsValue _symbol);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetSymbolFromPropertyId(JavaScriptPropertyId _propertyId, out JavaScriptValue _symbol);
-
+      internal static extern JsErrorCode JsGetSymbolFromPropertyId(JsPropertyId _propertyId, out JsValue _symbol);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetPropertyIdFromSymbol(JavaScriptValue _symbol, out JavaScriptPropertyId _propertyId);
-
+      internal static extern JsErrorCode JsGetPropertyIdFromSymbol(JsValue _symbol, out JsPropertyId _propertyId);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetOwnPropertySymbols(JavaScriptValue _obj, out JavaScriptValue _propertySymbols);
-
+      internal static extern JsErrorCode JsGetOwnPropertySymbols(JsValue _obj, out JsValue _propertySymbols);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsNumberToInt(JavaScriptValue _value, out int _intValue);
-
+      internal static extern JsErrorCode JsNumberToInt(JsValue _value, out int _intValue);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetIndexedPropertiesToExternalData(JavaScriptValue _obj,
+      internal static extern JsErrorCode JsSetIndexedPropertiesToExternalData(JsValue _obj,
          IntPtr _data,
          JavaScriptTypedArrayType _arrayType,
          uint _elementLength);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetIndexedPropertiesExternalData(JavaScriptValue _obj,
+      internal static extern JsErrorCode JsGetIndexedPropertiesExternalData(JsValue _obj,
          IntPtr _data,
          out JavaScriptTypedArrayType _arrayType,
          out uint _elementLength);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsHasIndexedPropertiesExternalData(JavaScriptValue _obj, out bool _value);
-
+      internal static extern JsErrorCode JsHasIndexedPropertiesExternalData(JsValue _obj, out bool _value);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsInstanceOf(JavaScriptValue _obj, JavaScriptValue _constructor, out bool _result);
-
+      internal static extern JsErrorCode JsInstanceOf(JsValue _obj, JsValue _constructor, out bool _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsCreateExternalArrayBuffer(IntPtr _data,
+      internal static extern JsErrorCode JsCreateExternalArrayBuffer(IntPtr _data,
          uint _byteLength,
-         JavaScriptObjectFinalizeCallback _finalizeCallback,
+         JsObjectFinalizeCallback _finalizeCallback,
          IntPtr _callbackState,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetTypedArrayInfo(JavaScriptValue _typedArray,
+      internal static extern JsErrorCode JsGetTypedArrayInfo(JsValue _typedArray,
          out JavaScriptTypedArrayType _arrayType,
-         out JavaScriptValue _arrayBuffer,
+         out JsValue _arrayBuffer,
          out uint _byteOffset,
          out uint _byteLength);
-
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetContextOfObject(JavaScriptValue _obj, out JavaScriptContext _context);
-
+      internal static extern JsErrorCode JsGetContextOfObject(JsValue _obj, out JsContext _context);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsGetContextData(JavaScriptContext _context, out IntPtr _data);
-
+      internal static extern JsErrorCode JsGetContextData(JsContext _context, out IntPtr _data);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsSetContextData(JavaScriptContext _context, IntPtr _data);
-
+      internal static extern JsErrorCode JsSetContextData(JsContext _context, IntPtr _data);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
+      internal static extern JsErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
-         JavaScriptSourceContext _sourceContext,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
-
+         out JsValue _result);
       [DllImport(DllName)]
-      internal static extern JavaScriptErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
+      internal static extern JsErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
-         JavaScriptSourceContext _sourceContext,
+         JsSourceContext _sourceContext,
          string _sourceUrl,
-         out JavaScriptValue _result);
+         out JsValue _result);
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsInitializeModuleRecord(
+         JsModuleRecord _referencingModule,
+         JsValue _normalizedSpecifier,
+         out JsModuleRecord _moduleRecord);
+
+      [DllImport(DllName, EntryPoint = "JsSetModuleHostInfo")]
+      internal static extern JsErrorCode JsSetModuleHostInfo(JsModuleRecord _requestModule,
+         JsModuleHostInfoKind _moduleHostInfo,
+         JsFetchImportedModuleCallBack _callback);
+      [DllImport(DllName, EntryPoint = "JsSetModuleHostInfo")]
+      internal static extern JsErrorCode JsSetModuleHostInfo(JsModuleRecord _requestModule,
+         JsModuleHostInfoKind _moduleHostInfo,
+         JsNotifyModuleReadyCallback _callback);
+      [DllImport(DllName, EntryPoint = "JsSetModuleHostInfo")]
+      internal static extern JsErrorCode JsSetModuleHostInfo(JsModuleRecord _requestModule,
+         JsModuleHostInfoKind _moduleHostInfo,
+         JsFetchImportedModuleFromScriptCallback _callback);
+
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsParseModuleSource(
+         JsModuleRecord _requestModule,
+         JsSourceContext _sourceContext,
+         byte[] _script,
+         uint _scriptLength,
+         JsParseModuleSourceFlags _sourceFlag,
+         out JsValue _exception);
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsModuleEvaluation(
+         JsModuleRecord _requestModule,
+         out JsValue _result);
    }
 }

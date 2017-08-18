@@ -18,40 +18,40 @@ namespace SharpChakra.Json
 
       private JavaScriptValueToJTokenConverter() { }
 
-      public static JToken Convert(JavaScriptValue _value) => SInstance.Visit(_value);
-      private JToken Visit(JavaScriptValue _value)
+      public static JToken Convert(JsValue _value) => SInstance.Visit(_value);
+      private JToken Visit(JsValue _value)
       {
          switch (_value.ValueType)
          {
-            case JavaScriptValueType.Array:
+            case JsValueType.Array:
                return VisitArray(_value);
-            case JavaScriptValueType.Boolean:
+            case JsValueType.Boolean:
                return VisitBoolean(_value);
-            case JavaScriptValueType.Null:
+            case JsValueType.Null:
                return VisitNull(_value);
-            case JavaScriptValueType.Number:
+            case JsValueType.Number:
                return VisitNumber(_value);
-            case JavaScriptValueType.Object:
+            case JsValueType.Object:
                return VisitObject(_value);
-            case JavaScriptValueType.String:
+            case JsValueType.String:
                return VisitString(_value);
-            case JavaScriptValueType.Undefined:
+            case JsValueType.Undefined:
                return VisitUndefined(_value);
-            case JavaScriptValueType.Function:
-            case JavaScriptValueType.Error:
+            case JsValueType.Function:
+            case JsValueType.Error:
             default:
                throw new NotSupportedException();
          }
       }
 
-      private JToken VisitArray(JavaScriptValue _value)
+      private JToken VisitArray(JsValue _value)
       {
          var array = new JArray();
-         var propertyId = JavaScriptPropertyId.FromString("length");
+         var propertyId = JsPropertyId.FromString("length");
          var length = (int)_value.GetProperty(propertyId).ToDouble();
          for (var i = 0; i < length; ++i)
          {
-            var index = JavaScriptValue.FromInt32(i);
+            var index = JsValue.FromInt32(i);
             var element = _value.GetIndexedProperty(index);
             array.Add(Visit(element));
          }
@@ -59,17 +59,17 @@ namespace SharpChakra.Json
          return array;
       }
 
-      private JToken VisitBoolean(JavaScriptValue _value)
+      private JToken VisitBoolean(JsValue _value)
       {
          return _value.ToBoolean() ? STrue : SFalse;
       }
 
-      private JToken VisitNull(JavaScriptValue _value)
+      private JToken VisitNull(JsValue _value)
       {
          return SNull;
       }
 
-      private JToken VisitNumber(JavaScriptValue _value)
+      private JToken VisitNumber(JsValue _value)
       {
          var number = _value.ToDouble();
 
@@ -78,13 +78,13 @@ namespace SharpChakra.Json
              : new JValue(number);
       }
 
-      private JToken VisitObject(JavaScriptValue _value)
+      private JToken VisitObject(JsValue _value)
       {
          var jsonObject = new JObject();
          var properties = Visit(_value.GetOwnPropertyNames()).ToObject<string[]>();
          foreach (var property in properties)
          {
-            var propertyId = JavaScriptPropertyId.FromString(property);
+            var propertyId = JsPropertyId.FromString(property);
             var propertyValue = _value.GetProperty(propertyId);
             jsonObject.Add(property, Visit(propertyValue));
          }
@@ -92,12 +92,12 @@ namespace SharpChakra.Json
          return jsonObject;
       }
 
-      private JToken VisitString(JavaScriptValue _value)
+      private JToken VisitString(JsValue _value)
       {
          return JValue.CreateString(_value.ToString());
       }
 
-      private JToken VisitUndefined(JavaScriptValue _value)
+      private JToken VisitUndefined(JsValue _value)
       {
          return SUndefined;
       }

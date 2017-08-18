@@ -4,7 +4,7 @@ namespace SharpChakra.Json
 {
    public static class JTokenExtensions
    {
-      public static JavaScriptValue ToJavaScriptValue(this JToken _this)
-         => JTokenToJavaScriptValueConverter.Convert(_this);
+      public static JsValue ToJavaScriptValue(this JToken _this)
+         => JTokenToJsValueConverter.Convert(_this);
    }
 }

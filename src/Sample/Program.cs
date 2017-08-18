@@ -7,52 +7,52 @@ namespace Sample
 {
    class Program
    {
-      static void Main(string[] _args)
+      static void Main()
       {
-         using (var runtime = JavaScriptRuntime.Create())
+         using (var runtime = JsRuntime.Create())
          {
             var context = runtime.CreateContext();
-            using (new JavaScriptContext.Scope(context))
+            using (new JsContext.Scope(context))
             {
                // Get JS Global Object
-               var globalObject = JavaScriptValue.GlobalObject;
+               var globalObject = JsValue.GlobalObject;
 
                // Register Global Function
-               globalObject.SetProperty(JavaScriptPropertyId.FromString("loginfo"), // function name
-                  JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+               globalObject.SetProperty(JsPropertyId.FromString("loginfo"), // function name
+                  JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
                      {
                         var build = BuildLogRecord(_arguments, _count); // Build msg
                         Console.WriteLine(build.ToString()); // Output
-                        return JavaScriptValue.Invalid;
+                        return JsValue.Invalid;
                      },
                      IntPtr.Zero),
                   true);
 
                // logerror
-               globalObject.SetProperty(JavaScriptPropertyId.FromString("logerror"), // function name 
-                  JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+               globalObject.SetProperty(JsPropertyId.FromString("logerror"), // function name 
+                  JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
                      {
                         var build = BuildLogRecord(_arguments, _count); // Build msg
                         var color = Console.ForegroundColor; // Save color
                         Console.ForegroundColor = ConsoleColor.DarkRed; // Change color to red
                         Console.WriteLine(build.ToString()); // Output
                         Console.ForegroundColor = color; // Restore color
-                        return JavaScriptValue.Invalid;
+                        return JsValue.Invalid;
                      },
                      IntPtr.Zero),
                   true);
 
                // Execute all scripts inside js folder
-               var currentSourceContext = JavaScriptSourceContext.FromIntPtr(IntPtr.Zero);
+               var currentSourceContext = JsSourceContext.FromIntPtr(IntPtr.Zero);
                foreach (var js in Directory.EnumerateFiles("js","*.js"))
                {
                   Console.WriteLine($"Executing '{js}' ... ------------------->");
                   try
                   {
                      var src = File.ReadAllText(js);
-                     JavaScriptContext.RunScript(src, currentSourceContext++, js);
+                     JsContext.RunScript(src, currentSourceContext++, js);
                   }
-                  catch (JavaScriptScriptException e)
+                  catch (JsScriptException e)
                   {
                      Console.WriteLine($"Can't process '{js}' script, {e}");
                   }
@@ -63,7 +63,7 @@ namespace Sample
             Console.ReadLine();
          }
       }
-      private static StringBuilder BuildLogRecord(JavaScriptValue[] _arguments, ushort _count)
+      private static StringBuilder BuildLogRecord(JsValue[] _arguments, ushort _count)
       {
          var build = new StringBuilder();
          for (uint index = 1; index < _count; index++)

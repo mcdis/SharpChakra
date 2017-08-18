@@ -8,16 +8,16 @@ namespace Sample.Json
 {
    class Program
    {
-      static void Main(string[] _args)
+      static void Main()
       {
-         using (var runtime = JavaScriptRuntime.Create())
-         using (new JavaScriptContext.Scope(runtime.CreateContext()))
+         using (var runtime = JsRuntime.Create())
+         using (new JsContext.Scope(runtime.CreateContext()))
          {
             // Register Global Function
-            JavaScriptValue
+            JsValue
                .GlobalObject
-               .SetProperty(JavaScriptPropertyId.FromString("dump"), // function name
-               JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+               .SetProperty(JsPropertyId.FromString("dump"), // function name
+               JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
                   {
                      Console.WriteLine("-- dump --");
                      Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
@@ -27,7 +27,7 @@ namespace Sample.Json
                true);
 
             Console.WriteLine("-- executing --");
-            var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});");
+            var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
 
             Console.WriteLine("-- result --");
             Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));

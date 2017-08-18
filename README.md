@@ -222,10 +222,10 @@ JsTTDPreExecuteSnapShotInterval | -
 JsTTDMoveToTopLevelEvent | -
 JsTTDReplayExecution | -
 
-JsInitializeModuleRecord | -
-JsParseModuleSource | -
-JsModuleEvaluation | -
-JsSetModuleHostInfo | -
+JsInitializeModuleRecord | done
+JsParseModuleSource | done
+JsModuleEvaluation | done
+JsSetModuleHostInfo | done
 JsGetModuleHostInfo | -
 JsInitializeJITServer | -
 
