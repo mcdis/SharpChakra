@@ -88,6 +88,46 @@ N | host | Dir | chakacore.dll | Comment
 8.| NotifyModuleReadyCallback |<-----| |
 9.| |----->|  JsModuleEvaluation|       for root module
 
+```csharp
+using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures,JsRuntimeVersion.VersionEdge))
+using (new JsContext.Scope(runtime.CreateContext()))
+{
+   // Register Global Function
+   JsValue
+      .GlobalObject.SetProperty(JsPropertyId.FromString("echo"), // function name
+      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+         {
+            Console.WriteLine(_arguments[1].ToString());
+            return JsValue.Undefined;
+         },
+         IntPtr.Zero),
+      true);
+
+   // Declare Root Module               
+   var rootModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord(root)
+   var fooModule = JsModuleRecord.Invalid;
+   JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // 4. FetchImportedModuleCallback
+   {
+      // Create Foo Module
+      fooModule = JsModuleRecord.Create(_module, _specifier); // 2. JsInitializeModuleRecord (foo.js)                   
+      _record = fooModule;
+      return JsErrorCode.NoError;
+   }               
+
+   rootModule.SetHostInfo(onFetch);
+   var rootSrc = 
+   @"
+      import {test} from 'foo.js';
+      echo(test());
+   ";
+   rootModule.Parse(rootSrc); // 3. JsParseModuleSource(root)
+   fooModule.Parse("export let test = function(){return 'hello';}"); //3. JsParseModuleSource(foo.js)
+
+   rootModule.Eval(); // 9. JsModuleEvaluation(root)->import test()->echo(test())->echo('hello')-> console output hello
+}
+```
+Output: hello
+
 # Api coverage
 
 **JsrtCommonExports.inc**
