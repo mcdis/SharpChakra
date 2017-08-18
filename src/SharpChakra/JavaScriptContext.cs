@@ -29,18 +29,14 @@ namespace SharpChakra
         /// <param name="_reference">The reference.</param>
         internal JavaScriptContext(IntPtr _reference)
         {
-            this.p_reference = _reference;
+            p_reference = _reference;
         }
 
         /// <summary>
         ///     Gets an invalid context.
         /// </summary>
-        public static JavaScriptContext Invalid
-        {
-            get { return new JavaScriptContext(IntPtr.Zero); }
-        }
-
-        /// <summary>
+        public static JavaScriptContext Invalid => new JavaScriptContext(IntPtr.Zero);
+       /// <summary>
         ///     Gets or sets the current script context on the thread.
         /// </summary>
         public static JavaScriptContext Current
@@ -52,11 +48,8 @@ namespace SharpChakra
                 return reference;
             }
 
-            set
-            {
-                Native.ThrowIfError(Native.JsSetCurrentContext(value));
-            }
-        }
+            set => Native.ThrowIfError(Native.JsSetCurrentContext(value));
+       }
 
         /// <summary>
         ///     Gets a value indicating whether the runtime of the current context is in an exception state.
@@ -103,12 +96,8 @@ namespace SharpChakra
         /// <summary>
         ///     Gets a value indicating whether the context is a valid context or not.
         /// </summary>
-        public bool IsValid
-        {
-            get { return p_reference != IntPtr.Zero; }
-        }
-
-        /// <summary>
+        public bool IsValid => p_reference != IntPtr.Zero;
+       /// <summary>
         ///     Tells the runtime to do any idle processing it need to do.
         /// </summary>
         /// <remarks>

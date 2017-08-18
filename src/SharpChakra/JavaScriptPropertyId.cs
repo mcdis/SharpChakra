@@ -22,18 +22,14 @@ namespace SharpChakra
         /// <param name="_id">The ID.</param>
         internal JavaScriptPropertyId(IntPtr _id)
         {
-            this.p_id = _id;
+            p_id = _id;
         }
 
         /// <summary>
         ///     Gets an invalid ID.
         /// </summary>
-        public static JavaScriptPropertyId Invalid
-        {
-            get { return new JavaScriptPropertyId(IntPtr.Zero); }
-        }
-
-        /// <summary>
+        public static JavaScriptPropertyId Invalid => new JavaScriptPropertyId(IntPtr.Zero);
+       /// <summary>
         ///     Gets the name associated with the property ID.
         /// </summary>
         /// <remarks>

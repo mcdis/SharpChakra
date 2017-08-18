@@ -79,7 +79,7 @@ namespace SharpChakra.Parts
                case JavaScriptErrorCode.ScriptException:
                   {
                      JavaScriptValue errorObject;
-                     JavaScriptErrorCode innerError = JsGetAndClearException(out errorObject);
+                     var innerError = JsGetAndClearException(out errorObject);
 
                      if (innerError != JavaScriptErrorCode.NoError)
                      {
@@ -92,7 +92,7 @@ namespace SharpChakra.Parts
                case JavaScriptErrorCode.ScriptCompile:
                   {
                      JavaScriptValue errorObject;
-                     JavaScriptErrorCode innerError = JsGetAndClearException(out errorObject);
+                     var innerError = JsGetAndClearException(out errorObject);
 
                      if (innerError != JavaScriptErrorCode.NoError)
                      {

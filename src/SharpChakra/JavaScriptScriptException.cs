@@ -31,7 +31,7 @@ namespace SharpChakra
         public JavaScriptScriptException(JavaScriptErrorCode _code, JavaScriptValue _error, string message) :
             base(_code, message)
         {
-            this.p_error = _error;
+            p_error = _error;
         }
 
         /// <summary>
@@ -47,12 +47,6 @@ namespace SharpChakra
         /// <summary>
         ///     Gets a JavaScript object representing the script error.
         /// </summary>
-        public JavaScriptValue Error
-        {
-            get
-            {
-                return p_error;
-            }
-        }
+        public JavaScriptValue Error => p_error;
     }
 }

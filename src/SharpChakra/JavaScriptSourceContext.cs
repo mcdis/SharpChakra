@@ -18,18 +18,14 @@ namespace SharpChakra
         /// <param name="_context">The context.</param>
         private JavaScriptSourceContext(IntPtr _context)
         {
-            this.p_context = _context;
+            p_context = _context;
         }
 
         /// <summary>
         ///     Gets an empty source context.
         /// </summary>
-        public static JavaScriptSourceContext None
-        {
-            get { return new JavaScriptSourceContext(new IntPtr(-1)); }
-        }
-
-        /// <summary>
+        public static JavaScriptSourceContext None => new JavaScriptSourceContext(new IntPtr(-1));
+       /// <summary>
         ///     The equality operator for source contexts.
         /// </summary>
         /// <param name="_left">The first source context to compare.</param>

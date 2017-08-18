@@ -29,7 +29,7 @@ namespace SharpChakra
         public JavaScriptException(JavaScriptErrorCode _code, string message) :
             base(message)
         {
-            this.p_code = _code;
+            p_code = _code;
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace SharpChakra
         {
             if (message != null)
             {
-                p_code = (JavaScriptErrorCode) base.HResult;
+                p_code = (JavaScriptErrorCode) HResult;
             }
         }
 
@@ -61,9 +61,6 @@ namespace SharpChakra
         /// <summary>
         ///     Gets the error code.
         /// </summary>
-        public JavaScriptErrorCode ErrorCode
-        {
-            get { return p_code; }
-        }
+        public JavaScriptErrorCode ErrorCode => p_code;
     }
 }

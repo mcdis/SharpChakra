@@ -30,12 +30,8 @@ namespace SharpChakra
         /// <summary>
         ///     Gets a value indicating whether the runtime is valid.
         /// </summary>
-        public bool IsValid
-        {
-            get { return p_handle != IntPtr.Zero; }
-        }
-
-        /// <summary>
+        public bool IsValid => p_handle != IntPtr.Zero;
+       /// <summary>
         ///     Gets the current memory usage for a runtime.
         /// </summary>
         /// <remarks>
@@ -68,10 +64,7 @@ namespace SharpChakra
                 return memoryLimit;
             }
 
-            set
-            {
-                Native.ThrowIfError(Native.JsSetRuntimeMemoryLimit(this, value));
-            }
+            set => Native.ThrowIfError(Native.JsSetRuntimeMemoryLimit(this, value));
         }
 
         /// <summary>
@@ -86,12 +79,9 @@ namespace SharpChakra
                 return isDisabled;
             }
 
-            set 
-            {
-                Native.ThrowIfError(value
-                                        ? Native.JsDisableRuntimeExecution(this)
-                                        : Native.JsEnableRuntimeExecution(this));
-            }
+            set => Native.ThrowIfError(value
+               ? Native.JsDisableRuntimeExecution(this)
+               : Native.JsEnableRuntimeExecution(this));
         }
 
         /// <summary>
