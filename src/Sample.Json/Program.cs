@@ -21,7 +21,7 @@ namespace Sample.Json
                   {
                      Console.WriteLine("-- dump --");
                      Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
-                     return JObject.Parse("{status:'ok',error:-1}").ToJavaScriptValue();
+                     return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
                   },
                   IntPtr.Zero),
                true);
