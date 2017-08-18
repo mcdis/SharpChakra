@@ -61,82 +61,24 @@ namespace SharpChakra
          => Is32 ? Native32.JsGetRuntime(_context, out _runtime) : Native64.JsGetRuntime(_context, out _runtime);
       public static JavaScriptErrorCode JsIdle(out uint _nextIdleTick)
          => Is32 ? Native32.JsIdle(out _nextIdleTick) : Native64.JsIdle(out _nextIdleTick);
-
-      /// <summary>
-      /// Parses a script and returns a function representing the script.
-      /// </summary>
-      /// <param name="_script"></param>
-      /// <param name="_sourceContext"></param>
-      /// <param name="_sourceUrl"></param>
-      /// <param name="_result"></param>
-      /// <returns></returns>
       public static JavaScriptErrorCode JsParseScript(string _script,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsParseScript(_script, _sourceContext, _sourceUrl, out _result) : Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
-
-      /// <summary>
-      /// Executes a script.
-      /// </summary>
-      /// <param name="_script"></param>
-      /// <param name="_sourceContext"></param>
-      /// <param name="_sourceUrl"></param>
-      /// <param name="_result"></param>
-      /// <returns></returns>
       public static JavaScriptErrorCode JsRunScript(string _script,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsRunScript(_script, _sourceContext, _sourceUrl, out _result) : Native64.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
-
-      /// <summary>
-      ///     Serializes a parsed script to a buffer than can be reused.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     <c>JsSerializeScript</c> parses a script and then stores the parsed form of the script in a
-      ///     runtime-independent format. The serialized script then can be deserialized in any
-      ///     runtime without requiring the script to be re-parsed.
-      ///     </para>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsSerializeScript(string _script, byte[] _buffer, ref ulong _bufferSize)
          => Is32 ? Native32.JsSerializeScript(_script, _buffer, ref _bufferSize) : Native64.JsSerializeScript(_script, _buffer, ref _bufferSize);
-
-      /// <summary>
-      ///     Parses a serialized script and returns a function representing the script.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      ///     <para>
-      ///     The runtime will hold on to the buffer until all instances of any functions created from
-      ///     the buffer are garbage collected.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsParseSerializedScript(string _script,
          byte[] _buffer,
          JavaScriptSourceContext _sourceContext,
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-
-      /// <summary>
-      ///     Runs a serialized script.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      ///     <para>
-      ///     The runtime will hold on to the buffer until all instances of any functions created from
-      ///     the buffer are garbage collected.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsRunSerializedScript(string _script,
          byte[] _buffer,
          JavaScriptSourceContext _sourceContext,
@@ -144,32 +86,8 @@ namespace SharpChakra
          out JavaScriptValue _result)
          => Is32 ? Native32.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
 
-      /// <summary>
-      ///     Gets the property ID associated with the name.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Property IDs are specific to a context and cannot be used across contexts.
-      ///     </para>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsGetPropertyIdFromName(string _name, out JavaScriptPropertyId _propertyId)
          => Is32 ? Native32.JsGetPropertyIdFromName(_name, out _propertyId) : Native64.JsGetPropertyIdFromName(_name, out _propertyId);
-      
-      /// <summary>
-      ///     Gets the name associated with the property ID.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      ///     <para>
-      ///     The returned buffer is valid as long as the runtime is alive and cannot be used
-      ///     once the runtime has been disposed.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsGetPropertyNameFromId(JavaScriptPropertyId _propertyId, out string _name)
         => Is32 ? Native32.JsGetPropertyNameFromId(_propertyId, out _name) : Native64.JsGetPropertyNameFromId(_propertyId, out _name);
       public static JavaScriptErrorCode JsGetUndefinedValue(out JavaScriptValue _undefinedValue)
@@ -198,31 +116,8 @@ namespace SharpChakra
          => Is32 ? Native32.JsConvertValueToNumber(_value, out _numberValue) : Native64.JsConvertValueToNumber(_value, out _numberValue);
       public static JavaScriptErrorCode JsGetStringLength(JavaScriptValue _sringValue, out int _length)
          => Is32 ? Native32.JsGetStringLength(_sringValue, out _length) : Native64.JsGetStringLength(_sringValue, out _length);
-
-      /// <summary>
-      ///     Creates a string value from a string pointer.
-      /// </summary>
-      /// <remarks>
-      ///     Requires an active script context.
-      /// </remarks>
       public static JavaScriptErrorCode JsPointerToString(string _value, UIntPtr _stringLength, out JavaScriptValue _stringValue)
          => Is32 ? Native32.JsPointerToString(_value, _stringLength, out _stringValue) : Native64.JsPointerToString(_value, _stringLength, out _stringValue);
-
-      /// <summary>
-      ///     Retrieves the string pointer of a string value.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     This function retrieves the string pointer of a string value. It will fail with
-      ///     <c>JsErrorInvalidArgument</c> if the type of the value is not string. The lifetime
-      ///     of the string returned will be the same as the lifetime of the value it came from, however
-      ///     the string pointer is not considered a reference to the value (and so will not keep it
-      ///     from being collected).
-      ///     </para>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsStringToPointer(JavaScriptValue _value, out IntPtr _stringValue, out UIntPtr _stringLength)
          => Is32 ? Native32.JsStringToPointer(_value, out _stringValue, out _stringLength) : Native64.JsStringToPointer(_value, out _stringValue, out _stringLength);
       public static JavaScriptErrorCode JsConvertValueToString(JavaScriptValue _value, out JavaScriptValue _stringValue)
@@ -402,21 +297,6 @@ namespace SharpChakra
          => Is32 ? Native32.JsGetContextData(_context, out _data) : Native64.JsGetContextData(_context, out _data);
       public static JavaScriptErrorCode JsSetContextData(JavaScriptContext _context, IntPtr _data)
          => Is32 ? Native32.JsSetContextData(_context, _data) : Native64.JsSetContextData(_context, _data);
-
-      /// <summary>
-      ///     Parses a serialized script and returns a function representing the script.
-      ///     Provides the ability to lazy load the script source only if/when it is needed.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      ///     <para>
-      ///     The runtime will hold on to the buffer until all instances of any functions created from
-      ///     the buffer are garbage collected.  It will then call scriptUnloadCallback to inform the
-      ///     caller it is safe to release.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsParseSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
@@ -424,21 +304,6 @@ namespace SharpChakra
          string _sourceUrl,
          out JavaScriptValue _result)
          => Is32 ? Native32.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result) : Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-
-      /// <summary>
-      ///     Runs a serialized script.
-      ///     Provides the ability to lazy load the script source only if/when it is needed.
-      /// </summary>
-      /// <remarks>
-      ///     <para>
-      ///     Requires an active script context.
-      ///     </para>
-      ///     <para>
-      ///     The runtime will hold on to the buffer until all instances of any functions created from
-      ///     the buffer are garbage collected.  It will then call scriptUnloadCallback to inform the
-      ///     caller it is safe to release.
-      ///     </para>
-      /// </remarks>
       public static JavaScriptErrorCode JsRunSerializedScriptWithCallback(JavaScriptSerializedScriptLoadSourceCallback _scriptLoadCallback,
          JavaScriptSerializedScriptUnloadCallback _scriptUnloadCallback,
          byte[] _buffer,
