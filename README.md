@@ -22,7 +22,7 @@ using (new JavaScriptContext.Scope(runtime.CreateContext()))
             IntPtr.Zero),
          true);
 
-   JavaScriptContext.RunScript("run();", JavaScriptSourceContext.FromIntPtr(IntPtr.Zero), "");
+   JavaScriptContext.RunScript("run();");
 }
 ```
 Output: 'hello from script!'
@@ -46,7 +46,7 @@ using (new JavaScriptContext.Scope(runtime.CreateContext()))
       true);
 
    Console.WriteLine("-- executing --");
-   var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});", JavaScriptSourceContext.FromIntPtr(IntPtr.Zero), "");
+   var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});");
 
    Console.WriteLine("-- result --");
    Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
