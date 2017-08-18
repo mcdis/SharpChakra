@@ -68,7 +68,8 @@ Output:
 ```
 
 # Api coverage
-From ChakraRtInterface.h
+
+**ChakraRtInterface.h**
 
 Function | Status
 ---------| -------------
@@ -161,3 +162,21 @@ JsCreateString | -
 JsCreateStringUtf16 | - 
 JsCreatePropertyId | - 
 JsCreateExternalArrayBuffer | done
+
+**ChakraCommonWindows.h**
+
+Function | Status
+---------| -------------
+JsParseScript | done
+JsParseScriptWithAttributes | -
+JsRunScript | done
+JsExperimentalApiRunModule | -
+JsSerializeScript | done
+JsParseSerializedScriptWithCallback | done
+JsRunSerializedScriptWithCallback | done
+JsParseSerializedScript | done
+JsRunSerializedScript | done
+JsGetPropertyIdFromName | done
+JsGetPropertyNameFromId | done
+JsPointerToString | done
+JsStringToPointer | done
