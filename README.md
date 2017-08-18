@@ -1,52 +1,60 @@
-# SharpChakra
+# About
 Slim managed any cpu .net wrapper of Microsoft.ChakraCore
-Simple auto call proxy to x86/x64 dllimport method based on Microsoft.ChakraCore C# Host Sample
+
+# Goals
+- any cpu (auto proxy to x86/x64)
+- slim (no extra logic, only Api)
+- module API support (import/export)
+- Json interopability
 
 # How to use
 - Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
 - Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
 
+# Chakra binaries
+Microsoft.ChakraCore 1.7.1
+
 # Example
 
 ```csharp
-using (var runtime = JavaScriptRuntime.Create())
-using (new JavaScriptContext.Scope(runtime.CreateContext()))
+using (var runtime = JsRuntime.Create())
+using (new JsContext.Scope(runtime.CreateContext()))
 {
-   JavaScriptValue.GlobalObject
-      .SetProperty(JavaScriptPropertyId.FromString("run"), // Register run function
-         JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+   JsValue.GlobalObject
+      .SetProperty(JsPropertyId.FromString("run"), // Register run function
+         JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
             {
                Console.WriteLine("hello from script!"); // Output
-               return JavaScriptValue.Invalid;
+               return JsValue.Undefined;
             },
             IntPtr.Zero),
          true);
 
-   JavaScriptContext.RunScript("run();");
+   JsContext.RunScript("run();");
 }
 ```
 Output: 'hello from script!'
 
 # Newtonsoft.Json Interopability example
 ```csharp
-using (var runtime = JavaScriptRuntime.Create())
-using (new JavaScriptContext.Scope(runtime.CreateContext()))
+using (var runtime = JsRuntime.Create())
+using (new JsContext.Scope(runtime.CreateContext()))
 {
    // Register Global Function
-   JavaScriptValue
+   JsValue
       .GlobalObject
-      .SetProperty(JavaScriptPropertyId.FromString("dump"), // function name
-      JavaScriptValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+      .SetProperty(JsPropertyId.FromString("dump"), // function name
+      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
          {
             Console.WriteLine("-- dump --");
             Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
-            return JObject.Parse("{status:'ok',error:-1}").ToJavaScriptValue();
+            return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
          },
          IntPtr.Zero),
       true);
 
    Console.WriteLine("-- executing --");
-   var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});");
+   var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
 
    Console.WriteLine("-- result --");
    Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
