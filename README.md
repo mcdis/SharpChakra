@@ -76,7 +76,7 @@ Output:
 ```
 # Module Api
 
-N | host | Dir | chakacore.dll | Comment
+N | host | Dir | chakracore.dll | Comment
 --|------|-----|---------------|-----------
 1.| Load top level script | | |
 2.| | ---->|JsInitializeModuleRecord | for root module
