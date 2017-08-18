@@ -67,9 +67,95 @@ Output:
 }
 ```
 
-# Goals
-- You can use exists js code
-- You can extend your C# app by use script
-- You can control script execution (you can terminate dead loop and limit memory consumption, tnx MS)
-- You can build your own script system (game,config system and etc.)
-- Speed, Chakra is very fast 
+# Api coverage
+Function | Status
+---------| -------------
+JsCreateRuntime | 
+JsCreateContext | 
+JsSetObjectBeforeCollectCallback | 
+JsSetRuntimeMemoryLimit | 
+JsSetCurrentContext | 
+JsGetCurrentContext | 
+JsDisposeRuntime | 
+JsCreateObject | 
+JsCreateExternalObject | 
+JsCreateFunction | 
+JsCreateNamedFunction | 
+JsSetProperty | 
+JsGetGlobalObject | 
+JsGetUndefinedValue | 
+JsGetNullValue | 
+JsGetTrueValue | 
+JsGetFalseValue | 
+JsConvertValueToString | 
+JsConvertValueToNumber | 
+JsConvertValueToBoolean | 
+JsBooleanToBool | 
+JsGetProperty | 
+JsHasProperty | 
+JsCallFunction | 
+JsNumberToDouble | 
+JsNumberToInt | 
+JsDoubleToNumber | 
+JsGetExternalData | 
+JsSetExternalData | 
+JsCreateArray | 
+JsCreateArrayBuffer | 
+JsCreateSharedArrayBufferWithSharedContent | 
+JsGetSharedArrayBufferContent | 
+JsReleaseSharedArrayBufferContentHandle | 
+JsGetArrayBufferStorage | 
+JsCreateError | 
+JsHasException | 
+JsSetException | 
+JsGetAndClearException | 
+JsGetRuntime | 
+JsRelease | 
+JsAddRef | 
+JsGetValueType | 
+JsSetIndexedProperty | 
+JsSetPromiseContinuationCallback | 
+JsGetContextOfObject | 
+JsDiagStartDebugging | 
+JsDiagStopDebugging | 
+JsDiagGetSource | 
+JsDiagSetBreakpoint | 
+JsDiagGetStackTrace | 
+JsDiagRequestAsyncBreak | 
+JsDiagGetBreakpoints | 
+JsDiagRemoveBreakpoint | 
+JsDiagSetBreakOnException | 
+JsDiagGetBreakOnException | 
+JsDiagSetStepType | 
+JsDiagGetScripts | 
+JsDiagGetFunctionPosition | 
+JsDiagGetStackProperties | 
+JsDiagGetProperties | 
+JsDiagGetObjectFromHandle | 
+JsDiagEvaluate | 
+JsParseModuleSource | 
+JsModuleEvaluation | 
+JsInitializeModuleRecord | 
+JsSetModuleHostInfo | 
+JsGetModuleHostInfo | 
+JsTTDCreateRecordRuntime | 
+JsTTDCreateReplayRuntime | 
+JsTTDCreateContext | 
+JsTTDNotifyContextDestroy | 
+JsTTDStart | 
+JsTTDStop | 
+JsTTDNotifyYield | 
+JsTTDHostExit | 
+JsTTDGetSnapTimeTopLevelEventMove | 
+JsTTDMoveToTopLevelEvent | 
+JsTTDReplayExecution | 
+JsRun | 
+JsParse | 
+JsSerialize | 
+JsRunSerialized | 
+JsGetStringLength | 
+JsCopyString | 
+JsCreateString | 
+JsCreateStringUtf16 | 
+JsCreatePropertyId | 
+JsCreateExternalArrayBuffer | 
