@@ -4,7 +4,7 @@ Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 # Goals
 - any cpu (auto proxy to x86/x64)
 - slim (no extra logic, only Api)
-- module API support (import/export)
+- module API support (es6 import/export)
 - Json interopability
 
 # How to use
