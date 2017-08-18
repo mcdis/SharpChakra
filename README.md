@@ -74,6 +74,19 @@ Output:
   "error": -1
 }
 ```
+# Module Api
+
+N | host | Dir | chakacore.dll | Comment
+--|------|-----|---------------|-----------
+1.| Load top level script | | |
+2.| | ---->|JsInitializeModuleRecord | for root module
+3.| | ---->|JsParseModuleSource|parse root module
+4.| FetchImportedModuleCallback | <---- | | optional for imported module
+5.| |----->|JsInitializeModuleRecord| for nested module
+6.| load additional script| | |
+7.| |----->|  JsParseModuleSource| for nested module
+8.| NotifyModuleReadyCallback |<-----| |
+9.| |----->|  JsModuleEvaluation|       for root module
 
 # Api coverage
 
