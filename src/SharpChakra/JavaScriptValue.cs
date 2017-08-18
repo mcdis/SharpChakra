@@ -844,7 +844,7 @@ namespace SharpChakra
 
             if (_arguments.Length > ushort.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("_arguments");
+                throw new ArgumentOutOfRangeException(nameof(_arguments));
             }
 
             Native.ThrowIfError(Native.JsCallFunction(this, _arguments, (ushort)_arguments.Length, out returnReference));
@@ -865,7 +865,7 @@ namespace SharpChakra
 
             if (_arguments.Length > ushort.MaxValue)
             {
-                throw new ArgumentOutOfRangeException("_arguments");
+                throw new ArgumentOutOfRangeException(nameof(_arguments));
             }
 
             Native.ThrowIfError(Native.JsConstructObject(this, _arguments, (ushort)_arguments.Length, out returnReference));
