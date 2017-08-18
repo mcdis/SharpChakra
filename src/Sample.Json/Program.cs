@@ -27,7 +27,7 @@ namespace Sample.Json
                true);
 
             Console.WriteLine("-- executing --");
-            var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});", JavaScriptSourceContext.FromIntPtr(IntPtr.Zero), "");
+            var res = JavaScriptContext.RunScript("dump({id:4,name:'chakra'});");
 
             Console.WriteLine("-- result --");
             Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
