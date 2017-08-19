@@ -13,11 +13,7 @@ namespace SharpChakra.Json
 
       private JTokenToJsValueConverter() { }
 
-      public static JsValue Convert(JToken _token)
-      {
-         return SInstance.Visit(_token);
-      }
-
+      public static JsValue Convert(JToken _token) => SInstance.Visit(_token);
       private JsValue Visit(JToken _token)
       {
          if (_token == null)

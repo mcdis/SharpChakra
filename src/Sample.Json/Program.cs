@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SharpChakra;
+using SharpChakra.Extensions;
 using SharpChakra.Json;
 
 namespace Sample.Json
@@ -13,17 +14,16 @@ namespace Sample.Json
          using (var runtime = JsRuntime.Create())
          using (new JsContext.Scope(runtime.CreateContext()))
          {
-            // Register Global Function
-            JsValue
+            var fn = new JsNativeFunctionBuilder();
+            JsValue // Register Global Function
                .GlobalObject
-               .SetProperty(JsPropertyId.FromString("dump"), // function name
-               JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+               .SetProperty("dump", // dump
+               fn.New(_x =>
                   {
                      Console.WriteLine("-- dump --");
-                     Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
+                     Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
                      return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
-                  },
-                  IntPtr.Zero),
+                  }),
                true);
 
             Console.WriteLine("-- executing --");
