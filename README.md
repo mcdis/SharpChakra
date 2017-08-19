@@ -92,8 +92,8 @@ using (new JsContext.Scope(runtime.CreateContext()))
       .SetProperty("echo", // register echo func
       fn.New(_x =>Console.WriteLine(_x.Arguments[1].ToString())),true);
 
-   // Declare Root Module               
-   var rootModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord(root)
+   // Declare Main Module               
+   var mainModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord
    var fooModule = JsModuleRecord.Invalid;
    JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // 4. FetchImportedModuleCallback
    {
@@ -103,16 +103,16 @@ using (new JsContext.Scope(runtime.CreateContext()))
       return JsErrorCode.NoError;
    }               
 
-   rootModule.SetHostInfo(onFetch);
+   mainModule.SetHostInfo(onFetch);
    var rootSrc = 
    @"
       import {test} from 'foo.js';
       echo(test());
    ";
-   rootModule.Parse(rootSrc); // 3. JsParseModuleSource(root)
+   mainModule.Parse(rootSrc); // 3. JsParseModuleSource(root)
    fooModule.Parse("export let test = function(){return 'hello';}"); //3. JsParseModuleSource(foo.js)
 
-   rootModule.Eval(); // 9. JsModuleEvaluation(root)->import test()->echo(test())->echo('hello')-> console output hello
+   mainModule.Eval(); // 9. JsModuleEvaluation(main)->import {test}->test()->echo(test())->echo('hello')-> hello
 }
 ```
 Output: hello
