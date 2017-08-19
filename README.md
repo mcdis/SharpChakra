@@ -10,6 +10,7 @@ Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 # How to use
 - Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
 - Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
+- Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
 
 # Chakra binaries
 Microsoft.ChakraCore 1.7.1
@@ -20,14 +21,10 @@ Microsoft.ChakraCore 1.7.1
 using (var runtime = JsRuntime.Create())
 using (new JsContext.Scope(runtime.CreateContext()))
 {
+   var fn = new JsNativeFunctionBuilder();
    JsValue.GlobalObject
-      .SetProperty(JsPropertyId.FromString("run"), // Register run function
-         JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
-            {
-               Console.WriteLine("hello from script!"); // Output
-               return JsValue.Undefined;
-            },
-            IntPtr.Zero),
+      .SetProperty("run", // Register run function
+         fn.New(() =>Console.WriteLine("hello from script!")),
          true);
 
    JsContext.RunScript("run();");
@@ -40,17 +37,15 @@ Output: 'hello from script!'
 using (var runtime = JsRuntime.Create())
 using (new JsContext.Scope(runtime.CreateContext()))
 {
-   // Register Global Function
-   JsValue
-      .GlobalObject
-      .SetProperty(JsPropertyId.FromString("dump"), // function name
-      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
+   var fn = new JsNativeFunctionBuilder();   
+   JsValue.GlobalObject
+      .SetProperty("dump", // register dump function
+      fn.New(_x =>
          {
             Console.WriteLine("-- dump --");
-            Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
+            Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
             return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
-         },
-         IntPtr.Zero),
+         }),
       true);
 
    Console.WriteLine("-- executing --");
@@ -92,16 +87,10 @@ N | host | Dir | chakracore.dll | Comment
 using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures,JsRuntimeVersion.VersionEdge))
 using (new JsContext.Scope(runtime.CreateContext()))
 {
-   // Register Global Function
-   JsValue
-      .GlobalObject.SetProperty(JsPropertyId.FromString("echo"), // function name
-      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
-         {
-            Console.WriteLine(_arguments[1].ToString());
-            return JsValue.Undefined;
-         },
-         IntPtr.Zero),
-      true);
+   var fn = new JsNativeFunctionBuilder();   
+   JsValue.GlobalObject
+      .SetProperty("echo", // register echo func
+      fn.New(_x =>Console.WriteLine(_x.Arguments[1].ToString())),true);
 
    // Declare Root Module               
    var rootModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord(root)
