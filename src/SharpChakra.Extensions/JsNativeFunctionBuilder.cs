@@ -15,6 +15,12 @@ namespace SharpChakra.Extensions
          p_refs.Add(_handler);
          return JsValue.CreateFunction(_handler);
       }
+      public JsValue New(Action _x) => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) =>
+      {
+         _x();
+         return JsValue.Undefined;
+      });
+      public JsValue New(Func<JsValue> _x) => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) => _x());
       public JsValue New(Action<JsNativeFunctionArgs> _handler)
          => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) =>
          {
