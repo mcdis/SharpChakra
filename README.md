@@ -10,6 +10,7 @@ Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 # How to use
 - Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
 - Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
+- Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
 
 # Chakra binaries
 Microsoft.ChakraCore 1.7.1
@@ -20,17 +21,13 @@ Microsoft.ChakraCore 1.7.1
 using (var runtime = JsRuntime.Create())
 using (new JsContext.Scope(runtime.CreateContext()))
 {
-   JsValue.GlobalObject
-      .SetProperty(JsPropertyId.FromString("run"), // Register run function
-         JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
-            {
-               Console.WriteLine("hello from script!"); // Output
-               return JsValue.Undefined;
-            },
-            IntPtr.Zero),
-         true);
+  var fn = new JsNativeFunctionBuilder();
+  JsValue.GlobalObject
+    .SetProperty("run", // Register run function
+      fn.New(() =>Console.WriteLine("hello from script!")),
+      true);
 
-   JsContext.RunScript("run();");
+  JsContext.RunScript("run();");
 }
 ```
 Output: 'hello from script!'
@@ -40,24 +37,22 @@ Output: 'hello from script!'
 using (var runtime = JsRuntime.Create())
 using (new JsContext.Scope(runtime.CreateContext()))
 {
-   // Register Global Function
-   JsValue
-      .GlobalObject
-      .SetProperty(JsPropertyId.FromString("dump"), // function name
-      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
-         {
-            Console.WriteLine("-- dump --");
-            Console.WriteLine(_arguments[1].ToJToken().ToString(Formatting.Indented));
-            return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
-         },
-         IntPtr.Zero),
-      true);
+  var fn = new JsNativeFunctionBuilder();   
+  JsValue.GlobalObject
+    .SetProperty("dump", // register dump function
+    fn.New(_x =>
+    {
+      Console.WriteLine("-- dump --");
+      Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
+      return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
+    }),
+    true);
 
-   Console.WriteLine("-- executing --");
-   var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
+  Console.WriteLine("-- executing --");
+  var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
 
-   Console.WriteLine("-- result --");
-   Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
+  Console.WriteLine("-- result --");
+  Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
 }
 ```
 Output:
@@ -92,38 +87,30 @@ N | host | Dir | chakracore.dll | Comment
 using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures,JsRuntimeVersion.VersionEdge))
 using (new JsContext.Scope(runtime.CreateContext()))
 {
-   // Register Global Function
-   JsValue
-      .GlobalObject.SetProperty(JsPropertyId.FromString("echo"), // function name
-      JsValue.CreateFunction((_callee, _call, _arguments, _count, _data) =>
-         {
-            Console.WriteLine(_arguments[1].ToString());
-            return JsValue.Undefined;
-         },
-         IntPtr.Zero),
-      true);
+  var fn = new JsNativeFunctionBuilder();   
+  JsValue.GlobalObject
+    .SetProperty("echo", // register echo func
+    fn.New(_x =>Console.WriteLine(_x.Arguments[1].ToString())),true);
 
-   // Declare Root Module               
-   var rootModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord(root)
-   var fooModule = JsModuleRecord.Invalid;
-   JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // 4. FetchImportedModuleCallback
-   {
-      // Create Foo Module
-      fooModule = JsModuleRecord.Create(_module, _specifier); // 2. JsInitializeModuleRecord (foo.js)                   
-      _record = fooModule;
-      return JsErrorCode.NoError;
-   }               
+  var mainModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord
+  var fooModule = JsModuleRecord.Invalid;
+  JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // 4. FetchImportedModuleCallback
+  {
+    fooModule = JsModuleRecord.Create(_module, _specifier); // 2. JsInitializeModuleRecord (foo.js)                   
+    _record = fooModule;
+    return JsErrorCode.NoError;
+  }               
 
-   rootModule.SetHostInfo(onFetch);
-   var rootSrc = 
-   @"
-      import {test} from 'foo.js';
-      echo(test());
-   ";
-   rootModule.Parse(rootSrc); // 3. JsParseModuleSource(root)
-   fooModule.Parse("export let test = function(){return 'hello';}"); //3. JsParseModuleSource(foo.js)
+  mainModule.SetHostInfo(onFetch);
+  var rootSrc = 
+  @"
+    import {test} from 'foo.js';
+    echo(test());
+  ";
+  mainModule.Parse(rootSrc); // 3. JsParseModuleSource(root)
+  fooModule.Parse("export let test = function(){return 'hello';}"); //3. JsParseModuleSource(foo.js)
 
-   rootModule.Eval(); // 9. JsModuleEvaluation(root)->import test()->echo(test())->echo('hello')-> console output hello
+  mainModule.Eval(); // 9. JsModuleEvaluation(main)->import {test}->test()->echo(test())->echo('hello')-> hello
 }
 ```
 Output: hello
