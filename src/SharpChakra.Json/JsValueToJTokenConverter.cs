@@ -48,7 +48,7 @@ namespace SharpChakra.Json
       {
          var array = new JArray();
          var propertyId = JsPropertyId.FromString("length");
-         var length = (int)_value.GetProperty(propertyId).ToDouble();
+         var length = _value.GetProperty(propertyId).ToInt32();
          for (var i = 0; i < length; ++i)
          {
             var index = JsValue.FromInt32(i);

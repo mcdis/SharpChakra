@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Modules", "Sample.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChakra.Extensions", "SharpChakra.Extensions\SharpChakra.Extensions.csproj", "{1A5722E1-D8F0-4879-9299-6E50466167E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Extensions", "Sample.Extensions\Sample.Extensions.csproj", "{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{1A5722E1-D8F0-4879-9299-6E50466167E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A5722E1-D8F0-4879-9299-6E50466167E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A5722E1-D8F0-4879-9299-6E50466167E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
