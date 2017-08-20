@@ -1,3 +1,8 @@
+# How to use
+- Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
+- Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
+- Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
+
 # About
 Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 
@@ -6,11 +11,6 @@ Slim managed any cpu .net wrapper of Microsoft.ChakraCore
 - slim (no extra logic, only Api)
 - module API support (es6 import/export)
 - Json interopability
-
-# How to use
-- Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
-- Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
-- Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
 
 # Chakra binaries
 Microsoft.ChakraCore 1.7.1
