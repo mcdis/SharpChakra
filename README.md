@@ -4,7 +4,7 @@
 - Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
 
 # About
-Slim managed any cpu .net wrapper of Microsoft.ChakraCore
+Slim managed any cpu .net wrapper of Microsoft.ChakraCore (https://github.com/Microsoft/ChakraCore)
 
 # Goals
 - any cpu (auto proxy to x86/x64)
