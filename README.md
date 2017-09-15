@@ -280,3 +280,6 @@ JsInitializeJITServer | -
 JsCreateSharedArrayBufferWithSharedContent | -
 JsGetSharedArrayBufferContent | -
 JsReleaseSharedArrayBufferContentHandle | -
+
+# License
+Code licensed under the MIT License.
