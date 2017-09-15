@@ -3,7 +3,7 @@
    <PropertyGroup>
       <TargetFrameworks>net45;net46</TargetFrameworks>
       <Product>SharpChakra.Extensions</Product>
-      <Version>1.3.0</Version>
+      <Version>1.4.0</Version>
       <PackageProjectUrl>https://github.com/mcdis/SharpChakra</PackageProjectUrl>
       <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
       <Description>Slim managed any cpu .net wrapper of Microsoft.ChakraCore. Extensions</Description>
@@ -13,5 +13,4 @@
   <ItemGroup>
     <ProjectReference Include="..\SharpChakra\SharpChakra.csproj" />
   </ItemGroup>
-
 </Project>

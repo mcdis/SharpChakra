@@ -11,7 +11,7 @@ namespace Sample
       static void Main()
       {
          using (var runtime = JsRuntime.Create())
-         using (new JsContext.Scope(runtime.CreateContext()))
+         using (runtime.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();            
             var globalObject = JsValue.GlobalObject; // Get JS Global Object

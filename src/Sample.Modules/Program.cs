@@ -9,7 +9,7 @@ namespace Sample.Modules
       static void Main()
       {
          using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
-         using (new JsContext.Scope(runtime.CreateContext()))
+         using (runtime.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();
 
@@ -19,10 +19,12 @@ namespace Sample.Modules
                   fn.New(_x => Console.WriteLine(_x.Arguments[1].ToString())),
                   true);
 
-            var rootModule = JsModuleRecord.Create(JsModuleRecord.Root, JsValue.FromString("")); // Declare Root Module               
+            var rootModule =
+               JsModuleRecord.Create(JsModuleRecord.Root, JsValue.FromString("")); // Declare Root Module               
             var fooModule = JsModuleRecord.Invalid;
 
-            JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // fetch callback
+            JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier,
+               out JsModuleRecord _record) // fetch callback
             {
                Console.WriteLine($"importing '{_specifier.ToString()}'...");
 

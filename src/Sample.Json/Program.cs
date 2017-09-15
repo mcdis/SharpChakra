@@ -12,7 +12,7 @@ namespace Sample.Json
       static void Main()
       {
          using (var runtime = JsRuntime.Create())
-         using (new JsContext.Scope(runtime.CreateContext()))
+         using (runtime.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();
             JsValue // Register Global Function

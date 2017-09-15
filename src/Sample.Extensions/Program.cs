@@ -10,7 +10,7 @@ namespace Sample.Extensions
       static void Main()
       {
          using (var runtime = JsRuntime.Create())
-         using (new JsContext.Scope(runtime.CreateContext()))
+         using (runtime.CreateContext().Scope())
          {
             var jsCtx = JsValue.CreateObject();
             JsValue.GlobalObject.SetProperty("ctx", jsCtx, true);
