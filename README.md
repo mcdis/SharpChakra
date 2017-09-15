@@ -22,7 +22,7 @@ Microsoft.ChakraCore 1.7.1
 
 ```csharp
 using (var runtime = JsRuntime.Create())
-using (new JsContext.Scope(runtime.CreateContext()))
+using (runtime.CreateContext().Scope())
 {
   var fn = new JsNativeFunctionBuilder();
   JsValue.GlobalObject
@@ -38,7 +38,7 @@ Output: 'hello from script!'
 # Newtonsoft.Json Interopability example
 ```csharp
 using (var runtime = JsRuntime.Create())
-using (new JsContext.Scope(runtime.CreateContext()))
+using (runtime.CreateContext().Scope())
 {
   var fn = new JsNativeFunctionBuilder();   
   JsValue.GlobalObject
@@ -88,7 +88,7 @@ N | host | Dir | chakracore.dll | Comment
 
 ```csharp
 using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures,JsRuntimeVersion.VersionEdge))
-using (new JsContext.Scope(runtime.CreateContext()))
+using (runtime.CreateContext().Scope())
 {
   var fn = new JsNativeFunctionBuilder();   
   JsValue.GlobalObject
