@@ -1,10 +1,13 @@
+# SharpChakra
+[![Licensed under the MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/mcdis/SharpChakra/blob/master/LICENSE)
+
+Slim managed any cpu (x86/x64) .net wrapper of Microsoft.ChakraCore (https://github.com/Microsoft/ChakraCore)
+
 # How to use
 - Install SharpChakra [nuget](https://www.nuget.org/packages/SharpChakra)
 - Install SharpChakra.Json [nuget](https://www.nuget.org/packages/SharpChakra.Json) (Json Interop)
 - Install SharpChakra.Extensions [nuget](https://www.nuget.org/packages/SharpChakra.Extensions) (Extensions)
 
-# About
-Slim managed any cpu .net wrapper of Microsoft.ChakraCore (https://github.com/Microsoft/ChakraCore)
 
 # Goals
 - any cpu (auto proxy to x86/x64)
