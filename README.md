@@ -16,7 +16,7 @@ Slim managed any cpu (x86/x64) .net wrapper of Microsoft.ChakraCore (https://git
 - Json interopability
 
 # Chakra binaries
-Microsoft.ChakraCore 1.7.1
+Microsoft.ChakraCore 1.7.2
 
 # Example
 
