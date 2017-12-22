@@ -14,9 +14,10 @@ Slim managed any cpu (x86/x64) .net wrapper of Microsoft.ChakraCore (https://git
 - slim (no extra logic, only Api)
 - module API support (es6 import/export)
 - Json interopability
+- Object proxy
 
 # Chakra binaries
-Microsoft.ChakraCore 1.7.4
+Microsoft.ChakraCore 1.7.5
 
 # Example
 
@@ -72,6 +73,58 @@ Output:
   "error": -1
 }
 ```
+# Object proxy example
+```csharp
+var builder = new JsNativeFunctionBuilder();
+using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
+using (runtime.CreateContext().Scope())
+{
+   var jsCtx = JsValue.CreateObject();
+   JsValue.GlobalObject
+      .SetProperty("ctx", jsCtx, true)
+      .SetProperty("proxy", JsProxy.New(new TestProxy(), builder), true);
+   JsContext.RunScript(@"
+      proxy.EchoHello();
+      proxy.Echo(proxy.TestArgs(100,'string',1.0/3.0));
+      proxy.EchoComplex(proxy.ConstComplex);
+      proxy.EchoComplex({'X':100,'Y':500});
+   ");
+}
+Console.WriteLine("Finished... Press enter to exit...");
+Console.ReadLine();
+```
+where TextProxy:
+```csharp
+   struct ComplexType
+   {
+      public int X { get; set; }
+      public int Y { get; set; }
+   }
+   class TestProxy
+   {
+      private int p_callCount;
+      public string Name => $"TestProxy Object [{p_callCount++}]";
+      public void EchoHello() => Console.WriteLine("Hello");
+      public void Echo(string _s) => Console.WriteLine(_s);
+      public ComplexType ConstComplex { get; } = new ComplexType { X = 1, Y = 5 };
+      public void EchoComplex(ComplexType _x) => Console.WriteLine($"X:{_x.X}, Y:{_x.Y}");
+      public string TestArgs(int _a, string _s, double _d)
+      {
+         var t = $"int:{_a}, string: {_s}, double: {_d}";
+         Console.WriteLine(t);
+         return t;
+      }
+   }
+```
+Output:
+```
+Hello
+int:100, string: string, double: 0,333333343267441
+int:100, string: string, double: 0,333333343267441
+X:1, Y:5
+X:100, Y:500
+```
+
 # Module Api
 
 N | host | Dir | chakracore.dll | Comment
