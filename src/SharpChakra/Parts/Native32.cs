@@ -19,7 +19,7 @@ namespace SharpChakra.Parts
          {
             switch (_error)
             {
-               case JsErrorCode.InvalidArgument:
+               case JsErrorCode.InvalidArgument:   
                   throw new JsUsageException(_error, "Invalid argument.");
 
                case JsErrorCode.NullArgument:
@@ -78,8 +78,7 @@ namespace SharpChakra.Parts
 
                case JsErrorCode.ScriptException:
                   {
-                     JsValue errorObject;
-                     var innerError = JsGetAndClearException(out errorObject);
+                     var innerError = JsGetAndClearException(out var errorObject);
 
                      if (innerError != JsErrorCode.NoError)
                      {
@@ -91,8 +90,7 @@ namespace SharpChakra.Parts
 
                case JsErrorCode.ScriptCompile:
                   {
-                     JsValue errorObject;
-                     var innerError = JsGetAndClearException(out errorObject);
+                     var innerError = JsGetAndClearException(out var errorObject);
 
                      if (innerError != JsErrorCode.NoError)
                      {
