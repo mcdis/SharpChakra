@@ -90,8 +90,6 @@ using (runtime.CreateContext().Scope())
       proxy.EchoComplex({'X':100,'Y':500});
    ");
 }
-Console.WriteLine("Finished... Press enter to exit...");
-Console.ReadLine();
 ```
 where TextProxy:
 ```csharp
