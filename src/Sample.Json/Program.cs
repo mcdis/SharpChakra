@@ -16,7 +16,7 @@ namespace Sample.Json
          {
             var fn = new JsNativeFunctionBuilder();
             JsValue // Register Global Function
-               .GlobalObject
+               .GetGlobalObject()
                .SetProperty("dump", // dump
                fn.New(_x =>
                   {

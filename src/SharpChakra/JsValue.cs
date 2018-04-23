@@ -43,13 +43,10 @@ namespace SharpChakra
             return value;
          }
       }
-      public static JsValue GlobalObject
+      public static JsValue GetGlobalObject()
       {
-         get
-         {
-            Native.ThrowIfError(Native.JsGetGlobalObject(out var value));
-            return value;
-         }
+         Native.ThrowIfError(Native.JsGetGlobalObject(out var value));
+         return value;
       }
       public bool IsValid => p_reference != IntPtr.Zero;
       public JsValueType ValueType

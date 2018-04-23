@@ -6,24 +6,24 @@ namespace SharpChakra
    {
       private IntPtr p_handle;
       public bool IsValid => p_handle != IntPtr.Zero;
-      public UIntPtr MemoryUsage
+      public ulong MemoryUsage
       {
          get
          {
             Native.ThrowIfError(Native.JsGetRuntimeMemoryUsage(this, out var memoryUsage));
-            return memoryUsage;
+            return memoryUsage.ToUInt64();
          }
       }
 
-      public UIntPtr MemoryLimit
+      public ulong MemoryLimit
       {
          get
          {
             Native.ThrowIfError(Native.JsGetRuntimeMemoryLimit(this, out var memoryLimit));
-            return memoryLimit;
+            return memoryLimit.ToUInt64();
          }
 
-         set => Native.ThrowIfError(Native.JsSetRuntimeMemoryLimit(this, value));
+         set => Native.ThrowIfError(Native.JsSetRuntimeMemoryLimit(this,new UIntPtr(value)));
       }
 
       public bool Disabled
@@ -54,7 +54,7 @@ namespace SharpChakra
          p_handle = IntPtr.Zero;
       }
 
-      public void CollectGarbage() => Native.ThrowIfError(Native.JsCollectGarbage(this));
+      public void GC() => Native.ThrowIfError(Native.JsCollectGarbage(this));
 
       public void SetMemoryAllocationCallback(IntPtr _callbackState, JsMemoryAllocationCallback _allocationCallback)
          => Native.ThrowIfError(Native.JsSetRuntimeMemoryAllocationCallback(this, _callbackState, _allocationCallback));
@@ -95,6 +95,13 @@ namespace SharpChakra
       {
          Native.ThrowIfError(Native.JsDiagGetBreakpoints(out var breakpoints));
          return breakpoints;
+      }
+
+      public JsValue DiagEvaluate(JsValue _expression, uint _stackFrameIndex,
+         JsParseScriptAttributes _parseAttributes, bool _forceSetValueProp)
+      {
+         Native.ThrowIfError(Native.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp,out var eval));
+         return eval;
       }
    }
 }

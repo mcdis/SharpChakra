@@ -14,7 +14,7 @@ namespace Sample.Modules
             var fn = new JsNativeFunctionBuilder();
 
             JsValue // Register Global Function
-               .GlobalObject
+               .GetGlobalObject()
                .SetProperty("echo", // echo
                   fn.New(_x => Console.WriteLine(_x.Arguments[1].ToString())),
                   true);

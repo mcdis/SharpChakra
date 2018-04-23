@@ -14,7 +14,7 @@ namespace Sample.Extensions
          using (jsrt.CreateContext().Scope())
          {
             var jsCtx = JsValue.CreateObject();
-            JsValue.GlobalObject
+            JsValue.GetGlobalObject()
                .SetProperty("ctx", jsCtx, true)
                .SetProperty("proxy", JsProxy.New(new TestProxy(), builder), true);
             JsContext.RunScript(@"

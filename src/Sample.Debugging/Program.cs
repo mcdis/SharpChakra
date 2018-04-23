@@ -26,13 +26,16 @@ namespace Sample.Debugging
                if (_event == JsDiagDebugEvent.JsDiagDebugEventBreakpoint)
                {
                   Console.WriteLine("debugger> Breakpoint! Enter to continue... (write 'break' to stop the script)");
+                  var res = jsrt.DiagEvaluate(JsValue.FromString("debugVar"), 0,
+                     JsParseScriptAttributes.JsParseScriptAttributeNone, false);
+                  Console.WriteLine($"debugger> dump 'debugVar' info:\r\n {res.ToJToken().ToString(Formatting.Indented)}");
                   Console.ReadLine();
                }
             });
             using (jsrt.CreateContext().Scope())
             {
                var fn = new JsNativeFunctionBuilder();
-               var globalObject = JsValue.GlobalObject; // Get JS Global Object
+               var globalObject = JsValue.GetGlobalObject(); // Get JS Global Object
 
                globalObject // Register Global Functions
                   .SetProperty("loginfo", // loginfo

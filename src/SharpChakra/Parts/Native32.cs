@@ -463,5 +463,9 @@ namespace SharpChakra.Parts
 
       [DllImport(DllName)]
       internal static extern JsErrorCode JsDiagGetScripts(out JsValue _scripts);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagEvaluate(JsValue _expression, uint _stackFrameIndex,
+         JsParseScriptAttributes _parseAttributes, bool _forceSetValueProp, out JsValue _eval);
    }
 }
