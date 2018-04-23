@@ -392,5 +392,23 @@ namespace SharpChakra
          JsModuleRecord _requestModule,
          out JsValue _result)
          => Is32 ? Native32.JsModuleEvaluation(_requestModule, out _result) : Native64.JsModuleEvaluation(_requestModule, out _result);
+
+      public static JsErrorCode JsDiagStartDebugging(
+         JsRuntime _runtime,
+         JsDiagDebugEventCallback _debugEventCallback,
+         IntPtr _callbackState)
+         => Is32 ? Native32.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState) : Native64.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
+
+      public static JsErrorCode JsDiagStopDebugging(JsRuntime _runtime, out IntPtr _callbackState)
+         => Is32 ? Native32.JsDiagStopDebugging(_runtime, out _callbackState) : Native64.JsDiagStopDebugging(_runtime, out _callbackState);
+
+      public static JsErrorCode SetBreakpoint(uint _scriptId, uint _lineNumber, uint _column, out JsValue _breakpoint)
+         => Is32 ? Native32.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint) : Native64.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
+
+      public static JsErrorCode JsDiagRequestAsyncBreak(JsRuntime _jsRuntime)
+         => Is32 ? Native32.JsDiagRequestAsyncBreak(_jsRuntime) : Native64.JsDiagRequestAsyncBreak(_jsRuntime);
+
+      public static JsErrorCode JsDiagGetBreakpoints(out JsValue _breakpoints)
+         => Is32 ? Native32.JsDiagGetBreakpoints(out _breakpoints) : Native64.JsDiagGetBreakpoints(out _breakpoints);
    }
 }

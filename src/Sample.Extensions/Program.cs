@@ -10,8 +10,8 @@ namespace Sample.Extensions
       static void Main()
       {
          var builder = new JsNativeFunctionBuilder();
-         using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
-         using (runtime.CreateContext().Scope())
+         using (var jsrt = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
+         using (jsrt.CreateContext().Scope())
          {
             var jsCtx = JsValue.CreateObject();
             JsValue.GlobalObject

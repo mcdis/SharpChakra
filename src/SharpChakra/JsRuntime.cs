@@ -60,10 +60,31 @@ namespace SharpChakra
          => Native.ThrowIfError(Native.JsSetRuntimeMemoryAllocationCallback(this, _callbackState, _allocationCallback));
       public void SetBeforeCollectCallback(IntPtr _callbackState, JsBeforeCollectCallback _beforeCollectCallback)
          => Native.ThrowIfError(Native.JsSetRuntimeBeforeCollectCallback(this, _callbackState, _beforeCollectCallback));
+
+      public void StartDebugging(JsDiagDebugEventCallback _debugEventCallback)
+         => StartDebugging(_debugEventCallback, IntPtr.Zero);
+
+      public void StopDebugging() => StopDebugging(out var state);
+
+      public void StopDebugging(out IntPtr _callbackState)
+         => Native.ThrowIfError(Native.JsDiagStopDebugging(this, out _callbackState));
+      public void StartDebugging(JsDiagDebugEventCallback _debugEventCallback, IntPtr _callbackState)
+         => Native.ThrowIfError(Native.JsDiagStartDebugging(this, _debugEventCallback, _callbackState));
+
+      public void SetBreakpoint(uint _scriptId, uint _lineNumber, uint _column, out JsValue _breakpoint)
+         => Native.ThrowIfError(Native.SetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint));
+      public void RequestAsyncBreak()
+         => Native.ThrowIfError(Native.JsDiagRequestAsyncBreak(this));
       public JsContext CreateContext()
       {
          Native.ThrowIfError(Native.JsCreateContext(this, out var reference));
          return reference;
+      }
+
+      public JsValue GetBreakpoints()
+      {
+         Native.ThrowIfError(Native.JsDiagGetBreakpoints(out var breakpoints));
+         return breakpoints;
       }
    }
 }

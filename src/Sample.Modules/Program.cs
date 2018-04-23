@@ -8,8 +8,8 @@ namespace Sample.Modules
    {
       static void Main()
       {
-         using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
-         using (runtime.CreateContext().Scope())
+         using (var jsrt = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
+         using (jsrt.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();
 
