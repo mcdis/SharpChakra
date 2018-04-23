@@ -6,7 +6,7 @@ using SharpChakra;
 using SharpChakra.Extensions;
 using SharpChakra.Json;
 
-namespace Sample
+namespace Sample.Debugging
 {
    class Program
    {
