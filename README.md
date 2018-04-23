@@ -283,23 +283,23 @@ JsSetPromiseContinuationCallback | done
 
 Function | Status
 ---------| -------------
-JsDiagEvaluate | -
+JsDiagEvaluate | done
 JsDiagGetBreakOnException | -
-JsDiagGetBreakpoints | -
+JsDiagGetBreakpoints | done
 JsDiagGetFunctionPosition | -
 JsDiagGetProperties | -
-JsDiagGetScripts | -
+JsDiagGetScripts | done
 JsDiagGetSource | -
 JsDiagGetStackProperties | -
 JsDiagGetStackTrace | -
 JsDiagGetObjectFromHandle | -
-JsDiagRemoveBreakpoint | -
-JsDiagRequestAsyncBreak | -
+JsDiagRemoveBreakpoint | done
+JsDiagRequestAsyncBreak | done
 JsDiagSetBreakOnException | -
-JsDiagSetBreakpoint | -
+JsDiagSetBreakpoint | done
 JsDiagSetStepType | -
-JsDiagStartDebugging | -
-JsDiagStopDebugging | -
+JsDiagStartDebugging | done
+JsDiagStopDebugging | done
 JsTTDCreateRecordRuntime | -
 JsTTDCreateReplayRuntime | -
 JsTTDCreateContext | -
