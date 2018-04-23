@@ -79,6 +79,12 @@ namespace SharpChakra
       public void RemoveBreakpoint(uint _breakpointId)
          => Native.ThrowIfError(Native.JsDiagRemoveBreakpoint(_breakpointId));
 
+      public JsValue GetScripts()
+      {
+         Native.ThrowIfError(Native.JsDiagGetScripts(out var scripts));
+         return scripts;
+      }
+
       public JsContext CreateContext()
       {
          Native.ThrowIfError(Native.JsCreateContext(this, out var reference));

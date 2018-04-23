@@ -413,5 +413,8 @@ namespace SharpChakra
 
       public static JsErrorCode JsDiagRemoveBreakpoint(uint _breakpointId)
          => Is32 ? Native32.JsDiagRemoveBreakpoint(_breakpointId) : Native64.JsDiagRemoveBreakpoint(_breakpointId);
+
+      public static JsErrorCode JsDiagGetScripts(out JsValue _scripts)
+         => Is32 ? Native32.JsDiagGetScripts(out _scripts) : Native64.JsDiagGetScripts(out _scripts);
    }
 }

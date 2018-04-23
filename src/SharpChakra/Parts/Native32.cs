@@ -460,5 +460,8 @@ namespace SharpChakra.Parts
 
       [DllImport(DllName)]
       internal static extern JsErrorCode JsDiagRemoveBreakpoint(uint _breakpointId);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagGetScripts(out JsValue _scripts);
    }
 }
