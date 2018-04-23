@@ -431,9 +431,41 @@ namespace SharpChakra.Parts
          uint _scriptLength,
          JsParseModuleSourceFlags _sourceFlag,
          out JsValue _exception);
+
       [DllImport(DllName)]
       internal static extern JsErrorCode JsModuleEvaluation(
          JsModuleRecord _requestModule,
          out JsValue _result);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagStartDebugging(
+         JsRuntime _runtime,
+         JsDiagDebugEventCallback _debugEventCallback, 
+         IntPtr _callbackState);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagStopDebugging(
+         JsRuntime _runtime,
+         out IntPtr _callbackState);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagSetBreakpoint(uint _scriptId, uint _lineNumber, uint _column, out JsValue _breakpoint);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagRequestAsyncBreak(JsRuntime _runtime);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagGetBreakpoints(out JsValue _breakpoints);
+
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagRemoveBreakpoint(uint _breakpointId);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagGetScripts(out JsValue _scripts);
+
+      [DllImport(DllName)]
+      internal static extern JsErrorCode JsDiagEvaluate(JsValue _expression, uint _stackFrameIndex,
+         JsParseScriptAttributes _parseAttributes, bool _forceSetValueProp, out JsValue _eval);
    }
 }

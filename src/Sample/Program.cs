@@ -10,11 +10,11 @@ namespace Sample
    {
       static void Main()
       {
-         using (var runtime = JsRuntime.Create())
-         using (runtime.CreateContext().Scope())
+         using (var jsrt = JsRuntime.Create())
+         using (jsrt.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();            
-            var globalObject = JsValue.GlobalObject; // Get JS Global Object
+            var globalObject = JsValue.GetGlobalObject(); // Get JS Global Object
 
             globalObject // Register Global Functions
                .SetProperty("loginfo", // loginfo

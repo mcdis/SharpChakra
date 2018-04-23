@@ -8,13 +8,13 @@ namespace Sample.Modules
    {
       static void Main()
       {
-         using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
-         using (runtime.CreateContext().Scope())
+         using (var jsrt = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
+         using (jsrt.CreateContext().Scope())
          {
             var fn = new JsNativeFunctionBuilder();
 
             JsValue // Register Global Function
-               .GlobalObject
+               .GetGlobalObject()
                .SetProperty("echo", // echo
                   fn.New(_x => Console.WriteLine(_x.Arguments[1].ToString())),
                   true);

@@ -5,10 +5,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EDBB9FB0-42E4-46CE-BA71-FA97CF4B16CD}</ProjectGuid>
+    <ProjectGuid>{33D5AD33-A213-4851-A39E-D1BBFC5024F9}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Sample.Extensions</RootNamespace>
-    <AssemblyName>Sample.Extensions</AssemblyName>
+    <RootNamespace>Sample.Debugging</RootNamespace>
+    <AssemblyName>Sample.Debugging</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -37,6 +37,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestProxy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -57,17 +59,23 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SharpChakra.Extensions\SharpChakra.Extensions.csproj">
-      <Project>{1a5722e1-d8f0-4879-9299-6e50466167e8}</Project>
+      <Project>{1A5722E1-D8F0-4879-9299-6E50466167E8}</Project>
       <Name>SharpChakra.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharpChakra.Json\SharpChakra.Json.csproj">
-      <Project>{0b2a5ca7-5b4c-4e87-9524-32dea572fadc}</Project>
+      <Project>{0B2A5CA7-5B4C-4E87-9524-32DEA572FADC}</Project>
       <Name>SharpChakra.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\SharpChakra\SharpChakra.csproj">
       <Project>{d2605b03-f075-4593-998e-b04ead3ab2c3}</Project>
       <Name>SharpChakra</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="js\hello_world.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
