@@ -13,6 +13,8 @@ Slim managed any cpu (x86/x64) .net wrapper of Microsoft.ChakraCore (https://git
 - any cpu (auto proxy to x86/x64)
 - slim (no extra logic, only Api)
 - module API support (es6 import/export)
+- diag API support (breakpoints, evals)
+- memory limitation
 - Json interopability
 - Object proxy
 
