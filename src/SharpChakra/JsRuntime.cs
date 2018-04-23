@@ -75,6 +75,10 @@ namespace SharpChakra
          => Native.ThrowIfError(Native.SetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint));
       public void RequestAsyncBreak()
          => Native.ThrowIfError(Native.JsDiagRequestAsyncBreak(this));
+
+      public void RemoveBreakpoint(uint _breakpointId)
+         => Native.ThrowIfError(Native.JsDiagRemoveBreakpoint(_breakpointId));
+
       public JsContext CreateContext()
       {
          Native.ThrowIfError(Native.JsCreateContext(this, out var reference));
