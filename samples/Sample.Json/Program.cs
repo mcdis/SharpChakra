@@ -7,33 +7,33 @@ using SharpChakra.Json;
 
 namespace Sample.Json
 {
-   class Program
-   {
-      static void Main()
-      {
-         using (var jsrt = JsRuntime.Create())
-         using (jsrt.CreateContext().Scope())
-         {
-            var fn = new JsNativeFunctionBuilder();
-            JsValue // Register Global Function
-               .GetGlobalObject()
-               .SetProperty("dump", // dump
-               fn.New(_x =>
-                  {
-                     Console.WriteLine("-- dump --");
-                     Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
-                     return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
-                  }),
-               true);
+    internal class Program
+    {
+        private static void Main()
+        {
+            using (var jsrt = JsRuntime.Create())
+            {
+                var context = jsrt.CreateContext();
 
-            Console.WriteLine("-- executing --");
-            var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
+                context.Global // Register Global Function
+                    .SetProperty("dump", // dump
+                        context.CreateFunction(x =>
+                        {
+                            Console.WriteLine("-- dump --");
+                            Console.WriteLine(x.Arguments[1].ToJToken().ToString(Formatting.Indented));
+                            return JObject.Parse("{status:'ok',error:-1}").ToJsValue(context);
+                        }),
+                        true);
 
-            Console.WriteLine("-- result --");
-            Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
-         }
-         Console.WriteLine("Finished... Press enter to exit...");
-         Console.ReadLine();
-      }
-   }
+                Console.WriteLine("-- executing --");
+                var res = context.RunScript("dump({id:4,name:'chakra'});");
+
+                Console.WriteLine("-- result --");
+                Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
+            }
+
+            Console.WriteLine("Finished... Press enter to exit...");
+            Console.ReadLine();
+        }
+    }
 }

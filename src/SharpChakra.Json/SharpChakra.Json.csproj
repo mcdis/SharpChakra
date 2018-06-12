@@ -8,6 +8,8 @@
       <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
       <Description>Slim managed any cpu .net wrapper of Microsoft.ChakraCore. Newtonsoft.Json Interopability</Description>
       <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+      <AssemblyVersion>3.1.0.0</AssemblyVersion>
+      <FileVersion>3.1.0.0</FileVersion>
    </PropertyGroup>
 
    <ItemGroup>

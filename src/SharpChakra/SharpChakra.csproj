@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
     <Product>SharpChakra</Product>
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <PackageProjectUrl>https://github.com/mcdis/SharpChakra</PackageProjectUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
     <Description>Managed any cpu .net wrapper of Microsoft.ChakraCore</Description>

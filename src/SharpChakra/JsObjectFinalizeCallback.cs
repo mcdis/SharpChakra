@@ -2,5 +2,5 @@
 
 namespace SharpChakra
 {
-   public delegate void JsObjectFinalizeCallback(IntPtr _data);
+    public delegate void JsObjectFinalizeCallback(IntPtr data);
 }
