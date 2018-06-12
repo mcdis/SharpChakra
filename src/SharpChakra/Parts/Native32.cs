@@ -8,7 +8,7 @@ namespace SharpChakra.Parts
    /// </summary>
    static class Native32
    {
-      const string DllName = @"x86\ChakraCore.dll";
+      const string DllName = @"runtimes\win-x86\native\ChakraCore.dll";
       /// <summary>
       /// Throws if a native method returns an error code.
       /// </summary>
