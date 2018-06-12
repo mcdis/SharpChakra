@@ -10,16 +10,18 @@ Slim managed any cpu (x86/x64) .net wrapper of Microsoft.ChakraCore (https://git
 
 
 # Goals
-- any cpu (auto proxy to x86/x64)
-- slim (no extra logic, only Api)
-- module API support (es6 import/export)
-- diag API support (breakpoints, evals)
-- memory limitation
-- Json interopability
+- Any cpu (auto proxy to x86/x64)
+- Slim (no extra logic, only Api)
+- Module API support (es6 import/export)
+- Diagnostic API support (breakpoints, evals)
+- Memory limitation
+- JSON interopability
 - Object proxy
 
 # Chakra binaries
-Microsoft.ChakraCore 1.8.3
+Microsoft.ChakraCore 1.8.4
+
+The binaries can be found in the directory `src\SharpChakra\runtimes`.
 
 # Example
 
