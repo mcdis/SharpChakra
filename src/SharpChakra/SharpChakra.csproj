@@ -13,8 +13,10 @@
   <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
     <Compile Remove="Parts\Native64Linux.cs" />
     <Compile Remove="Parts\Native64Mac.cs" />
+    <Compile Remove="Parts\NativeArm.cs" />
     <None Include="Parts\Native64Linux.cs" />
     <None Include="Parts\Native64Mac.cs" />
+    <None Include="Parts\NativeArm.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

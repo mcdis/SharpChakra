@@ -11,6 +11,8 @@ namespace SharpChakra
 {
 #if NETSTANDARD
        private static readonly bool Is32 = RuntimeInformation.OSArchitecture == Architecture.X86;
+       private static readonly bool Is64 = RuntimeInformation.OSArchitecture == Architecture.X64;
+       private static readonly bool IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm;
        private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
        private static readonly bool IsLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
        private static readonly bool IsMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
@@ -32,9 +34,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateRuntime(_attributes, _threadService, out _runtime);
-         if (IsWindows && !Is32) return Native64.JsCreateRuntime(_attributes, _threadService, out _runtime);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateRuntime(_attributes, _threadService, out _runtime);
-         if (IsMac && !Is32) return Native64Mac.JsCreateRuntime(_attributes, _threadService, out _runtime);
+         if (IsWindows && Is64) return Native64.JsCreateRuntime(_attributes, _threadService, out _runtime);
+         if (IsWindows && IsArm) return NativeArm.JsCreateRuntime(_attributes, _threadService, out _runtime);
+         if (IsLinux && Is64) return Native64Linux.JsCreateRuntime(_attributes, _threadService, out _runtime);
+         if (IsMac && Is64) return Native64Mac.JsCreateRuntime(_attributes, _threadService, out _runtime);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -47,9 +50,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCollectGarbage(_handle);
-         if (IsWindows && !Is32) return Native64.JsCollectGarbage(_handle);
-         if (IsLinux && !Is32) return Native64Linux.JsCollectGarbage(_handle);
-         if (IsMac && !Is32) return Native64Mac.JsCollectGarbage(_handle);
+         if (IsWindows && Is64) return Native64.JsCollectGarbage(_handle);
+         if (IsWindows && IsArm) return NativeArm.JsCollectGarbage(_handle);
+         if (IsLinux && Is64) return Native64Linux.JsCollectGarbage(_handle);
+         if (IsMac && Is64) return Native64Mac.JsCollectGarbage(_handle);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -62,9 +66,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDisposeRuntime(_handle);
-         if (IsWindows && !Is32) return Native64.JsDisposeRuntime(_handle);
-         if (IsLinux && !Is32) return Native64Linux.JsDisposeRuntime(_handle);
-         if (IsMac && !Is32) return Native64Mac.JsDisposeRuntime(_handle);
+         if (IsWindows && Is64) return Native64.JsDisposeRuntime(_handle);
+         if (IsWindows && IsArm) return NativeArm.JsDisposeRuntime(_handle);
+         if (IsLinux && Is64) return Native64Linux.JsDisposeRuntime(_handle);
+         if (IsMac && Is64) return Native64Mac.JsDisposeRuntime(_handle);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -77,9 +82,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
-         if (IsWindows && !Is32) return Native64.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
-         if (IsLinux && !Is32) return Native64Linux.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
-         if (IsMac && !Is32) return Native64Mac.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+         if (IsWindows && Is64) return Native64.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+         if (IsWindows && IsArm) return NativeArm.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+         if (IsLinux && Is64) return Native64Linux.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
+         if (IsMac && Is64) return Native64Mac.JsGetRuntimeMemoryUsage(_runtime, out _memoryUsage);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -92,9 +98,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
-         if (IsWindows && !Is32) return Native64.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
-         if (IsLinux && !Is32) return Native64Linux.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
-         if (IsMac && !Is32) return Native64Mac.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
+         if (IsWindows && Is64) return Native64.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
+         if (IsWindows && IsArm) return NativeArm.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
+         if (IsLinux && Is64) return Native64Linux.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
+         if (IsMac && Is64) return Native64Mac.JsGetRuntimeMemoryLimit(_runtime, out _memoryLimit);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -107,9 +114,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
-         if (IsWindows && !Is32) return Native64.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
-         if (IsLinux && !Is32) return Native64Linux.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
-         if (IsMac && !Is32) return Native64Mac.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
+         if (IsWindows && Is64) return Native64.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
+         if (IsWindows && IsArm) return NativeArm.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
+         if (IsLinux && Is64) return Native64Linux.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
+         if (IsMac && Is64) return Native64Mac.JsSetRuntimeMemoryLimit(_runtime, _memoryLimit);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -124,9 +132,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
-         if (IsWindows && !Is32) return Native64.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
-         if (IsMac && !Is32) return Native64Mac.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
+         if (IsWindows && Is64) return Native64.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
+         if (IsWindows && IsArm) return NativeArm.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
+         if (IsLinux && Is64) return Native64Linux.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
+         if (IsMac && Is64) return Native64Mac.JsSetRuntimeMemoryAllocationCallback(_runtime, _callbackState, _allocationCallback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -141,9 +150,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
-         if (IsWindows && !Is32) return Native64.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
-         if (IsMac && !Is32) return Native64Mac.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
+         if (IsWindows && Is64) return Native64.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
+         if (IsWindows && IsArm) return NativeArm.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
+         if (IsLinux && Is64) return Native64Linux.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
+         if (IsMac && Is64) return Native64Mac.JsSetRuntimeBeforeCollectCallback(_runtime, _callbackState, _beforeCollectCallback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -156,9 +166,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsContextAddRef(_reference, out _count);
-         if (IsWindows && !Is32) return Native64.JsContextAddRef(_reference, out _count);
-         if (IsLinux && !Is32) return Native64Linux.JsContextAddRef(_reference, out _count);
-         if (IsMac && !Is32) return Native64Mac.JsContextAddRef(_reference, out _count);
+         if (IsWindows && Is64) return Native64.JsContextAddRef(_reference, out _count);
+         if (IsWindows && IsArm) return NativeArm.JsContextAddRef(_reference, out _count);
+         if (IsLinux && Is64) return Native64Linux.JsContextAddRef(_reference, out _count);
+         if (IsMac && Is64) return Native64Mac.JsContextAddRef(_reference, out _count);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -171,9 +182,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsAddRef(_reference, out _count);
-         if (IsWindows && !Is32) return Native64.JsAddRef(_reference, out _count);
-         if (IsLinux && !Is32) return Native64Linux.JsAddRef(_reference, out _count);
-         if (IsMac && !Is32) return Native64Mac.JsAddRef(_reference, out _count);
+         if (IsWindows && Is64) return Native64.JsAddRef(_reference, out _count);
+         if (IsWindows && IsArm) return NativeArm.JsAddRef(_reference, out _count);
+         if (IsLinux && Is64) return Native64Linux.JsAddRef(_reference, out _count);
+         if (IsMac && Is64) return Native64Mac.JsAddRef(_reference, out _count);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -186,9 +198,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsContextRelease(_reference, out _count);
-         if (IsWindows && !Is32) return Native64.JsContextRelease(_reference, out _count);
-         if (IsLinux && !Is32) return Native64Linux.JsContextRelease(_reference, out _count);
-         if (IsMac && !Is32) return Native64Mac.JsContextRelease(_reference, out _count);
+         if (IsWindows && Is64) return Native64.JsContextRelease(_reference, out _count);
+         if (IsWindows && IsArm) return NativeArm.JsContextRelease(_reference, out _count);
+         if (IsLinux && Is64) return Native64Linux.JsContextRelease(_reference, out _count);
+         if (IsMac && Is64) return Native64Mac.JsContextRelease(_reference, out _count);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -201,9 +214,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsRelease(_reference, out _count);
-         if (IsWindows && !Is32) return Native64.JsRelease(_reference, out _count);
-         if (IsLinux && !Is32) return Native64Linux.JsRelease(_reference, out _count);
-         if (IsMac && !Is32) return Native64Mac.JsRelease(_reference, out _count);
+         if (IsWindows && Is64) return Native64.JsRelease(_reference, out _count);
+         if (IsWindows && IsArm) return NativeArm.JsRelease(_reference, out _count);
+         if (IsLinux && Is64) return Native64Linux.JsRelease(_reference, out _count);
+         if (IsMac && Is64) return Native64Mac.JsRelease(_reference, out _count);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -216,9 +230,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateContext(_runtime, out _newContext);
-         if (IsWindows && !Is32) return Native64.JsCreateContext(_runtime, out _newContext);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateContext(_runtime, out _newContext);
-         if (IsMac && !Is32) return Native64Mac.JsCreateContext(_runtime, out _newContext);
+         if (IsWindows && Is64) return Native64.JsCreateContext(_runtime, out _newContext);
+         if (IsWindows && IsArm) return NativeArm.JsCreateContext(_runtime, out _newContext);
+         if (IsLinux && Is64) return Native64Linux.JsCreateContext(_runtime, out _newContext);
+         if (IsMac && Is64) return Native64Mac.JsCreateContext(_runtime, out _newContext);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -231,9 +246,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetCurrentContext(out _currentContext);
-         if (IsWindows && !Is32) return Native64.JsGetCurrentContext(out _currentContext);
-         if (IsLinux && !Is32) return Native64Linux.JsGetCurrentContext(out _currentContext);
-         if (IsMac && !Is32) return Native64Mac.JsGetCurrentContext(out _currentContext);
+         if (IsWindows && Is64) return Native64.JsGetCurrentContext(out _currentContext);
+         if (IsWindows && IsArm) return NativeArm.JsGetCurrentContext(out _currentContext);
+         if (IsLinux && Is64) return Native64Linux.JsGetCurrentContext(out _currentContext);
+         if (IsMac && Is64) return Native64Mac.JsGetCurrentContext(out _currentContext);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -246,9 +262,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetCurrentContext(_context);
-         if (IsWindows && !Is32) return Native64.JsSetCurrentContext(_context);
-         if (IsLinux && !Is32) return Native64Linux.JsSetCurrentContext(_context);
-         if (IsMac && !Is32) return Native64Mac.JsSetCurrentContext(_context);
+         if (IsWindows && Is64) return Native64.JsSetCurrentContext(_context);
+         if (IsWindows && IsArm) return NativeArm.JsSetCurrentContext(_context);
+         if (IsLinux && Is64) return Native64Linux.JsSetCurrentContext(_context);
+         if (IsMac && Is64) return Native64Mac.JsSetCurrentContext(_context);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -261,9 +278,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetRuntime(_context, out _runtime);
-         if (IsWindows && !Is32) return Native64.JsGetRuntime(_context, out _runtime);
-         if (IsLinux && !Is32) return Native64Linux.JsGetRuntime(_context, out _runtime);
-         if (IsMac && !Is32) return Native64Mac.JsGetRuntime(_context, out _runtime);
+         if (IsWindows && Is64) return Native64.JsGetRuntime(_context, out _runtime);
+         if (IsWindows && IsArm) return NativeArm.JsGetRuntime(_context, out _runtime);
+         if (IsLinux && Is64) return Native64Linux.JsGetRuntime(_context, out _runtime);
+         if (IsMac && Is64) return Native64Mac.JsGetRuntime(_context, out _runtime);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -276,9 +294,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsIdle(out _nextIdleTick);
-         if (IsWindows && !Is32) return Native64.JsIdle(out _nextIdleTick);
-         if (IsLinux && !Is32) return Native64Linux.JsIdle(out _nextIdleTick);
-         if (IsMac && !Is32) return Native64Mac.JsIdle(out _nextIdleTick);
+         if (IsWindows && Is64) return Native64.JsIdle(out _nextIdleTick);
+         if (IsWindows && IsArm) return NativeArm.JsIdle(out _nextIdleTick);
+         if (IsLinux && Is64) return Native64Linux.JsIdle(out _nextIdleTick);
+         if (IsMac && Is64) return Native64Mac.JsIdle(out _nextIdleTick);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -294,9 +313,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsParseScript(_script, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -312,9 +332,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsRunScript(_script, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -327,9 +348,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSerializeScript(_script, _buffer, ref _bufferSize);
-         if (IsWindows && !Is32) return Native64.JsSerializeScript(_script, _buffer, ref _bufferSize);
-         if (IsLinux && !Is32) return Native64Linux.JsSerializeScript(_script, _buffer, ref _bufferSize);
-         if (IsMac && !Is32) return Native64Mac.JsSerializeScript(_script, _buffer, ref _bufferSize);
+         if (IsWindows && Is64) return Native64.JsSerializeScript(_script, _buffer, ref _bufferSize);
+         if (IsWindows && IsArm) return NativeArm.JsSerializeScript(_script, _buffer, ref _bufferSize);
+         if (IsLinux && Is64) return Native64Linux.JsSerializeScript(_script, _buffer, ref _bufferSize);
+         if (IsMac && Is64) return Native64Mac.JsSerializeScript(_script, _buffer, ref _bufferSize);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -346,9 +368,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -365,9 +388,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -380,9 +404,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetPropertyIdFromName(_name, out _propertyId);
-         if (IsWindows && !Is32) return Native64.JsGetPropertyIdFromName(_name, out _propertyId);
-         if (IsLinux && !Is32) return Native64Linux.JsGetPropertyIdFromName(_name, out _propertyId);
-         if (IsMac && !Is32) return Native64Mac.JsGetPropertyIdFromName(_name, out _propertyId);
+         if (IsWindows && Is64) return Native64.JsGetPropertyIdFromName(_name, out _propertyId);
+         if (IsWindows && IsArm) return NativeArm.JsGetPropertyIdFromName(_name, out _propertyId);
+         if (IsLinux && Is64) return Native64Linux.JsGetPropertyIdFromName(_name, out _propertyId);
+         if (IsMac && Is64) return Native64Mac.JsGetPropertyIdFromName(_name, out _propertyId);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -395,9 +420,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetPropertyNameFromId(_propertyId, out _name);
-         if (IsWindows && !Is32) return Native64.JsGetPropertyNameFromId(_propertyId, out _name);
-         if (IsLinux && !Is32) return Native64Linux.JsGetPropertyNameFromId(_propertyId, out _name);
-         if (IsMac && !Is32) return Native64Mac.JsGetPropertyNameFromId(_propertyId, out _name);
+         if (IsWindows && Is64) return Native64.JsGetPropertyNameFromId(_propertyId, out _name);
+         if (IsWindows && IsArm) return NativeArm.JsGetPropertyNameFromId(_propertyId, out _name);
+         if (IsLinux && Is64) return Native64Linux.JsGetPropertyNameFromId(_propertyId, out _name);
+         if (IsMac && Is64) return Native64Mac.JsGetPropertyNameFromId(_propertyId, out _name);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -410,9 +436,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetUndefinedValue(out _undefinedValue);
-         if (IsWindows && !Is32) return Native64.JsGetUndefinedValue(out _undefinedValue);
-         if (IsLinux && !Is32) return Native64Linux.JsGetUndefinedValue(out _undefinedValue);
-         if (IsMac && !Is32) return Native64Mac.JsGetUndefinedValue(out _undefinedValue);
+         if (IsWindows && Is64) return Native64.JsGetUndefinedValue(out _undefinedValue);
+         if (IsWindows && IsArm) return NativeArm.JsGetUndefinedValue(out _undefinedValue);
+         if (IsLinux && Is64) return Native64Linux.JsGetUndefinedValue(out _undefinedValue);
+         if (IsMac && Is64) return Native64Mac.JsGetUndefinedValue(out _undefinedValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -425,9 +452,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetNullValue(out _nullValue);
-         if (IsWindows && !Is32) return Native64.JsGetNullValue(out _nullValue);
-         if (IsLinux && !Is32) return Native64Linux.JsGetNullValue(out _nullValue);
-         if (IsMac && !Is32) return Native64Mac.JsGetNullValue(out _nullValue);
+         if (IsWindows && Is64) return Native64.JsGetNullValue(out _nullValue);
+         if (IsWindows && IsArm) return NativeArm.JsGetNullValue(out _nullValue);
+         if (IsLinux && Is64) return Native64Linux.JsGetNullValue(out _nullValue);
+         if (IsMac && Is64) return Native64Mac.JsGetNullValue(out _nullValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -440,9 +468,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetTrueValue(out _trueValue);
-         if (IsWindows && !Is32) return Native64.JsGetTrueValue(out _trueValue);
-         if (IsLinux && !Is32) return Native64Linux.JsGetTrueValue(out _trueValue);
-         if (IsMac && !Is32) return Native64Mac.JsGetTrueValue(out _trueValue);
+         if (IsWindows && Is64) return Native64.JsGetTrueValue(out _trueValue);
+         if (IsWindows && IsArm) return NativeArm.JsGetTrueValue(out _trueValue);
+         if (IsLinux && Is64) return Native64Linux.JsGetTrueValue(out _trueValue);
+         if (IsMac && Is64) return Native64Mac.JsGetTrueValue(out _trueValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -455,9 +484,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetFalseValue(out _falseValue);
-         if (IsWindows && !Is32) return Native64.JsGetFalseValue(out _falseValue);
-         if (IsLinux && !Is32) return Native64Linux.JsGetFalseValue(out _falseValue);
-         if (IsMac && !Is32) return Native64Mac.JsGetFalseValue(out _falseValue);
+         if (IsWindows && Is64) return Native64.JsGetFalseValue(out _falseValue);
+         if (IsWindows && IsArm) return NativeArm.JsGetFalseValue(out _falseValue);
+         if (IsLinux && Is64) return Native64Linux.JsGetFalseValue(out _falseValue);
+         if (IsMac && Is64) return Native64Mac.JsGetFalseValue(out _falseValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -470,9 +500,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsBoolToBoolean(_value, out _booleanValue);
-         if (IsWindows && !Is32) return Native64.JsBoolToBoolean(_value, out _booleanValue);
-         if (IsLinux && !Is32) return Native64Linux.JsBoolToBoolean(_value, out _booleanValue);
-         if (IsMac && !Is32) return Native64Mac.JsBoolToBoolean(_value, out _booleanValue);
+         if (IsWindows && Is64) return Native64.JsBoolToBoolean(_value, out _booleanValue);
+         if (IsWindows && IsArm) return NativeArm.JsBoolToBoolean(_value, out _booleanValue);
+         if (IsLinux && Is64) return Native64Linux.JsBoolToBoolean(_value, out _booleanValue);
+         if (IsMac && Is64) return Native64Mac.JsBoolToBoolean(_value, out _booleanValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -485,9 +516,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsBooleanToBool(_booleanValue, out _boolValue);
-         if (IsWindows && !Is32) return Native64.JsBooleanToBool(_booleanValue, out _boolValue);
-         if (IsLinux && !Is32) return Native64Linux.JsBooleanToBool(_booleanValue, out _boolValue);
-         if (IsMac && !Is32) return Native64Mac.JsBooleanToBool(_booleanValue, out _boolValue);
+         if (IsWindows && Is64) return Native64.JsBooleanToBool(_booleanValue, out _boolValue);
+         if (IsWindows && IsArm) return NativeArm.JsBooleanToBool(_booleanValue, out _boolValue);
+         if (IsLinux && Is64) return Native64Linux.JsBooleanToBool(_booleanValue, out _boolValue);
+         if (IsMac && Is64) return Native64Mac.JsBooleanToBool(_booleanValue, out _boolValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -500,9 +532,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsConvertValueToBoolean(_value, out _booleanValue);
-         if (IsWindows && !Is32) return Native64.JsConvertValueToBoolean(_value, out _booleanValue);
-         if (IsLinux && !Is32) return Native64Linux.JsConvertValueToBoolean(_value, out _booleanValue);
-         if (IsMac && !Is32) return Native64Mac.JsConvertValueToBoolean(_value, out _booleanValue);
+         if (IsWindows && Is64) return Native64.JsConvertValueToBoolean(_value, out _booleanValue);
+         if (IsWindows && IsArm) return NativeArm.JsConvertValueToBoolean(_value, out _booleanValue);
+         if (IsLinux && Is64) return Native64Linux.JsConvertValueToBoolean(_value, out _booleanValue);
+         if (IsMac && Is64) return Native64Mac.JsConvertValueToBoolean(_value, out _booleanValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -515,9 +548,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetValueType(_value, out _type);
-         if (IsWindows && !Is32) return Native64.JsGetValueType(_value, out _type);
-         if (IsLinux && !Is32) return Native64Linux.JsGetValueType(_value, out _type);
-         if (IsMac && !Is32) return Native64Mac.JsGetValueType(_value, out _type);
+         if (IsWindows && Is64) return Native64.JsGetValueType(_value, out _type);
+         if (IsWindows && IsArm) return NativeArm.JsGetValueType(_value, out _type);
+         if (IsLinux && Is64) return Native64Linux.JsGetValueType(_value, out _type);
+         if (IsMac && Is64) return Native64Mac.JsGetValueType(_value, out _type);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -530,9 +564,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDoubleToNumber(_doubleValue, out _value);
-         if (IsWindows && !Is32) return Native64.JsDoubleToNumber(_doubleValue, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsDoubleToNumber(_doubleValue, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsDoubleToNumber(_doubleValue, out _value);
+         if (IsWindows && Is64) return Native64.JsDoubleToNumber(_doubleValue, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsDoubleToNumber(_doubleValue, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsDoubleToNumber(_doubleValue, out _value);
+         if (IsMac && Is64) return Native64Mac.JsDoubleToNumber(_doubleValue, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -545,9 +580,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDoubleToNumber(_intValue, out _value);
-         if (IsWindows && !Is32) return Native64.JsDoubleToNumber(_intValue, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsDoubleToNumber(_intValue, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsDoubleToNumber(_intValue, out _value);
+         if (IsWindows && Is64) return Native64.JsDoubleToNumber(_intValue, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsDoubleToNumber(_intValue, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsDoubleToNumber(_intValue, out _value);
+         if (IsMac && Is64) return Native64Mac.JsDoubleToNumber(_intValue, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -560,9 +596,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsNumberToDouble(_value, out _doubleValue);
-         if (IsWindows && !Is32) return Native64.JsNumberToDouble(_value, out _doubleValue);
-         if (IsLinux && !Is32) return Native64Linux.JsNumberToDouble(_value, out _doubleValue);
-         if (IsMac && !Is32) return Native64Mac.JsNumberToDouble(_value, out _doubleValue);
+         if (IsWindows && Is64) return Native64.JsNumberToDouble(_value, out _doubleValue);
+         if (IsWindows && IsArm) return NativeArm.JsNumberToDouble(_value, out _doubleValue);
+         if (IsLinux && Is64) return Native64Linux.JsNumberToDouble(_value, out _doubleValue);
+         if (IsMac && Is64) return Native64Mac.JsNumberToDouble(_value, out _doubleValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -575,9 +612,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsConvertValueToNumber(_value, out _numberValue);
-         if (IsWindows && !Is32) return Native64.JsConvertValueToNumber(_value, out _numberValue);
-         if (IsLinux && !Is32) return Native64Linux.JsConvertValueToNumber(_value, out _numberValue);
-         if (IsMac && !Is32) return Native64Mac.JsConvertValueToNumber(_value, out _numberValue);
+         if (IsWindows && Is64) return Native64.JsConvertValueToNumber(_value, out _numberValue);
+         if (IsWindows && IsArm) return NativeArm.JsConvertValueToNumber(_value, out _numberValue);
+         if (IsLinux && Is64) return Native64Linux.JsConvertValueToNumber(_value, out _numberValue);
+         if (IsMac && Is64) return Native64Mac.JsConvertValueToNumber(_value, out _numberValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -590,9 +628,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetStringLength(_sringValue, out _length);
-         if (IsWindows && !Is32) return Native64.JsGetStringLength(_sringValue, out _length);
-         if (IsLinux && !Is32) return Native64Linux.JsGetStringLength(_sringValue, out _length);
-         if (IsMac && !Is32) return Native64Mac.JsGetStringLength(_sringValue, out _length);
+         if (IsWindows && Is64) return Native64.JsGetStringLength(_sringValue, out _length);
+         if (IsWindows && IsArm) return NativeArm.JsGetStringLength(_sringValue, out _length);
+         if (IsLinux && Is64) return Native64Linux.JsGetStringLength(_sringValue, out _length);
+         if (IsMac && Is64) return Native64Mac.JsGetStringLength(_sringValue, out _length);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -605,9 +644,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsPointerToString(_value, _stringLength, out _stringValue);
-         if (IsWindows && !Is32) return Native64.JsPointerToString(_value, _stringLength, out _stringValue);
-         if (IsLinux && !Is32) return Native64Linux.JsPointerToString(_value, _stringLength, out _stringValue);
-         if (IsMac && !Is32) return Native64Mac.JsPointerToString(_value, _stringLength, out _stringValue);
+         if (IsWindows && Is64) return Native64.JsPointerToString(_value, _stringLength, out _stringValue);
+         if (IsWindows && IsArm) return NativeArm.JsPointerToString(_value, _stringLength, out _stringValue);
+         if (IsLinux && Is64) return Native64Linux.JsPointerToString(_value, _stringLength, out _stringValue);
+         if (IsMac && Is64) return Native64Mac.JsPointerToString(_value, _stringLength, out _stringValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -620,9 +660,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsStringToPointer(_value, out _stringValue, out _stringLength);
-         if (IsWindows && !Is32) return Native64.JsStringToPointer(_value, out _stringValue, out _stringLength);
-         if (IsLinux && !Is32) return Native64Linux.JsStringToPointer(_value, out _stringValue, out _stringLength);
-         if (IsMac && !Is32) return Native64Mac.JsStringToPointer(_value, out _stringValue, out _stringLength);
+         if (IsWindows && Is64) return Native64.JsStringToPointer(_value, out _stringValue, out _stringLength);
+         if (IsWindows && IsArm) return NativeArm.JsStringToPointer(_value, out _stringValue, out _stringLength);
+         if (IsLinux && Is64) return Native64Linux.JsStringToPointer(_value, out _stringValue, out _stringLength);
+         if (IsMac && Is64) return Native64Mac.JsStringToPointer(_value, out _stringValue, out _stringLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -635,9 +676,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsConvertValueToString(_value, out _stringValue);
-         if (IsWindows && !Is32) return Native64.JsConvertValueToString(_value, out _stringValue);
-         if (IsLinux && !Is32) return Native64Linux.JsConvertValueToString(_value, out _stringValue);
-         if (IsMac && !Is32) return Native64Mac.JsConvertValueToString(_value, out _stringValue);
+         if (IsWindows && Is64) return Native64.JsConvertValueToString(_value, out _stringValue);
+         if (IsWindows && IsArm) return NativeArm.JsConvertValueToString(_value, out _stringValue);
+         if (IsLinux && Is64) return Native64Linux.JsConvertValueToString(_value, out _stringValue);
+         if (IsMac && Is64) return Native64Mac.JsConvertValueToString(_value, out _stringValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -650,9 +692,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetGlobalObject(out _globalObject);
-         if (IsWindows && !Is32) return Native64.JsGetGlobalObject(out _globalObject);
-         if (IsLinux && !Is32) return Native64Linux.JsGetGlobalObject(out _globalObject);
-         if (IsMac && !Is32) return Native64Mac.JsGetGlobalObject(out _globalObject);
+         if (IsWindows && Is64) return Native64.JsGetGlobalObject(out _globalObject);
+         if (IsWindows && IsArm) return NativeArm.JsGetGlobalObject(out _globalObject);
+         if (IsLinux && Is64) return Native64Linux.JsGetGlobalObject(out _globalObject);
+         if (IsMac && Is64) return Native64Mac.JsGetGlobalObject(out _globalObject);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -665,9 +708,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateObject(out _obj);
-         if (IsWindows && !Is32) return Native64.JsCreateObject(out _obj);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateObject(out _obj);
-         if (IsMac && !Is32) return Native64Mac.JsCreateObject(out _obj);
+         if (IsWindows && Is64) return Native64.JsCreateObject(out _obj);
+         if (IsWindows && IsArm) return NativeArm.JsCreateObject(out _obj);
+         if (IsLinux && Is64) return Native64Linux.JsCreateObject(out _obj);
+         if (IsMac && Is64) return Native64Mac.JsCreateObject(out _obj);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -681,9 +725,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
-         if (IsWindows && !Is32) return Native64.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
-         if (IsMac && !Is32) return Native64Mac.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+         if (IsWindows && Is64) return Native64.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+         if (IsWindows && IsArm) return NativeArm.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+         if (IsLinux && Is64) return Native64Linux.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
+         if (IsMac && Is64) return Native64Mac.JsCreateExternalObject(_data, _finalizeCallback, out _obj);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -696,9 +741,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsConvertValueToObject(_value, out _obj);
-         if (IsWindows && !Is32) return Native64.JsConvertValueToObject(_value, out _obj);
-         if (IsLinux && !Is32) return Native64Linux.JsConvertValueToObject(_value, out _obj);
-         if (IsMac && !Is32) return Native64Mac.JsConvertValueToObject(_value, out _obj);
+         if (IsWindows && Is64) return Native64.JsConvertValueToObject(_value, out _obj);
+         if (IsWindows && IsArm) return NativeArm.JsConvertValueToObject(_value, out _obj);
+         if (IsLinux && Is64) return Native64Linux.JsConvertValueToObject(_value, out _obj);
+         if (IsMac && Is64) return Native64Mac.JsConvertValueToObject(_value, out _obj);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -711,9 +757,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetPrototype(_obj, out _prototypeObject);
-         if (IsWindows && !Is32) return Native64.JsGetPrototype(_obj, out _prototypeObject);
-         if (IsLinux && !Is32) return Native64Linux.JsGetPrototype(_obj, out _prototypeObject);
-         if (IsMac && !Is32) return Native64Mac.JsGetPrototype(_obj, out _prototypeObject);
+         if (IsWindows && Is64) return Native64.JsGetPrototype(_obj, out _prototypeObject);
+         if (IsWindows && IsArm) return NativeArm.JsGetPrototype(_obj, out _prototypeObject);
+         if (IsLinux && Is64) return Native64Linux.JsGetPrototype(_obj, out _prototypeObject);
+         if (IsMac && Is64) return Native64Mac.JsGetPrototype(_obj, out _prototypeObject);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -726,9 +773,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetPrototype(_obj, _prototypeObject);
-         if (IsWindows && !Is32) return Native64.JsSetPrototype(_obj, _prototypeObject);
-         if (IsLinux && !Is32) return Native64Linux.JsSetPrototype(_obj, _prototypeObject);
-         if (IsMac && !Is32) return Native64Mac.JsSetPrototype(_obj, _prototypeObject);
+         if (IsWindows && Is64) return Native64.JsSetPrototype(_obj, _prototypeObject);
+         if (IsWindows && IsArm) return NativeArm.JsSetPrototype(_obj, _prototypeObject);
+         if (IsLinux && Is64) return Native64Linux.JsSetPrototype(_obj, _prototypeObject);
+         if (IsMac && Is64) return Native64Mac.JsSetPrototype(_obj, _prototypeObject);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -741,9 +789,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetExtensionAllowed(_obj, out _value);
-         if (IsWindows && !Is32) return Native64.JsGetExtensionAllowed(_obj, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsGetExtensionAllowed(_obj, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsGetExtensionAllowed(_obj, out _value);
+         if (IsWindows && Is64) return Native64.JsGetExtensionAllowed(_obj, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsGetExtensionAllowed(_obj, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsGetExtensionAllowed(_obj, out _value);
+         if (IsMac && Is64) return Native64Mac.JsGetExtensionAllowed(_obj, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -756,9 +805,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsPreventExtension(_obj);
-         if (IsWindows && !Is32) return Native64.JsPreventExtension(_obj);
-         if (IsLinux && !Is32) return Native64Linux.JsPreventExtension(_obj);
-         if (IsMac && !Is32) return Native64Mac.JsPreventExtension(_obj);
+         if (IsWindows && Is64) return Native64.JsPreventExtension(_obj);
+         if (IsWindows && IsArm) return NativeArm.JsPreventExtension(_obj);
+         if (IsLinux && Is64) return Native64Linux.JsPreventExtension(_obj);
+         if (IsMac && Is64) return Native64Mac.JsPreventExtension(_obj);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -771,9 +821,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetProperty(_obj, _propertyId, out _value);
-         if (IsWindows && !Is32) return Native64.JsGetProperty(_obj, _propertyId, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsGetProperty(_obj, _propertyId, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsGetProperty(_obj, _propertyId, out _value);
+         if (IsWindows && Is64) return Native64.JsGetProperty(_obj, _propertyId, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsGetProperty(_obj, _propertyId, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsGetProperty(_obj, _propertyId, out _value);
+         if (IsMac && Is64) return Native64Mac.JsGetProperty(_obj, _propertyId, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -788,9 +839,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
-         if (IsWindows && !Is32) return Native64.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
-         if (IsLinux && !Is32) return Native64Linux.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
-         if (IsMac && !Is32) return Native64Mac.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
+         if (IsWindows && Is64) return Native64.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
+         if (IsWindows && IsArm) return NativeArm.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
+         if (IsLinux && Is64) return Native64Linux.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
+         if (IsMac && Is64) return Native64Mac.JsGetOwnPropertyDescriptor(_obj, _propertyId, out _propertyDescriptor);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -803,9 +855,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetOwnPropertyNames(_obj, out _propertyNames);
-         if (IsWindows && !Is32) return Native64.JsGetOwnPropertyNames(_obj, out _propertyNames);
-         if (IsLinux && !Is32) return Native64Linux.JsGetOwnPropertyNames(_obj, out _propertyNames);
-         if (IsMac && !Is32) return Native64Mac.JsGetOwnPropertyNames(_obj, out _propertyNames);
+         if (IsWindows && Is64) return Native64.JsGetOwnPropertyNames(_obj, out _propertyNames);
+         if (IsWindows && IsArm) return NativeArm.JsGetOwnPropertyNames(_obj, out _propertyNames);
+         if (IsLinux && Is64) return Native64Linux.JsGetOwnPropertyNames(_obj, out _propertyNames);
+         if (IsMac && Is64) return Native64Mac.JsGetOwnPropertyNames(_obj, out _propertyNames);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -819,9 +872,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
-         if (IsWindows && !Is32) return Native64.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
-         if (IsLinux && !Is32) return Native64Linux.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
-         if (IsMac && !Is32) return Native64Mac.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
+         if (IsWindows && Is64) return Native64.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
+         if (IsWindows && IsArm) return NativeArm.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
+         if (IsLinux && Is64) return Native64Linux.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
+         if (IsMac && Is64) return Native64Mac.JsSetProperty(_obj, _propertyId, _value, _useStrictRules);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -834,9 +888,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsHasProperty(_obj, _propertyId, out _hasProperty);
-         if (IsWindows && !Is32) return Native64.JsHasProperty(_obj, _propertyId, out _hasProperty);
-         if (IsLinux && !Is32) return Native64Linux.JsHasProperty(_obj, _propertyId, out _hasProperty);
-         if (IsMac && !Is32) return Native64Mac.JsHasProperty(_obj, _propertyId, out _hasProperty);
+         if (IsWindows && Is64) return Native64.JsHasProperty(_obj, _propertyId, out _hasProperty);
+         if (IsWindows && IsArm) return NativeArm.JsHasProperty(_obj, _propertyId, out _hasProperty);
+         if (IsLinux && Is64) return Native64Linux.JsHasProperty(_obj, _propertyId, out _hasProperty);
+         if (IsMac && Is64) return Native64Mac.JsHasProperty(_obj, _propertyId, out _hasProperty);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -852,9 +907,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
-         if (IsWindows && !Is32) return Native64.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
+         if (IsWindows && Is64) return Native64.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
+         if (IsMac && Is64) return Native64Mac.JsDeleteProperty(_obj, _propertyId, _useStrictRules, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -870,9 +926,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
-         if (IsWindows && !Is32) return Native64.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
+         if (IsWindows && Is64) return Native64.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
+         if (IsMac && Is64) return Native64Mac.JsDefineProperty(_obj, _propertyId, _propertyDescriptor, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -885,9 +942,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsHasIndexedProperty(_obj, _index, out _result);
-         if (IsWindows && !Is32) return Native64.JsHasIndexedProperty(_obj, _index, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsHasIndexedProperty(_obj, _index, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsHasIndexedProperty(_obj, _index, out _result);
+         if (IsWindows && Is64) return Native64.JsHasIndexedProperty(_obj, _index, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsHasIndexedProperty(_obj, _index, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsHasIndexedProperty(_obj, _index, out _result);
+         if (IsMac && Is64) return Native64Mac.JsHasIndexedProperty(_obj, _index, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -900,9 +958,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetIndexedProperty(_obj, _index, out _result);
-         if (IsWindows && !Is32) return Native64.JsGetIndexedProperty(_obj, _index, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsGetIndexedProperty(_obj, _index, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsGetIndexedProperty(_obj, _index, out _result);
+         if (IsWindows && Is64) return Native64.JsGetIndexedProperty(_obj, _index, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsGetIndexedProperty(_obj, _index, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsGetIndexedProperty(_obj, _index, out _result);
+         if (IsMac && Is64) return Native64Mac.JsGetIndexedProperty(_obj, _index, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -915,9 +974,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetIndexedProperty(_obj, _index, _value);
-         if (IsWindows && !Is32) return Native64.JsSetIndexedProperty(_obj, _index, _value);
-         if (IsLinux && !Is32) return Native64Linux.JsSetIndexedProperty(_obj, _index, _value);
-         if (IsMac && !Is32) return Native64Mac.JsSetIndexedProperty(_obj, _index, _value);
+         if (IsWindows && Is64) return Native64.JsSetIndexedProperty(_obj, _index, _value);
+         if (IsWindows && IsArm) return NativeArm.JsSetIndexedProperty(_obj, _index, _value);
+         if (IsLinux && Is64) return Native64Linux.JsSetIndexedProperty(_obj, _index, _value);
+         if (IsMac && Is64) return Native64Mac.JsSetIndexedProperty(_obj, _index, _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -930,9 +990,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDeleteIndexedProperty(_obj, _index);
-         if (IsWindows && !Is32) return Native64.JsDeleteIndexedProperty(_obj, _index);
-         if (IsLinux && !Is32) return Native64Linux.JsDeleteIndexedProperty(_obj, _index);
-         if (IsMac && !Is32) return Native64Mac.JsDeleteIndexedProperty(_obj, _index);
+         if (IsWindows && Is64) return Native64.JsDeleteIndexedProperty(_obj, _index);
+         if (IsWindows && IsArm) return NativeArm.JsDeleteIndexedProperty(_obj, _index);
+         if (IsLinux && Is64) return Native64Linux.JsDeleteIndexedProperty(_obj, _index);
+         if (IsMac && Is64) return Native64Mac.JsDeleteIndexedProperty(_obj, _index);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -945,9 +1006,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsEquals(_obj1, _obj2, out _result);
-         if (IsWindows && !Is32) return Native64.JsEquals(_obj1, _obj2, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsEquals(_obj1, _obj2, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsEquals(_obj1, _obj2, out _result);
+         if (IsWindows && Is64) return Native64.JsEquals(_obj1, _obj2, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsEquals(_obj1, _obj2, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsEquals(_obj1, _obj2, out _result);
+         if (IsMac && Is64) return Native64Mac.JsEquals(_obj1, _obj2, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -960,9 +1022,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsStrictEquals(_obj1, _obj2, out _result);
-         if (IsWindows && !Is32) return Native64.JsStrictEquals(_obj1, _obj2, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsStrictEquals(_obj1, _obj2, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsStrictEquals(_obj1, _obj2, out _result);
+         if (IsWindows && Is64) return Native64.JsStrictEquals(_obj1, _obj2, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsStrictEquals(_obj1, _obj2, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsStrictEquals(_obj1, _obj2, out _result);
+         if (IsMac && Is64) return Native64Mac.JsStrictEquals(_obj1, _obj2, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -975,9 +1038,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsHasExternalData(_obj, out _value);
-         if (IsWindows && !Is32) return Native64.JsHasExternalData(_obj, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsHasExternalData(_obj, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsHasExternalData(_obj, out _value);
+         if (IsWindows && Is64) return Native64.JsHasExternalData(_obj, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsHasExternalData(_obj, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsHasExternalData(_obj, out _value);
+         if (IsMac && Is64) return Native64Mac.JsHasExternalData(_obj, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -990,9 +1054,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetExternalData(_obj, out _externalData);
-         if (IsWindows && !Is32) return Native64.JsGetExternalData(_obj, out _externalData);
-         if (IsLinux && !Is32) return Native64Linux.JsGetExternalData(_obj, out _externalData);
-         if (IsMac && !Is32) return Native64Mac.JsGetExternalData(_obj, out _externalData);
+         if (IsWindows && Is64) return Native64.JsGetExternalData(_obj, out _externalData);
+         if (IsWindows && IsArm) return NativeArm.JsGetExternalData(_obj, out _externalData);
+         if (IsLinux && Is64) return Native64Linux.JsGetExternalData(_obj, out _externalData);
+         if (IsMac && Is64) return Native64Mac.JsGetExternalData(_obj, out _externalData);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1005,9 +1070,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetExternalData(_obj, _externalData);
-         if (IsWindows && !Is32) return Native64.JsSetExternalData(_obj, _externalData);
-         if (IsLinux && !Is32) return Native64Linux.JsSetExternalData(_obj, _externalData);
-         if (IsMac && !Is32) return Native64Mac.JsSetExternalData(_obj, _externalData);
+         if (IsWindows && Is64) return Native64.JsSetExternalData(_obj, _externalData);
+         if (IsWindows && IsArm) return NativeArm.JsSetExternalData(_obj, _externalData);
+         if (IsLinux && Is64) return Native64Linux.JsSetExternalData(_obj, _externalData);
+         if (IsMac && Is64) return Native64Mac.JsSetExternalData(_obj, _externalData);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1020,9 +1086,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateArray(_length, out _result);
-         if (IsWindows && !Is32) return Native64.JsCreateArray(_length, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateArray(_length, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCreateArray(_length, out _result);
+         if (IsWindows && Is64) return Native64.JsCreateArray(_length, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCreateArray(_length, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCreateArray(_length, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCreateArray(_length, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1038,9 +1105,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCallFunction(_function, _arguments, _argumentCount, out _result);
-         if (IsWindows && !Is32) return Native64.JsCallFunction(_function, _arguments, _argumentCount, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCallFunction(_function, _arguments, _argumentCount, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCallFunction(_function, _arguments, _argumentCount, out _result);
+         if (IsWindows && Is64) return Native64.JsCallFunction(_function, _arguments, _argumentCount, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCallFunction(_function, _arguments, _argumentCount, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCallFunction(_function, _arguments, _argumentCount, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCallFunction(_function, _arguments, _argumentCount, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1056,9 +1124,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsConstructObject(_function, _arguments, _argumentCount, out _result);
-         if (IsWindows && !Is32) return Native64.JsConstructObject(_function, _arguments, _argumentCount, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsConstructObject(_function, _arguments, _argumentCount, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsConstructObject(_function, _arguments, _argumentCount, out _result);
+         if (IsWindows && Is64) return Native64.JsConstructObject(_function, _arguments, _argumentCount, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsConstructObject(_function, _arguments, _argumentCount, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsConstructObject(_function, _arguments, _argumentCount, out _result);
+         if (IsMac && Is64) return Native64Mac.JsConstructObject(_function, _arguments, _argumentCount, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1072,9 +1141,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateFunction(_nativeFunction, _externalData, out _function);
-         if (IsWindows && !Is32) return Native64.JsCreateFunction(_nativeFunction, _externalData, out _function);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateFunction(_nativeFunction, _externalData, out _function);
-         if (IsMac && !Is32) return Native64Mac.JsCreateFunction(_nativeFunction, _externalData, out _function);
+         if (IsWindows && Is64) return Native64.JsCreateFunction(_nativeFunction, _externalData, out _function);
+         if (IsWindows && IsArm) return NativeArm.JsCreateFunction(_nativeFunction, _externalData, out _function);
+         if (IsLinux && Is64) return Native64Linux.JsCreateFunction(_nativeFunction, _externalData, out _function);
+         if (IsMac && Is64) return Native64Mac.JsCreateFunction(_nativeFunction, _externalData, out _function);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1087,9 +1157,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1102,9 +1173,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateRangeError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateRangeError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateRangeError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateRangeError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateRangeError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateRangeError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateRangeError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateRangeError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1117,9 +1189,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateReferenceError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateReferenceError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateReferenceError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateReferenceError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateReferenceError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateReferenceError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateReferenceError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateReferenceError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1132,9 +1205,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateSyntaxError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateSyntaxError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateSyntaxError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateSyntaxError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateSyntaxError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateSyntaxError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateSyntaxError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateSyntaxError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1147,9 +1221,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateTypeError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateTypeError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateTypeError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateTypeError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateTypeError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateTypeError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateTypeError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateTypeError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1162,9 +1237,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateURIError(_message, out _error);
-         if (IsWindows && !Is32) return Native64.JsCreateURIError(_message, out _error);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateURIError(_message, out _error);
-         if (IsMac && !Is32) return Native64Mac.JsCreateURIError(_message, out _error);
+         if (IsWindows && Is64) return Native64.JsCreateURIError(_message, out _error);
+         if (IsWindows && IsArm) return NativeArm.JsCreateURIError(_message, out _error);
+         if (IsLinux && Is64) return Native64Linux.JsCreateURIError(_message, out _error);
+         if (IsMac && Is64) return Native64Mac.JsCreateURIError(_message, out _error);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1177,9 +1253,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsHasException(out _hasException);
-         if (IsWindows && !Is32) return Native64.JsHasException(out _hasException);
-         if (IsLinux && !Is32) return Native64Linux.JsHasException(out _hasException);
-         if (IsMac && !Is32) return Native64Mac.JsHasException(out _hasException);
+         if (IsWindows && Is64) return Native64.JsHasException(out _hasException);
+         if (IsWindows && IsArm) return NativeArm.JsHasException(out _hasException);
+         if (IsLinux && Is64) return Native64Linux.JsHasException(out _hasException);
+         if (IsMac && Is64) return Native64Mac.JsHasException(out _hasException);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1192,9 +1269,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetAndClearException(out _exception);
-         if (IsWindows && !Is32) return Native64.JsGetAndClearException(out _exception);
-         if (IsLinux && !Is32) return Native64Linux.JsGetAndClearException(out _exception);
-         if (IsMac && !Is32) return Native64Mac.JsGetAndClearException(out _exception);
+         if (IsWindows && Is64) return Native64.JsGetAndClearException(out _exception);
+         if (IsWindows && IsArm) return NativeArm.JsGetAndClearException(out _exception);
+         if (IsLinux && Is64) return Native64Linux.JsGetAndClearException(out _exception);
+         if (IsMac && Is64) return Native64Mac.JsGetAndClearException(out _exception);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1207,9 +1285,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetException(_exception);
-         if (IsWindows && !Is32) return Native64.JsSetException(_exception);
-         if (IsLinux && !Is32) return Native64Linux.JsSetException(_exception);
-         if (IsMac && !Is32) return Native64Mac.JsSetException(_exception);
+         if (IsWindows && Is64) return Native64.JsSetException(_exception);
+         if (IsWindows && IsArm) return NativeArm.JsSetException(_exception);
+         if (IsLinux && Is64) return Native64Linux.JsSetException(_exception);
+         if (IsMac && Is64) return Native64Mac.JsSetException(_exception);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1222,9 +1301,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDisableRuntimeExecution(_runtime);
-         if (IsWindows && !Is32) return Native64.JsDisableRuntimeExecution(_runtime);
-         if (IsLinux && !Is32) return Native64Linux.JsDisableRuntimeExecution(_runtime);
-         if (IsMac && !Is32) return Native64Mac.JsDisableRuntimeExecution(_runtime);
+         if (IsWindows && Is64) return Native64.JsDisableRuntimeExecution(_runtime);
+         if (IsWindows && IsArm) return NativeArm.JsDisableRuntimeExecution(_runtime);
+         if (IsLinux && Is64) return Native64Linux.JsDisableRuntimeExecution(_runtime);
+         if (IsMac && Is64) return Native64Mac.JsDisableRuntimeExecution(_runtime);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1237,9 +1317,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsEnableRuntimeExecution(_runtime);
-         if (IsWindows && !Is32) return Native64.JsEnableRuntimeExecution(_runtime);
-         if (IsLinux && !Is32) return Native64Linux.JsEnableRuntimeExecution(_runtime);
-         if (IsMac && !Is32) return Native64Mac.JsEnableRuntimeExecution(_runtime);
+         if (IsWindows && Is64) return Native64.JsEnableRuntimeExecution(_runtime);
+         if (IsWindows && IsArm) return NativeArm.JsEnableRuntimeExecution(_runtime);
+         if (IsLinux && Is64) return Native64Linux.JsEnableRuntimeExecution(_runtime);
+         if (IsMac && Is64) return Native64Mac.JsEnableRuntimeExecution(_runtime);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1252,9 +1333,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
-         if (IsWindows && !Is32) return Native64.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
-         if (IsLinux && !Is32) return Native64Linux.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
-         if (IsMac && !Is32) return Native64Mac.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
+         if (IsWindows && Is64) return Native64.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
+         if (IsWindows && IsArm) return NativeArm.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
+         if (IsLinux && Is64) return Native64Linux.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
+         if (IsMac && Is64) return Native64Mac.JsIsRuntimeExecutionDisabled(_runtime, out _isDisabled);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1269,9 +1351,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
-         if (IsWindows && !Is32) return Native64.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
-         if (IsMac && !Is32) return Native64Mac.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
+         if (IsWindows && Is64) return Native64.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
+         if (IsWindows && IsArm) return NativeArm.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
+         if (IsLinux && Is64) return Native64Linux.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
+         if (IsMac && Is64) return Native64Mac.JsSetObjectBeforeCollectCallback(_reference, _callbackState, _beforeCollectCallback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1287,9 +1370,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
-         if (IsWindows && !Is32) return Native64.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
-         if (IsMac && !Is32) return Native64Mac.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+         if (IsWindows && Is64) return Native64.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+         if (IsWindows && IsArm) return NativeArm.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+         if (IsLinux && Is64) return Native64Linux.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
+         if (IsMac && Is64) return Native64Mac.JsCreateNamedFunction(_name, _nativeFunction, _callbackState, out _function);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1304,9 +1388,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
-         if (IsWindows && !Is32) return Native64.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
-         if (IsLinux && !Is32) return Native64Linux.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
-         if (IsMac && !Is32) return Native64Mac.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
+         if (IsWindows && Is64) return Native64.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
+         if (IsWindows && IsArm) return NativeArm.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
+         if (IsLinux && Is64) return Native64Linux.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
+         if (IsMac && Is64) return Native64Mac.JsSetPromiseContinuationCallback(_promiseContinuationCallback, _callbackState);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1319,9 +1404,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateArrayBuffer(_byteLength, out _result);
-         if (IsWindows && !Is32) return Native64.JsCreateArrayBuffer(_byteLength, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateArrayBuffer(_byteLength, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCreateArrayBuffer(_byteLength, out _result);
+         if (IsWindows && Is64) return Native64.JsCreateArrayBuffer(_byteLength, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCreateArrayBuffer(_byteLength, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCreateArrayBuffer(_byteLength, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCreateArrayBuffer(_byteLength, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1338,9 +1424,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
-         if (IsWindows && !Is32) return Native64.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
+         if (IsWindows && Is64) return Native64.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCreateTypedArray(_arrayType, _arrayBuffer, _byteOffset, _elementLength, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1356,9 +1443,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
-         if (IsWindows && !Is32) return Native64.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+         if (IsWindows && Is64) return Native64.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCreateDataView(_arrayBuffer, _byteOffset, _byteOffsetLength, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1372,9 +1460,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
-         if (IsWindows && !Is32) return Native64.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
-         if (IsLinux && !Is32) return Native64Linux.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
-         if (IsMac && !Is32) return Native64Mac.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
+         if (IsWindows && Is64) return Native64.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
+         if (IsWindows && IsArm) return NativeArm.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
+         if (IsLinux && Is64) return Native64Linux.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
+         if (IsMac && Is64) return Native64Mac.JsGetArrayBufferStorage(_arrayBuffer, out _buffer, out _bufferLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1391,9 +1480,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
-         if (IsWindows && !Is32) return Native64.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
-         if (IsLinux && !Is32) return Native64Linux.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
-         if (IsMac && !Is32) return Native64Mac.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+         if (IsWindows && Is64) return Native64.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+         if (IsWindows && IsArm) return NativeArm.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+         if (IsLinux && Is64) return Native64Linux.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
+         if (IsMac && Is64) return Native64Mac.JsGetTypedArrayStorage(_typedArray, out _buffer, out _bufferLength, out _arrayType, out _elementSize);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1406,9 +1496,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
-         if (IsWindows && !Is32) return Native64.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
-         if (IsLinux && !Is32) return Native64Linux.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
-         if (IsMac && !Is32) return Native64Mac.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
+         if (IsWindows && Is64) return Native64.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
+         if (IsWindows && IsArm) return NativeArm.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
+         if (IsLinux && Is64) return Native64Linux.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
+         if (IsMac && Is64) return Native64Mac.JsGetDataViewStorage(_dataView, out _buffer, out _bufferLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1421,9 +1512,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetPropertyIdType(_propertyId, out _propertyIdType);
-         if (IsWindows && !Is32) return Native64.JsGetPropertyIdType(_propertyId, out _propertyIdType);
-         if (IsLinux && !Is32) return Native64Linux.JsGetPropertyIdType(_propertyId, out _propertyIdType);
-         if (IsMac && !Is32) return Native64Mac.JsGetPropertyIdType(_propertyId, out _propertyIdType);
+         if (IsWindows && Is64) return Native64.JsGetPropertyIdType(_propertyId, out _propertyIdType);
+         if (IsWindows && IsArm) return NativeArm.JsGetPropertyIdType(_propertyId, out _propertyIdType);
+         if (IsLinux && Is64) return Native64Linux.JsGetPropertyIdType(_propertyId, out _propertyIdType);
+         if (IsMac && Is64) return Native64Mac.JsGetPropertyIdType(_propertyId, out _propertyIdType);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1436,9 +1528,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateSymbol(_description, out _symbol);
-         if (IsWindows && !Is32) return Native64.JsCreateSymbol(_description, out _symbol);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateSymbol(_description, out _symbol);
-         if (IsMac && !Is32) return Native64Mac.JsCreateSymbol(_description, out _symbol);
+         if (IsWindows && Is64) return Native64.JsCreateSymbol(_description, out _symbol);
+         if (IsWindows && IsArm) return NativeArm.JsCreateSymbol(_description, out _symbol);
+         if (IsLinux && Is64) return Native64Linux.JsCreateSymbol(_description, out _symbol);
+         if (IsMac && Is64) return Native64Mac.JsCreateSymbol(_description, out _symbol);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1451,9 +1544,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
-         if (IsWindows && !Is32) return Native64.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
-         if (IsLinux && !Is32) return Native64Linux.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
-         if (IsMac && !Is32) return Native64Mac.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
+         if (IsWindows && Is64) return Native64.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
+         if (IsWindows && IsArm) return NativeArm.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
+         if (IsLinux && Is64) return Native64Linux.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
+         if (IsMac && Is64) return Native64Mac.JsGetSymbolFromPropertyId(_propertyId, out _symbol);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1466,9 +1560,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
-         if (IsWindows && !Is32) return Native64.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
-         if (IsLinux && !Is32) return Native64Linux.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
-         if (IsMac && !Is32) return Native64Mac.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
+         if (IsWindows && Is64) return Native64.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
+         if (IsWindows && IsArm) return NativeArm.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
+         if (IsLinux && Is64) return Native64Linux.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
+         if (IsMac && Is64) return Native64Mac.JsGetPropertyIdFromSymbol(_symbol, out _propertyId);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1481,9 +1576,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
-         if (IsWindows && !Is32) return Native64.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
-         if (IsLinux && !Is32) return Native64Linux.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
-         if (IsMac && !Is32) return Native64Mac.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
+         if (IsWindows && Is64) return Native64.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
+         if (IsWindows && IsArm) return NativeArm.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
+         if (IsLinux && Is64) return Native64Linux.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
+         if (IsMac && Is64) return Native64Mac.JsGetOwnPropertySymbols(_obj, out _propertySymbols);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1496,9 +1592,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsNumberToInt(_value, out _intValue);
-         if (IsWindows && !Is32) return Native64.JsNumberToInt(_value, out _intValue);
-         if (IsLinux && !Is32) return Native64Linux.JsNumberToInt(_value, out _intValue);
-         if (IsMac && !Is32) return Native64Mac.JsNumberToInt(_value, out _intValue);
+         if (IsWindows && Is64) return Native64.JsNumberToInt(_value, out _intValue);
+         if (IsWindows && IsArm) return NativeArm.JsNumberToInt(_value, out _intValue);
+         if (IsLinux && Is64) return Native64Linux.JsNumberToInt(_value, out _intValue);
+         if (IsMac && Is64) return Native64Mac.JsNumberToInt(_value, out _intValue);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1514,9 +1611,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
-         if (IsWindows && !Is32) return Native64.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
-         if (IsLinux && !Is32) return Native64Linux.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
-         if (IsMac && !Is32) return Native64Mac.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
+         if (IsWindows && Is64) return Native64.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
+         if (IsWindows && IsArm) return NativeArm.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
+         if (IsLinux && Is64) return Native64Linux.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
+         if (IsMac && Is64) return Native64Mac.JsSetIndexedPropertiesToExternalData(_obj, _data, _arrayType, _elementLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1532,9 +1630,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
-         if (IsWindows && !Is32) return Native64.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
-         if (IsLinux && !Is32) return Native64Linux.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
-         if (IsMac && !Is32) return Native64Mac.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
+         if (IsWindows && Is64) return Native64.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
+         if (IsWindows && IsArm) return NativeArm.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
+         if (IsLinux && Is64) return Native64Linux.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
+         if (IsMac && Is64) return Native64Mac.JsGetIndexedPropertiesExternalData(_obj, _data, out _arrayType, out _elementLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1547,9 +1646,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsHasIndexedPropertiesExternalData(_obj, out _value);
-         if (IsWindows && !Is32) return Native64.JsHasIndexedPropertiesExternalData(_obj, out _value);
-         if (IsLinux && !Is32) return Native64Linux.JsHasIndexedPropertiesExternalData(_obj, out _value);
-         if (IsMac && !Is32) return Native64Mac.JsHasIndexedPropertiesExternalData(_obj, out _value);
+         if (IsWindows && Is64) return Native64.JsHasIndexedPropertiesExternalData(_obj, out _value);
+         if (IsWindows && IsArm) return NativeArm.JsHasIndexedPropertiesExternalData(_obj, out _value);
+         if (IsLinux && Is64) return Native64Linux.JsHasIndexedPropertiesExternalData(_obj, out _value);
+         if (IsMac && Is64) return Native64Mac.JsHasIndexedPropertiesExternalData(_obj, out _value);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1562,9 +1662,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsInstanceOf(_obj, _constructor, out _result);
-         if (IsWindows && !Is32) return Native64.JsInstanceOf(_obj, _constructor, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsInstanceOf(_obj, _constructor, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsInstanceOf(_obj, _constructor, out _result);
+         if (IsWindows && Is64) return Native64.JsInstanceOf(_obj, _constructor, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsInstanceOf(_obj, _constructor, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsInstanceOf(_obj, _constructor, out _result);
+         if (IsMac && Is64) return Native64Mac.JsInstanceOf(_obj, _constructor, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1581,9 +1682,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
-         if (IsWindows && !Is32) return Native64.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
+         if (IsWindows && Is64) return Native64.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
+         if (IsMac && Is64) return Native64Mac.JsCreateExternalArrayBuffer(_data, _byteLength, _finalizeCallback, _callbackState, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1600,9 +1702,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
-         if (IsWindows && !Is32) return Native64.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
-         if (IsLinux && !Is32) return Native64Linux.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
-         if (IsMac && !Is32) return Native64Mac.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
+         if (IsWindows && Is64) return Native64.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
+         if (IsWindows && IsArm) return NativeArm.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
+         if (IsLinux && Is64) return Native64Linux.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
+         if (IsMac && Is64) return Native64Mac.JsGetTypedArrayInfo(_typedArray, out _arrayType, out _arrayBuffer, out _byteOffset, out _byteLength);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1615,9 +1718,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetContextOfObject(_obj, out _context);
-         if (IsWindows && !Is32) return Native64.JsGetContextOfObject(_obj, out _context);
-         if (IsLinux && !Is32) return Native64Linux.JsGetContextOfObject(_obj, out _context);
-         if (IsMac && !Is32) return Native64Mac.JsGetContextOfObject(_obj, out _context);
+         if (IsWindows && Is64) return Native64.JsGetContextOfObject(_obj, out _context);
+         if (IsWindows && IsArm) return NativeArm.JsGetContextOfObject(_obj, out _context);
+         if (IsLinux && Is64) return Native64Linux.JsGetContextOfObject(_obj, out _context);
+         if (IsMac && Is64) return Native64Mac.JsGetContextOfObject(_obj, out _context);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1630,9 +1734,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsGetContextData(_context, out _data);
-         if (IsWindows && !Is32) return Native64.JsGetContextData(_context, out _data);
-         if (IsLinux && !Is32) return Native64Linux.JsGetContextData(_context, out _data);
-         if (IsMac && !Is32) return Native64Mac.JsGetContextData(_context, out _data);
+         if (IsWindows && Is64) return Native64.JsGetContextData(_context, out _data);
+         if (IsWindows && IsArm) return NativeArm.JsGetContextData(_context, out _data);
+         if (IsLinux && Is64) return Native64Linux.JsGetContextData(_context, out _data);
+         if (IsMac && Is64) return Native64Mac.JsGetContextData(_context, out _data);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1645,9 +1750,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetContextData(_context, _data);
-         if (IsWindows && !Is32) return Native64.JsSetContextData(_context, _data);
-         if (IsLinux && !Is32) return Native64Linux.JsSetContextData(_context, _data);
-         if (IsMac && !Is32) return Native64Mac.JsSetContextData(_context, _data);
+         if (IsWindows && Is64) return Native64.JsSetContextData(_context, _data);
+         if (IsWindows && IsArm) return NativeArm.JsSetContextData(_context, _data);
+         if (IsLinux && Is64) return Native64Linux.JsSetContextData(_context, _data);
+         if (IsMac && Is64) return Native64Mac.JsSetContextData(_context, _data);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1666,9 +1772,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsParseSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1687,9 +1794,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsWindows && !Is32) return Native64.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && Is64) return Native64.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
+         if (IsMac && Is64) return Native64Mac.JsRunSerializedScriptWithCallback(_scriptLoadCallback, _scriptUnloadCallback, _buffer, _sourceContext, _sourceUrl, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1705,9 +1813,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
-         if (IsWindows && !Is32) return Native64.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
-         if (IsLinux && !Is32) return Native64Linux.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
-         if (IsMac && !Is32) return Native64Mac.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
+         if (IsWindows && Is64) return Native64.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
+         if (IsWindows && IsArm) return NativeArm.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
+         if (IsLinux && Is64) return Native64Linux.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
+         if (IsMac && Is64) return Native64Mac.JsInitializeModuleRecord(_referencingModule, _normalizedSpecifier, out _moduleRecord);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1720,9 +1829,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
-         if (IsWindows && !Is32) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
-         if (IsMac && !Is32) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
+         if (IsWindows && Is64) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
+         if (IsWindows && IsArm) return NativeArm.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
+         if (IsLinux && Is64) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
+         if (IsMac && Is64) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleCallback, _callback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1735,9 +1845,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
-         if (IsWindows && !Is32) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
-         if (IsMac && !Is32) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
+         if (IsWindows && Is64) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
+         if (IsWindows && IsArm) return NativeArm.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
+         if (IsLinux && Is64) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
+         if (IsMac && Is64) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.NotifyModuleReadyCallback, _callback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1751,9 +1862,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
-         if (IsWindows && !Is32) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
-         if (IsLinux && !Is32) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
-         if (IsMac && !Is32) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
+         if (IsWindows && Is64) return Native64.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
+         if (IsWindows && IsArm) return NativeArm.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
+         if (IsLinux && Is64) return Native64Linux.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
+         if (IsMac && Is64) return Native64Mac.JsSetModuleHostInfo(_module, JsModuleHostInfoKind.FetchImportedModuleFromScriptCallback, _callback);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1772,9 +1884,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
-         if (IsWindows && !Is32) return Native64.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
-         if (IsLinux && !Is32) return Native64Linux.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
-         if (IsMac && !Is32) return Native64Mac.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
+         if (IsWindows && Is64) return Native64.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
+         if (IsWindows && IsArm) return NativeArm.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
+         if (IsLinux && Is64) return Native64Linux.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
+         if (IsMac && Is64) return Native64Mac.JsParseModuleSource(_requestModule, _sourceContext, _script, _scriptLength, _sourceFlag, out _exception);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1789,9 +1902,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsModuleEvaluation(_requestModule, out _result);
-         if (IsWindows && !Is32) return Native64.JsModuleEvaluation(_requestModule, out _result);
-         if (IsLinux && !Is32) return Native64Linux.JsModuleEvaluation(_requestModule, out _result);
-         if (IsMac && !Is32) return Native64Mac.JsModuleEvaluation(_requestModule, out _result);
+         if (IsWindows && Is64) return Native64.JsModuleEvaluation(_requestModule, out _result);
+         if (IsWindows && IsArm) return NativeArm.JsModuleEvaluation(_requestModule, out _result);
+         if (IsLinux && Is64) return Native64Linux.JsModuleEvaluation(_requestModule, out _result);
+         if (IsMac && Is64) return Native64Mac.JsModuleEvaluation(_requestModule, out _result);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1807,9 +1921,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
-         if (IsWindows && !Is32) return Native64.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
-         if (IsMac && !Is32) return Native64Mac.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
+         if (IsWindows && Is64) return Native64.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
+         if (IsWindows && IsArm) return NativeArm.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
+         if (IsLinux && Is64) return Native64Linux.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
+         if (IsMac && Is64) return Native64Mac.JsDiagStartDebugging(_runtime, _debugEventCallback, _callbackState);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1822,9 +1937,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagStopDebugging(_runtime, out _callbackState);
-         if (IsWindows && !Is32) return Native64.JsDiagStopDebugging(_runtime, out _callbackState);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagStopDebugging(_runtime, out _callbackState);
-         if (IsMac && !Is32) return Native64Mac.JsDiagStopDebugging(_runtime, out _callbackState);
+         if (IsWindows && Is64) return Native64.JsDiagStopDebugging(_runtime, out _callbackState);
+         if (IsWindows && IsArm) return NativeArm.JsDiagStopDebugging(_runtime, out _callbackState);
+         if (IsLinux && Is64) return Native64Linux.JsDiagStopDebugging(_runtime, out _callbackState);
+         if (IsMac && Is64) return Native64Mac.JsDiagStopDebugging(_runtime, out _callbackState);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1837,9 +1953,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
-         if (IsWindows && !Is32) return Native64.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
-         if (IsMac && !Is32) return Native64Mac.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
+         if (IsWindows && Is64) return Native64.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
+         if (IsWindows && IsArm) return NativeArm.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
+         if (IsLinux && Is64) return Native64Linux.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
+         if (IsMac && Is64) return Native64Mac.JsDiagSetBreakpoint(_scriptId, _lineNumber, _column, out _breakpoint);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1852,9 +1969,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagRequestAsyncBreak(_jsRuntime);
-         if (IsWindows && !Is32) return Native64.JsDiagRequestAsyncBreak(_jsRuntime);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagRequestAsyncBreak(_jsRuntime);
-         if (IsMac && !Is32) return Native64Mac.JsDiagRequestAsyncBreak(_jsRuntime);
+         if (IsWindows && Is64) return Native64.JsDiagRequestAsyncBreak(_jsRuntime);
+         if (IsWindows && IsArm) return NativeArm.JsDiagRequestAsyncBreak(_jsRuntime);
+         if (IsLinux && Is64) return Native64Linux.JsDiagRequestAsyncBreak(_jsRuntime);
+         if (IsMac && Is64) return Native64Mac.JsDiagRequestAsyncBreak(_jsRuntime);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1867,9 +1985,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagGetBreakpoints(out _breakpoints);
-         if (IsWindows && !Is32) return Native64.JsDiagGetBreakpoints(out _breakpoints);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagGetBreakpoints(out _breakpoints);
-         if (IsMac && !Is32) return Native64Mac.JsDiagGetBreakpoints(out _breakpoints);
+         if (IsWindows && Is64) return Native64.JsDiagGetBreakpoints(out _breakpoints);
+         if (IsWindows && IsArm) return NativeArm.JsDiagGetBreakpoints(out _breakpoints);
+         if (IsLinux && Is64) return Native64Linux.JsDiagGetBreakpoints(out _breakpoints);
+         if (IsMac && Is64) return Native64Mac.JsDiagGetBreakpoints(out _breakpoints);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1882,9 +2001,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagRemoveBreakpoint(_breakpointId);
-         if (IsWindows && !Is32) return Native64.JsDiagRemoveBreakpoint(_breakpointId);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagRemoveBreakpoint(_breakpointId);
-         if (IsMac && !Is32) return Native64Mac.JsDiagRemoveBreakpoint(_breakpointId);
+         if (IsWindows && Is64) return Native64.JsDiagRemoveBreakpoint(_breakpointId);
+         if (IsWindows && IsArm) return NativeArm.JsDiagRemoveBreakpoint(_breakpointId);
+         if (IsLinux && Is64) return Native64Linux.JsDiagRemoveBreakpoint(_breakpointId);
+         if (IsMac && Is64) return Native64Mac.JsDiagRemoveBreakpoint(_breakpointId);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1897,9 +2017,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagGetScripts(out _scripts);
-         if (IsWindows && !Is32) return Native64.JsDiagGetScripts(out _scripts);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagGetScripts(out _scripts);
-         if (IsMac && !Is32) return Native64Mac.JsDiagGetScripts(out _scripts);
+         if (IsWindows && Is64) return Native64.JsDiagGetScripts(out _scripts);
+         if (IsWindows && IsArm) return NativeArm.JsDiagGetScripts(out _scripts);
+         if (IsLinux && Is64) return Native64Linux.JsDiagGetScripts(out _scripts);
+         if (IsMac && Is64) return Native64Mac.JsDiagGetScripts(out _scripts);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
@@ -1913,9 +2034,10 @@ namespace SharpChakra
       {
 #if NETSTANDARD
          if (IsWindows && Is32) return Native32.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
-         if (IsWindows && !Is32) return Native64.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
-         if (IsLinux && !Is32) return Native64Linux.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
-         if (IsMac && !Is32) return Native64Mac.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
+         if (IsWindows && Is64) return Native64.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
+         if (IsWindows && IsArm) return NativeArm.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
+         if (IsLinux && Is64) return Native64Linux.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
+         if (IsMac && Is64) return Native64Mac.JsDiagEvaluate(_expression, _stackFrameIndex, _parseAttributes, _forceSetValueProp, out _eval);
          throw new NotSupportedException("The current operation system is not supported.");
 #else
          return Is32
