@@ -77,7 +77,7 @@ namespace SharpChakra.Json
             {
                 var value = Visit(entry.Value);
                 var propertyId = JsPropertyId.FromString(entry.Key);
-                jsonObject.SetProperty(propertyId, value, true);
+                jsonObject.SetProperty(propertyId, value);
                 value.Release();
             }
 

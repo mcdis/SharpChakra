@@ -39,8 +39,7 @@ namespace Sample.Debugging
 
                 context.Global // Register Global Functions
                     .SetProperty("loginfo", // loginfo
-                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
-                        true);
+                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())));
 
                 foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
                 {

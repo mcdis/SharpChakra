@@ -54,10 +54,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SharpChakra.Extensions\SharpChakra.Extensions.csproj">
-      <Project>{1a5722e1-d8f0-4879-9299-6e50466167e8}</Project>
-      <Name>SharpChakra.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\SharpChakra.Json\SharpChakra.Json.csproj">
       <Project>{0b2a5ca7-5b4c-4e87-9524-32dea572fadc}</Project>
       <Name>SharpChakra.Json</Name>

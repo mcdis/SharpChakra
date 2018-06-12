@@ -16,8 +16,7 @@ namespace Sample
 
                 context.Global // Register Global Functions
                     .SetProperty("loginfo", // loginfo
-                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
-                        true)
+                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())))
                     .SetProperty("logerror", // logerror
                         context.CreateFunction(x =>
                         {
@@ -26,8 +25,7 @@ namespace Sample
                             Console.ForegroundColor = ConsoleColor.DarkRed; // Change color to red
                             Console.WriteLine(msg); // Output
                             Console.ForegroundColor = color; // Restore color
-                        }),
-                        true);
+                        }));
 
                 foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
                 {

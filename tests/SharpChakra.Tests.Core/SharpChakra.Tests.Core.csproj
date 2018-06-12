@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SharpChakra.Extensions\SharpChakra.Extensions.csproj" />
     <ProjectReference Include="..\..\src\SharpChakra.Json\SharpChakra.Json.csproj" />
     <ProjectReference Include="..\..\src\SharpChakra\SharpChakra.csproj" />
   </ItemGroup>

@@ -171,7 +171,7 @@ namespace SharpChakra
             return propertyReference;
         }
 
-        public void SetProperty(JsPropertyId id, JsValue value, bool useStrictRules) =>
+        public void SetProperty(JsPropertyId id, JsValue value, bool useStrictRules = true) =>
             Native.ThrowIfError(Native.JsSetProperty(this, id, value, useStrictRules));
 
         public JsValue DeleteProperty(JsPropertyId propertyId, bool useStrictRules)

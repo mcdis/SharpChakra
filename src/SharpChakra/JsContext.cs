@@ -156,39 +156,7 @@ namespace SharpChakra
             Native.ThrowIfError(Native.JsContextRelease(this, out var count));
             return count;
         }
-        public JsValue Create(object val)
-        {
-            switch (val)
-            {
-                case null:
-                    return CreateNull();
-                case short i16:
-                    return CreateInt32(i16);
-                case ushort ui16:
-                    return CreateInt32(ui16);
-                case int i32:
-                    return CreateInt32(i32);
-                case uint ui32:
-                    return CreateInt32((int)ui32);
-                case string s:
-                    return CreateString(s);
-                case char ch:
-                    return CreateString(ch.ToString());
-                case float f32:
-                    return CreateDouble(f32);
-                case double f64:
-                    return CreateDouble(f64);
-                case bool b:
-                    return CreateBoolean(b);
-                case Action a:
-                    return CreateFunction(a);
-                case Func<JsValue> func:
-                    return CreateFunction(func);
-                default:
-                    return CreateUndefined();
-            }
-        }
-
+        
         [Pure]
         public JsValue CreateUndefined()
         {
@@ -340,54 +308,6 @@ namespace SharpChakra
             EnsureCurrent();
             Native.ThrowIfError(Native.JsCreateUriError(message, out var reference));
             return reference;
-        }
-
-        public JsValue CreateFunction(Action x)
-        {
-            var that = this;
-
-            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) =>
-            {
-                x();
-                return that.CreateUndefined();
-            });
-        }
-
-        public JsValue CreateFunction(Func<JsValue> x)
-        {
-            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) => x());
-        }
-
-        public JsValue CreateFunction(Action<JsNativeFunctionArgs> handler)
-        {
-            var that = this;
-
-            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) =>
-            {
-                handler(new JsNativeFunctionArgs
-                {
-                    Callee = callee,
-                    IsConstructCall = isConstructCall,
-                    Arguments = arguments,
-                    ArgumentCount = argumentCount,
-                    CallbackData = callbackData
-                });
-
-                return that.CreateUndefined();
-            });
-        }
-
-        public JsValue CreateFunction(Func<JsNativeFunctionArgs, JsValue> handler)
-        {
-            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData)
-                => handler(new JsNativeFunctionArgs
-                {
-                    Callee = callee,
-                    IsConstructCall = isConstructCall,
-                    Arguments = arguments,
-                    ArgumentCount = argumentCount,
-                    CallbackData = callbackData
-                }));
         }
     }
 }

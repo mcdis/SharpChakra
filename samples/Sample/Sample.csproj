@@ -53,10 +53,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SharpChakra.Extensions\SharpChakra.Extensions.csproj">
-      <Project>{1A5722E1-D8F0-4879-9299-6E50466167E8}</Project>
-      <Name>SharpChakra.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\SharpChakra\SharpChakra.csproj">
       <Project>{d2605b03-f075-4593-998e-b04ead3ab2c3}</Project>
       <Name>SharpChakra</Name>

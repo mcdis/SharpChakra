@@ -15,8 +15,8 @@ namespace Sample.Extensions
                 var jsCtx = context.CreateObject();
 
                 context.Global
-                    .SetProperty("ctx", jsCtx, true)
-                    .SetProperty("proxy", context.CreateProxy(new TestProxy()), true);
+                    .SetProperty("ctx", jsCtx)
+                    .SetProperty("proxy", context.CreateProxy(new TestProxy()));
 
                 context.RunScript(@"
                    ctx['a'] = 4;

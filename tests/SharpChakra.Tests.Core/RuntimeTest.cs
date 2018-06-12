@@ -6,24 +6,8 @@ using Xunit;
 
 namespace SharpChakra.Tests.Core
 {
-    public class JsRuntimeTest
+    public class RuntimeTest
     {
-        [Fact]
-        public void TestFunction()
-        {
-            using (var runtime = JsRuntime.Create())
-            {
-                var context = runtime.CreateContext();
-                var called = false;
-
-                context.Global.SetProperty("run", context.CreateFunction(() => called = true), true);
-                context.RunScript("run();");
-
-
-                Assert.True(called, "the run function was not callded.");
-            }
-        }
-
         [Fact]
         public void TestContextSwitching()
         {
@@ -41,7 +25,7 @@ namespace SharpChakra.Tests.Core
                 context2.EnsureCurrent();
 
                 // Modify the global from context1 without switching.
-                global1.SetProperty("run", func, true);
+                global1.SetProperty("run", func);
 
                 // Run script at context1.
                 context1.RunScript("run();");
@@ -56,9 +40,8 @@ namespace SharpChakra.Tests.Core
             using (var runtime = JsRuntime.Create())
             {
                 var context = runtime.CreateContext();
-
-                // Create a new string.
                 var value = context.CreateString("test");
+
                 Assert.Equal(context, value.Context);
             }
         }

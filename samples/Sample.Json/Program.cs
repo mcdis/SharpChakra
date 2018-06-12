@@ -22,8 +22,7 @@ namespace Sample.Json
                             Console.WriteLine("-- dump --");
                             Console.WriteLine(x.Arguments[1].ToJToken().ToString(Formatting.Indented));
                             return JObject.Parse("{status:'ok',error:-1}").ToJsValue(context);
-                        }),
-                        true);
+                        }));
 
                 Console.WriteLine("-- executing --");
                 var res = context.RunScript("dump({id:4,name:'chakra'});");

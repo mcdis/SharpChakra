@@ -14,7 +14,7 @@ namespace Sample.Modules
                 var context = jsrt.CreateContext();
                 
                 // Create the global method 'echo'.
-                context.Global.SetProperty("echo", context.CreateFunction(x => Console.WriteLine(x.Arguments[1].ToString())), true);
+                context.Global.SetProperty("echo", context.CreateFunction(x => Console.WriteLine(x.Arguments[1].ToString())));
 
                 // Create the root Module
                 var rootModule = context.CreateModule(JsModuleRecord.Root);          

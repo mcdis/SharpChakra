@@ -6,7 +6,7 @@ namespace SharpChakra.Extensions
 {
     public static class JsValueExtensions
     {
-        public static JsValue SetProperty(this JsValue _this, string propertyId, JsValue value, bool useStrictRules)
+        public static JsValue SetProperty(this JsValue _this, string propertyId, JsValue value, bool useStrictRules = true)
         {
             _this.SetProperty(JsPropertyId.FromString(propertyId), value, useStrictRules);
             return _this;
