@@ -8,68 +8,69 @@ using SharpChakra.Json;
 
 namespace Sample.Debugging
 {
-   class Program
-   {
-      static void Main()
-      {
-         using (var jsrt = JsRuntime.Create())
-         {
-            jsrt.StartDebugging((_event, data, state) =>
+    internal class Program
+    {
+        private static void Main()
+        {
+            using (var jsrt = JsRuntime.Create())
             {
-               Console.WriteLine($"debugger>\r\n {_event}, {data.ToJToken().ToString(Formatting.Indented)}");
-               if (_event == JsDiagDebugEvent.JsDiagDebugEventSourceCompile)
-               {
-                  var scriptId = data.GetProperty("scriptId").ToInt32();
-                  jsrt.SetBreakpoint((uint)scriptId,5,0,out var breakpoint);
-               }
+                var context = jsrt.CreateContext();
 
-               if (_event == JsDiagDebugEvent.JsDiagDebugEventBreakpoint)
-               {
-                  Console.WriteLine("debugger> Breakpoint! Enter to continue... (write 'break' to stop the script)");
-                  var res = jsrt.DiagEvaluate(JsValue.FromString("debugVar"), 0,
-                     JsParseScriptAttributes.JsParseScriptAttributeNone, false);
-                  Console.WriteLine($"debugger> dump 'debugVar' info:\r\n {res.ToJToken().ToString(Formatting.Indented)}");
-                  Console.ReadLine();
-               }
-            });
-            using (jsrt.CreateContext().Scope())
-            {
-               var fn = new JsNativeFunctionBuilder();
-               var globalObject = JsValue.GetGlobalObject(); // Get JS Global Object
+                jsrt.StartDebugging((_event, data, state) =>
+                {
+                    Console.WriteLine($"debugger>\r\n {_event}, {data.ToJToken().ToString(Formatting.Indented)}");
+                    if (_event == JsDiagDebugEvent.JsDiagDebugEventSourceCompile)
+                    {
+                        var scriptId = data.GetProperty("scriptId").ToInt32();
+                        jsrt.SetBreakpoint((uint) scriptId, 5, 0, out var breakpoint);
+                    }
 
-               globalObject // Register Global Functions
-                  .SetProperty("loginfo", // loginfo
-                     fn.New(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
-                     true);
+                    if (_event == JsDiagDebugEvent.JsDiagDebugEventBreakpoint)
+                    {
+                        Console.WriteLine(
+                            "debugger> Breakpoint! Enter to continue... (write 'break' to stop the script)");
+                        var res = jsrt.DiagEvaluate(context.CreateString("debugVar"), 0,
+                            JsParseScriptAttributes.JsParseScriptAttributeNone, false);
+                        Console.WriteLine(
+                            $"debugger> dump 'debugVar' info:\r\n {res.ToJToken().ToString(Formatting.Indented)}");
+                        Console.ReadLine();
+                    }
+                });
 
-               foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
-               {
-                  Console.WriteLine($"Executing '{js}' ... ------------------->");
-                  JsContext.RunScript(File.ReadAllText(js));
-                  Console.WriteLine($"<------------------- '{js}' executed");
-               }
+                context.Global // Register Global Functions
+                    .SetProperty("loginfo", // loginfo
+                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
+                        true);
+
+                foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
+                {
+                    Console.WriteLine($"Executing '{js}' ... ------------------->");
+                    context.RunScript(File.ReadAllText(js));
+                    Console.WriteLine($"<------------------- '{js}' executed");
+                }
+
+                //jsrt.StopDebugging();
             }
 
-            //jsrt.StopDebugging();
-         }
+            Console.WriteLine("Finished... Press enter to exit...");
+            Console.ReadLine();
+        }
 
-         Console.WriteLine("Finished... Press enter to exit...");
-         Console.ReadLine();
-      }
-      private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
-      {
-         var build = new StringBuilder();
-         build.Append("js> ");
-         for (uint index = 1;
-            index < count;
-            index++)
-         {
-            if (index > 1)
-               build.Append(" ");
+        private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
+        {
+            var build = new StringBuilder();
+            build.Append("js> ");
+            for (uint index = 1;
+                index < count;
+                index++)
+            {
+                if (index > 1)
+                    build.Append(" ");
 
-            build.Append(arguments[index].ConvertToString().ToString());
-         }
-         return build;
-      }
-   }
+                build.Append(arguments[index].ConvertToString().ToString());
+            }
+
+            return build;
+        }
+    }
 }

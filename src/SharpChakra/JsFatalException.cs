@@ -8,6 +8,7 @@ namespace SharpChakra
             this(code, "A fatal exception has occurred in a JavaScript runtime")
         {
         }
+
         public JsFatalException(JsErrorCode code, string message) :
             base(code, message)
         {

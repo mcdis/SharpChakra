@@ -2,7 +2,7 @@ using System;
 
 namespace SharpChakra
 {
-   /// <summary>
+    /// <summary>
     ///     An exception that occurred in the workings of the JavaScript engine itself.
     /// </summary>
     public sealed class JsEngineException : JsException

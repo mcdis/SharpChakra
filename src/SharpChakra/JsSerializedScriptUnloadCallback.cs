@@ -1,4 +1,4 @@
 ﻿namespace SharpChakra
 {
-   public delegate void JavaScriptSerializedScriptUnloadCallback(JsSourceContext sourceContext);
+    public delegate void JavaScriptSerializedScriptUnloadCallback(JsSourceContext sourceContext);
 }

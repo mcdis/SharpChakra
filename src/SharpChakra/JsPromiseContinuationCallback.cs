@@ -2,5 +2,5 @@
 
 namespace SharpChakra
 {
-   public delegate void JsPromiseContinuationCallback(JsValue task, IntPtr callbackState);
+    public delegate void JsPromiseContinuationCallback(JsValue task, IntPtr callbackState);
 }

@@ -2,5 +2,5 @@
 
 namespace SharpChakra
 {
-   public delegate void JsObjectBeforeCollectCallback(JsValue reference, IntPtr callbackState);
+    public delegate void JsObjectBeforeCollectCallback(JsValue reference, IntPtr callbackState);
 }

@@ -2,5 +2,6 @@
 
 namespace SharpChakra
 {
-   public delegate bool JavaScriptThreadServiceCallback(JsBackgroundWorkItemCallback callbackFunction, IntPtr callbackData);
+    public delegate bool JavaScriptThreadServiceCallback(JsBackgroundWorkItemCallback callbackFunction,
+        IntPtr callbackData);
 }

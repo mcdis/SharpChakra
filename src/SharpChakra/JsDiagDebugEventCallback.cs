@@ -2,5 +2,5 @@
 
 namespace SharpChakra
 {
-   public delegate void JsDiagDebugEventCallback(JsDiagDebugEvent debugEvent,JsValue eventData,IntPtr callbackState);
+    public delegate void JsDiagDebugEventCallback(JsDiagDebugEvent debugEvent, JsValue eventData, IntPtr callbackState);
 }

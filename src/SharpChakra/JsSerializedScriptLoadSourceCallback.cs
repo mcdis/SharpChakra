@@ -1,4 +1,5 @@
 ﻿namespace SharpChakra
 {
-    public delegate bool JavaScriptSerializedScriptLoadSourceCallback(JsSourceContext sourceContext, out string scriptBuffer);
+    public delegate bool JavaScriptSerializedScriptLoadSourceCallback(JsSourceContext sourceContext,
+        out string scriptBuffer);
 }
