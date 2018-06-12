@@ -18,10 +18,10 @@ namespace Sample.Json
             JsValue // Register Global Function
                .GetGlobalObject()
                .SetProperty("dump", // dump
-               fn.New(_x =>
+               fn.New(x =>
                   {
                      Console.WriteLine("-- dump --");
-                     Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
+                     Console.WriteLine(x.Arguments[1].ToJToken().ToString(Formatting.Indented));
                      return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
                   }),
                true);

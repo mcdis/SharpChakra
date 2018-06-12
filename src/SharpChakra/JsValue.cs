@@ -5,10 +5,10 @@ namespace SharpChakra
 {
    public struct JsValue
    {
-      private readonly IntPtr p_reference;
-      private JsValue(IntPtr _reference)
+      private readonly IntPtr _pReference;
+      private JsValue(IntPtr reference)
       {
-         p_reference = _reference;
+         _pReference = reference;
       }
       public static JsValue Invalid => new JsValue(IntPtr.Zero);
       public static JsValue Undefined
@@ -48,7 +48,7 @@ namespace SharpChakra
          Native.ThrowIfError(Native.JsGetGlobalObject(out var value));
          return value;
       }
-      public bool IsValid => p_reference != IntPtr.Zero;
+      public bool IsValid => _pReference != IntPtr.Zero;
       public JsValueType ValueType
       {
          get
@@ -99,24 +99,24 @@ namespace SharpChakra
          }
          set => Native.ThrowIfError(Native.JsSetExternalData(this, value));
       }
-      public static JsValue FromBoolean(bool _value)
+      public static JsValue FromBoolean(bool value)
       {
-         Native.ThrowIfError(Native.JsBoolToBoolean(_value, out var reference));
+         Native.ThrowIfError(Native.JsBoolToBoolean(value, out var reference));
          return reference;
       }
-      public static JsValue FromDouble(double _value)
+      public static JsValue FromDouble(double value)
       {
-         Native.ThrowIfError(Native.JsDoubleToNumber(_value, out var reference));
+         Native.ThrowIfError(Native.JsDoubleToNumber(value, out var reference));
          return reference;
       }
-      public static JsValue FromInt32(int _value)
+      public static JsValue FromInt32(int value)
       {
-         Native.ThrowIfError(Native.JsIntToNumber(_value, out var reference));
+         Native.ThrowIfError(Native.JsIntToNumber(value, out var reference));
          return reference;
       }
-      public static JsValue FromString(string _value)
+      public static JsValue FromString(string value)
       {
-         Native.ThrowIfError(Native.JsPointerToString(_value, new UIntPtr((uint) _value.Length), out var reference));
+         Native.ThrowIfError(Native.JsPointerToString(value, new UIntPtr((uint) value.Length), out var reference));
          return reference;
       }
       public static JsValue CreateObject()
@@ -124,54 +124,54 @@ namespace SharpChakra
          Native.ThrowIfError(Native.JsCreateObject(out var reference));
          return reference;
       }
-      public static JsValue CreateExternalObject(IntPtr _data, JsObjectFinalizeCallback _finalizer)
+      public static JsValue CreateExternalObject(IntPtr data, JsObjectFinalizeCallback finalizer)
       {
-         Native.ThrowIfError(Native.JsCreateExternalObject(_data, _finalizer, out var reference));
+         Native.ThrowIfError(Native.JsCreateExternalObject(data, finalizer, out var reference));
          return reference;
       }
-      public static JsValue CreateFunction(JsNativeFunction _function)
+      public static JsValue CreateFunction(JsNativeFunction function)
       {
-         Native.ThrowIfError(Native.JsCreateFunction(_function, IntPtr.Zero, out var reference));
+         Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out var reference));
          return reference;
       }
-      public static JsValue CreateFunction(JsNativeFunction _function, IntPtr _callbackData)
+      public static JsValue CreateFunction(JsNativeFunction function, IntPtr callbackData)
       {
-         Native.ThrowIfError(Native.JsCreateFunction(_function, _callbackData, out var reference));
+         Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out var reference));
          return reference;
       }
-      public static JsValue CreateArray(uint _length)
+      public static JsValue CreateArray(uint length)
       {
-         Native.ThrowIfError(Native.JsCreateArray(_length, out var reference));
+         Native.ThrowIfError(Native.JsCreateArray(length, out var reference));
          return reference;
       }
-      public static JsValue CreateError(JsValue _message)
+      public static JsValue CreateError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateError(message, out var reference));
          return reference;
       }
-      public static JsValue CreateRangeError(JsValue _message)
+      public static JsValue CreateRangeError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateRangeError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateRangeError(message, out var reference));
          return reference;
       }
-      public static JsValue CreateReferenceError(JsValue _message)
+      public static JsValue CreateReferenceError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateReferenceError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateReferenceError(message, out var reference));
          return reference;
       }
-      public static JsValue CreateSyntaxError(JsValue _message)
+      public static JsValue CreateSyntaxError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateSyntaxError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateSyntaxError(message, out var reference));
          return reference;
       }
-      public static JsValue CreateTypeError(JsValue _message)
+      public static JsValue CreateTypeError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateTypeError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateTypeError(message, out var reference));
          return reference;
       }
-      public static JsValue CreateUriError(JsValue _message)
+      public static JsValue CreateUriError(JsValue message)
       {
-         Native.ThrowIfError(Native.JsCreateUriError(_message, out var reference));
+         Native.ThrowIfError(Native.JsCreateUriError(message, out var reference));
          return reference;
       }
       public uint AddRef()
@@ -228,9 +228,9 @@ namespace SharpChakra
       {
          Native.ThrowIfError(Native.JsPreventExtension(this));
       }
-      public JsValue GetOwnPropertyDescriptor(JsPropertyId _propertyId)
+      public JsValue GetOwnPropertyDescriptor(JsPropertyId propertyId)
       {
-         Native.ThrowIfError(Native.JsGetOwnPropertyDescriptor(this, _propertyId, out var descriptorReference));
+         Native.ThrowIfError(Native.JsGetOwnPropertyDescriptor(this, propertyId, out var descriptorReference));
          return descriptorReference;
       }
       public JsValue GetOwnPropertyNames()
@@ -238,67 +238,67 @@ namespace SharpChakra
          Native.ThrowIfError(Native.JsGetOwnPropertyNames(this, out var propertyNamesReference));
          return propertyNamesReference;
       }
-      public bool HasProperty(JsPropertyId _propertyId)
+      public bool HasProperty(JsPropertyId propertyId)
       {
-         Native.ThrowIfError(Native.JsHasProperty(this, _propertyId, out var hasProperty));
+         Native.ThrowIfError(Native.JsHasProperty(this, propertyId, out var hasProperty));
          return hasProperty;
       }
-      public JsValue GetProperty(JsPropertyId _id)
+      public JsValue GetProperty(JsPropertyId id)
       {
-         Native.ThrowIfError(Native.JsGetProperty(this, _id, out var propertyReference));
+         Native.ThrowIfError(Native.JsGetProperty(this, id, out var propertyReference));
          return propertyReference;
       }
-      public void SetProperty(JsPropertyId _id, JsValue _value, bool _useStrictRules) =>
-         Native.ThrowIfError(Native.JsSetProperty(this, _id, _value, _useStrictRules));
-      public JsValue DeleteProperty(JsPropertyId _propertyId, bool _useStrictRules)
+      public void SetProperty(JsPropertyId id, JsValue value, bool useStrictRules) =>
+         Native.ThrowIfError(Native.JsSetProperty(this, id, value, useStrictRules));
+      public JsValue DeleteProperty(JsPropertyId propertyId, bool useStrictRules)
       {
-         Native.ThrowIfError(Native.JsDeleteProperty(this, _propertyId, _useStrictRules, out var returnReference));
+         Native.ThrowIfError(Native.JsDeleteProperty(this, propertyId, useStrictRules, out var returnReference));
          return returnReference;
       }
-      public bool DefineProperty(JsPropertyId _propertyId, JsValue _propertyDescriptor)
+      public bool DefineProperty(JsPropertyId propertyId, JsValue propertyDescriptor)
       {
-         Native.ThrowIfError(Native.JsDefineProperty(this, _propertyId, _propertyDescriptor, out var result));
+         Native.ThrowIfError(Native.JsDefineProperty(this, propertyId, propertyDescriptor, out var result));
          return result;
       }
-      public bool HasIndexedProperty(JsValue _index)
+      public bool HasIndexedProperty(JsValue index)
       {
-         Native.ThrowIfError(Native.JsHasIndexedProperty(this, _index, out var hasProperty));
+         Native.ThrowIfError(Native.JsHasIndexedProperty(this, index, out var hasProperty));
          return hasProperty;
       }
-      public JsValue GetIndexedProperty(JsValue _index)
+      public JsValue GetIndexedProperty(JsValue index)
       {
-         Native.ThrowIfError(Native.JsGetIndexedProperty(this, _index, out var propertyReference));
+         Native.ThrowIfError(Native.JsGetIndexedProperty(this, index, out var propertyReference));
          return propertyReference;
       }
-      public void SetIndexedProperty(JsValue _index, JsValue _value) => Native.ThrowIfError(Native.JsSetIndexedProperty(this, _index, _value));
-      public void DeleteIndexedProperty(JsValue _index)
+      public void SetIndexedProperty(JsValue index, JsValue value) => Native.ThrowIfError(Native.JsSetIndexedProperty(this, index, value));
+      public void DeleteIndexedProperty(JsValue index)
       {
-         Native.ThrowIfError(Native.JsDeleteIndexedProperty(this, _index));
+         Native.ThrowIfError(Native.JsDeleteIndexedProperty(this, index));
       }
-      public bool Equals(JsValue _other)
+      public bool Equals(JsValue other)
       {
-         Native.ThrowIfError(Native.JsEquals(this, _other, out var equals));
+         Native.ThrowIfError(Native.JsEquals(this, other, out var equals));
          return equals;
       }
-      public bool StrictEquals(JsValue _other)
+      public bool StrictEquals(JsValue other)
       {
-         Native.ThrowIfError(Native.JsStrictEquals(this, _other, out var equals));
+         Native.ThrowIfError(Native.JsStrictEquals(this, other, out var equals));
          return equals;
       }
-      public JsValue CallFunction(params JsValue[] _arguments)
+      public JsValue CallFunction(params JsValue[] arguments)
       {
-         if (_arguments.Length > ushort.MaxValue)
-            throw new ArgumentOutOfRangeException(nameof(_arguments));
+         if (arguments.Length > ushort.MaxValue)
+            throw new ArgumentOutOfRangeException(nameof(arguments));
 
-         Native.ThrowIfError(Native.JsCallFunction(this, _arguments, (ushort) _arguments.Length, out var returnReference));
+         Native.ThrowIfError(Native.JsCallFunction(this, arguments, (ushort) arguments.Length, out var returnReference));
          return returnReference;
       }
-      public JsValue ConstructObject(params JsValue[] _arguments)
+      public JsValue ConstructObject(params JsValue[] arguments)
       {
-         if (_arguments.Length > ushort.MaxValue)
-            throw new ArgumentOutOfRangeException(nameof(_arguments));
+         if (arguments.Length > ushort.MaxValue)
+            throw new ArgumentOutOfRangeException(nameof(arguments));
 
-         Native.ThrowIfError(Native.JsConstructObject(this, _arguments, (ushort) _arguments.Length, out var returnReference));
+         Native.ThrowIfError(Native.JsConstructObject(this, arguments, (ushort) arguments.Length, out var returnReference));
          return returnReference;
       }
    }

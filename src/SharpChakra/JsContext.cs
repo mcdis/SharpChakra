@@ -5,11 +5,11 @@ namespace SharpChakra
 
    public struct JsContext
    {
-      private readonly IntPtr p_reference;
+      private readonly IntPtr _pReference;
 
-      internal JsContext(IntPtr _reference)
+      internal JsContext(IntPtr reference)
       {
-         p_reference = _reference;
+         _pReference = reference;
       }
 
       public static JsContext Invalid => new JsContext(IntPtr.Zero);
@@ -43,45 +43,45 @@ namespace SharpChakra
          }
       }
 
-      public bool IsValid => p_reference != IntPtr.Zero;
+      public bool IsValid => _pReference != IntPtr.Zero;
       public static uint Idle()
       {
          uint ticks;
          Native.ThrowIfError(Native.JsIdle(out ticks));
          return ticks;
       }
-      public static JsValue ParseScript(string _script, JsSourceContext _sourceContext, string _sourceName)
+      public static JsValue ParseScript(string script, JsSourceContext sourceContext, string sourceName)
       {
          JsValue result;
-         Native.ThrowIfError(Native.JsParseScript(_script, _sourceContext, _sourceName, out result));
+         Native.ThrowIfError(Native.JsParseScript(script, sourceContext, sourceName, out result));
          return result;
       }
-      public static JsValue ParseScript(string _script, byte[] _buffer, JsSourceContext _sourceContext, string _sourceName)
+      public static JsValue ParseScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
       {
-         Native.ThrowIfError(Native.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceName, out var result));
-         return result;
-      }
-
-      public static JsValue ParseScript(string _script) => ParseScript(_script, JsSourceContext.None, string.Empty);
-      public static JsValue ParseScript(string _script, byte[] _buffer) => ParseScript(_script, _buffer, JsSourceContext.None, string.Empty);
-      public static JsValue RunScript(string _script, JsSourceContext _sourceContext, string _sourceName)
-      {
-         Native.ThrowIfError(Native.JsRunScript(_script, _sourceContext, _sourceName, out var result));
+         Native.ThrowIfError(Native.JsParseSerializedScript(script, buffer, sourceContext, sourceName, out var result));
          return result;
       }
 
-      public static JsValue RunScript(string _script, byte[] _buffer, JsSourceContext _sourceContext, string _sourceName)
+      public static JsValue ParseScript(string script) => ParseScript(script, JsSourceContext.None, string.Empty);
+      public static JsValue ParseScript(string script, byte[] buffer) => ParseScript(script, buffer, JsSourceContext.None, string.Empty);
+      public static JsValue RunScript(string script, JsSourceContext sourceContext, string sourceName)
       {
-         Native.ThrowIfError(Native.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceName, out var result));
+         Native.ThrowIfError(Native.JsRunScript(script, sourceContext, sourceName, out var result));
          return result;
       }
 
-      public static JsValue RunScript(string _script) => RunScript(_script, JsSourceContext.None, string.Empty);
-      public static JsValue RunScript(string _script, byte[] _buffer) => RunScript(_script, _buffer, JsSourceContext.None, string.Empty);
-      public static ulong SerializeScript(string _script, byte[] _buffer)
+      public static JsValue RunScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
       {
-         var bufferSize = (ulong)_buffer.Length;
-         Native.ThrowIfError(Native.JsSerializeScript(_script, _buffer, ref bufferSize));
+         Native.ThrowIfError(Native.JsRunSerializedScript(script, buffer, sourceContext, sourceName, out var result));
+         return result;
+      }
+
+      public static JsValue RunScript(string script) => RunScript(script, JsSourceContext.None, string.Empty);
+      public static JsValue RunScript(string script, byte[] buffer) => RunScript(script, buffer, JsSourceContext.None, string.Empty);
+      public static ulong SerializeScript(string script, byte[] buffer)
+      {
+         var bufferSize = (ulong)buffer.Length;
+         Native.ThrowIfError(Native.JsSerializeScript(script, buffer, ref bufferSize));
          return bufferSize;
       }
 
@@ -92,7 +92,7 @@ namespace SharpChakra
          return reference;
       }
 
-      public static void SetException(JsValue _exception) => Native.ThrowIfError(Native.JsSetException(_exception));
+      public static void SetException(JsValue exception) => Native.ThrowIfError(Native.JsSetException(exception));
       public uint AddRef()
       {
          Native.ThrowIfError(Native.JsContextAddRef(this, out var count));
@@ -106,22 +106,22 @@ namespace SharpChakra
 
       public struct Scope : IDisposable
       {
-         private readonly JsContext p_previousContext;
-         private bool p_disposed;
-         public Scope(JsContext _context)
+         private readonly JsContext _pPreviousContext;
+         private bool _pDisposed;
+         public Scope(JsContext context)
          {
-            p_disposed = false;
-            p_previousContext = Current;
-            Current = _context;
+            _pDisposed = false;
+            _pPreviousContext = Current;
+            Current = context;
          }
 
          public void Dispose()
          {
-            if (p_disposed)
+            if (_pDisposed)
                return;
 
-            Current = p_previousContext;
-            p_disposed = true;
+            Current = _pPreviousContext;
+            _pDisposed = true;
          }
       }
    }

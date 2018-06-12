@@ -4,16 +4,16 @@ namespace SharpChakra
 {
    public sealed class JsUsageException : JsException
    {
-      public JsUsageException(JsErrorCode _code) :
-          this(_code, "A fatal exception has occurred in a JavaScript runtime")
+      public JsUsageException(JsErrorCode code) :
+          this(code, "A fatal exception has occurred in a JavaScript runtime")
       {
       }
-      public JsUsageException(JsErrorCode _code, string _message) :
-          base(_code, _message)
+      public JsUsageException(JsErrorCode code, string message) :
+          base(code, message)
       {
       }
-      private JsUsageException(string _message, Exception _innerException) :
-          base(_message, _innerException)
+      private JsUsageException(string message, Exception innerException) :
+          base(message, innerException)
       {
       }
    }

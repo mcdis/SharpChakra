@@ -2,5 +2,5 @@
 
 namespace SharpChakra
 {
-   public delegate bool JsMemoryAllocationCallback(IntPtr _callbackState, JsMemoryEventType _allocationEvent, UIntPtr _allocationSize);
+   public delegate bool JsMemoryAllocationCallback(IntPtr callbackState, JsMemoryEventType allocationEvent, UIntPtr allocationSize);
 }

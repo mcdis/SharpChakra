@@ -1,4 +1,4 @@
 ﻿namespace SharpChakra
 {
-   public delegate JsErrorCode JsFetchImportedModuleCallBack(JsModuleRecord _referencingModule, JsValue _specifier,out JsModuleRecord _dependentModuleRecord);
+   public delegate JsErrorCode JsFetchImportedModuleCallBack(JsModuleRecord referencingModule, JsValue specifier,out JsModuleRecord dependentModuleRecord);
 }

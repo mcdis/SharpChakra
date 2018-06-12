@@ -4,29 +4,29 @@ namespace SharpChakra
 {
    public class JsException : Exception
    {
-      private readonly JsErrorCode p_code;
-      public JsException(JsErrorCode _code) :
-          this(_code, "A fatal exception has occurred in a JavaScript runtime")
+      private readonly JsErrorCode _pCode;
+      public JsException(JsErrorCode code) :
+          this(code, "A fatal exception has occurred in a JavaScript runtime")
       {
       }
 
-      public JsException(JsErrorCode _code, string _message) :
-            base(_message)
+      public JsException(JsErrorCode code, string message) :
+            base(message)
       {
-         p_code = _code;
+         _pCode = code;
       }
 
 
-      protected JsException(string message, Exception _innerException) :
-               base(message, _innerException)
+      protected JsException(string message, Exception innerException) :
+               base(message, innerException)
       {
          if (message != null)
          {
-            p_code = (JsErrorCode)HResult;
+            _pCode = (JsErrorCode)HResult;
          }
       }
 
 
-      public JsErrorCode ErrorCode => p_code;
+      public JsErrorCode ErrorCode => _pCode;
    }
 }

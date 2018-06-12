@@ -18,12 +18,12 @@ namespace Sample
 
             globalObject // Register Global Functions
                .SetProperty("loginfo", // loginfo
-                  fn.New(_x => Console.WriteLine(BuildMsg(_x.Arguments, _x.ArgumentCount).ToString())),
+                  fn.New(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
                   true)
                .SetProperty("logerror", // logerror
-                  fn.New(_x =>
+                  fn.New(x =>
                   {
-                     var msg = BuildMsg(_x.Arguments, _x.ArgumentCount).ToString(); // Build msg
+                     var msg = BuildMsg(x.Arguments, x.ArgumentCount).ToString(); // Build msg
                      var color = Console.ForegroundColor; // Save color
                      Console.ForegroundColor = ConsoleColor.DarkRed; // Change color to red
                      Console.WriteLine(msg); // Output
@@ -41,17 +41,17 @@ namespace Sample
          Console.WriteLine("Finished... Press enter to exit...");
          Console.ReadLine();
       }
-      private static StringBuilder BuildMsg(JsValue[] _arguments, ushort _count)
+      private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
       {
          var build = new StringBuilder();
          for (uint index = 1;
-            index < _count;
+            index < count;
             index++)
          {
             if (index > 1)
                build.Append(" ");
 
-            build.Append(_arguments[index].ConvertToString().ToString());
+            build.Append(arguments[index].ConvertToString().ToString());
          }
          return build;
       }

@@ -4,11 +4,11 @@ namespace SharpChakra
 {
    public struct JsPropertyId : IEquatable<JsPropertyId>
    {
-      private readonly IntPtr p_id;
+      private readonly IntPtr _pId;
 
-      internal JsPropertyId(IntPtr _id)
+      internal JsPropertyId(IntPtr id)
       {
-         p_id = _id;
+         _pId = id;
       }
 
       public static JsPropertyId Invalid => new JsPropertyId(IntPtr.Zero);
@@ -22,24 +22,24 @@ namespace SharpChakra
          }
       }
 
-      public static JsPropertyId FromString(string _name)
+      public static JsPropertyId FromString(string name)
       {
-         Native.ThrowIfError(Native.JsGetPropertyIdFromName(_name, out var id));
+         Native.ThrowIfError(Native.JsGetPropertyIdFromName(name, out var id));
          return id;
       }
 
-      public static bool operator ==(JsPropertyId _left, JsPropertyId _right) => _left.Equals(_right);
-      public static bool operator !=(JsPropertyId _left, JsPropertyId _right) => !_left.Equals(_right);
-      public bool Equals(JsPropertyId _other) => p_id == _other.p_id;
-      public override bool Equals(object _obj)
+      public static bool operator ==(JsPropertyId left, JsPropertyId right) => left.Equals(right);
+      public static bool operator !=(JsPropertyId left, JsPropertyId right) => !left.Equals(right);
+      public bool Equals(JsPropertyId other) => _pId == other._pId;
+      public override bool Equals(object obj)
       {
-         if (ReferenceEquals(null, _obj))
+         if (ReferenceEquals(null, obj))
             return false;
 
-         return _obj is JsPropertyId && Equals((JsPropertyId)_obj);
+         return obj is JsPropertyId && Equals((JsPropertyId)obj);
       }
 
-      public override int GetHashCode() => p_id.ToInt32();
+      public override int GetHashCode() => _pId.ToInt32();
       public override string ToString() => Name;
    }
 }

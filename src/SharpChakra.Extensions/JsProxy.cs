@@ -9,7 +9,7 @@ namespace SharpChakra.Extensions
 {
    public static class JsProxy
    {
-      public static JsValue New(object _object, JsNativeFunctionBuilder _builder)
+      public static JsValue New(object _object, JsNativeFunctionBuilder builder)
       {
          var proxy = JsValue.CreateObject();
          var type = _object.GetType();
@@ -20,16 +20,16 @@ namespace SharpChakra.Extensions
             if (method.IsSpecialName)
                continue;
             var name = method.Name;
-            var args = method.GetParameters();
+            var parameters = method.GetParameters();
             var noRet = method.ReturnType == typeof(void);
             proxy.SetProperty(name,
-               _builder.New(_args =>
+               builder.New(args =>
                {
-                  if(args.Length > _args.ArgumentCount-1)
+                  if(parameters.Length > args.ArgumentCount-1)
                      return JsValue.Invalid;
-                  var pars = new object[args.Length];
+                  var pars = new object[parameters.Length];
                   for (var i = 0; i < pars.Length; i++)
-                     pars[i] = ConvertToObject(args[i].ParameterType, _args.Arguments[i+1]);
+                     pars[i] = ConvertToObject(parameters[i].ParameterType, args.Arguments[i+1]);
                   if (noRet)
                   {
                      method.Invoke(_object,
@@ -52,37 +52,37 @@ namespace SharpChakra.Extensions
             var descriptor = JsValue.CreateObject();
             descriptor.SetProperty("configurable", JsValue.False, true);
             if(property.CanRead)
-               descriptor.SetProperty("get", _builder.New(() => ConvertToJsValue(property.GetValue(_object))), true);
+               descriptor.SetProperty("get", builder.New(() => ConvertToJsValue(property.GetValue(_object))), true);
             //descriptor.SetProperty("value", ConvertToJsValue(property.GetValue(_object)), true);
             proxy.DefineProperty(JsPropertyId.FromString(property.Name), descriptor);
          }
          return proxy;
       }
-      private static object ConvertToObject(Type _parameterType, JsValue _val)
+      private static object ConvertToObject(Type parameterType, JsValue val)
       {
-         if (_parameterType == typeof(short))
-            return (short) _val.ToInt32();
-         if (_parameterType == typeof(ushort))
-            return (ushort)_val.ToInt32();
-         if (_parameterType == typeof(int))
-            return _val.ToInt32();
-         if (_parameterType == typeof(uint))
-            return (uint)_val.ToInt32();
-         if (_parameterType == typeof(string))
-            return _val.ToString();
-         if (_parameterType == typeof(char))
-            return _val.ToString()[0];
-         if (_parameterType == typeof(float))
-            return (float)_val.ToDouble();
-         if (_parameterType == typeof(double))
-            return (float)_val.ToDouble();
-         if (_parameterType == typeof(bool))
-            return _val.ToBoolean();
-         return _val.ToJToken().ToObject(_parameterType);
+         if (parameterType == typeof(short))
+            return (short) val.ToInt32();
+         if (parameterType == typeof(ushort))
+            return (ushort)val.ToInt32();
+         if (parameterType == typeof(int))
+            return val.ToInt32();
+         if (parameterType == typeof(uint))
+            return (uint)val.ToInt32();
+         if (parameterType == typeof(string))
+            return val.ToString();
+         if (parameterType == typeof(char))
+            return val.ToString()[0];
+         if (parameterType == typeof(float))
+            return (float)val.ToDouble();
+         if (parameterType == typeof(double))
+            return (float)val.ToDouble();
+         if (parameterType == typeof(bool))
+            return val.ToBoolean();
+         return val.ToJToken().ToObject(parameterType);
       }
-      private static JsValue ConvertToJsValue(object _val)
+      private static JsValue ConvertToJsValue(object val)
       {
-         switch (_val)
+         switch (val)
          {
             case short i16:
                return JsValue.FromInt32(i16);
@@ -103,7 +103,7 @@ namespace SharpChakra.Extensions
             case bool b:
                return JsValue.FromBoolean(b);
             default:
-               return JToken.FromObject(_val).ToJsValue();
+               return JToken.FromObject(val).ToJsValue();
          }
       }
    }

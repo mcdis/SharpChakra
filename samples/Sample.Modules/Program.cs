@@ -16,26 +16,26 @@ namespace Sample.Modules
             JsValue // Register Global Function
                .GetGlobalObject()
                .SetProperty("echo", // echo
-                  fn.New(_x => Console.WriteLine(_x.Arguments[1].ToString())),
+                  fn.New(x => Console.WriteLine(x.Arguments[1].ToString())),
                   true);
 
             var rootModule =
                JsModuleRecord.Create(JsModuleRecord.Root, JsValue.FromString("")); // Declare Root Module               
             var fooModule = JsModuleRecord.Invalid;
 
-            JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier,
-               out JsModuleRecord _record) // fetch callback
+            JsErrorCode OnFetch(JsModuleRecord module, JsValue specifier,
+               out JsModuleRecord record) // fetch callback
             {
-               Console.WriteLine($"importing '{_specifier.ToString()}'...");
+               Console.WriteLine($"importing '{specifier.ToString()}'...");
 
-               fooModule = JsModuleRecord.Create(_module, _specifier); // Create Foo Module
+               fooModule = JsModuleRecord.Create(module, specifier); // Create Foo Module
 
-               Console.WriteLine($"imported '{_specifier.ToString()}'...");
-               _record = fooModule;
+               Console.WriteLine($"imported '{specifier.ToString()}'...");
+               record = fooModule;
                return JsErrorCode.NoError;
             }
 
-            rootModule.SetHostInfo(onFetch);
+            rootModule.SetHostInfo(OnFetch);
             var rootSrc =
                @"
                   import {test} from 'foo.js';

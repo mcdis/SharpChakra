@@ -5,44 +5,44 @@ namespace SharpChakra.Extensions
 {
    public class JsNativeFunctionBuilder
    {
-      private readonly List<JsNativeFunction> p_refs;
+      private readonly List<JsNativeFunction> _pRefs;
       public JsNativeFunctionBuilder()
       {
-         p_refs = new List<JsNativeFunction>();
+         _pRefs = new List<JsNativeFunction>();
       }
-      public JsValue New(JsNativeFunction _handler)
+      public JsValue New(JsNativeFunction handler)
       {
-         p_refs.Add(_handler);
-         return JsValue.CreateFunction(_handler);
+         _pRefs.Add(handler);
+         return JsValue.CreateFunction(handler);
       }
-      public JsValue New(Action _x) => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) =>
+      public JsValue New(Action x) => New((callee, isConstructCall, arguments, argumentCount, callbackData) =>
       {
-         _x();
+         x();
          return JsValue.Undefined;
       });
-      public JsValue New(Func<JsValue> _x) => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) => _x());
-      public JsValue New(Action<JsNativeFunctionArgs> _handler)
-         => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData) =>
+      public JsValue New(Func<JsValue> x) => New((callee, isConstructCall, arguments, argumentCount, callbackData) => x());
+      public JsValue New(Action<JsNativeFunctionArgs> handler)
+         => New((callee, isConstructCall, arguments, argumentCount, callbackData) =>
          {
-            _handler(new JsNativeFunctionArgs
+            handler(new JsNativeFunctionArgs
             {
-               Callee = _callee,
-               IsConstructCall = _isConstructCall,
-               Arguments = _arguments,
-               ArgumentCount = _argumentCount,
-               CallbackData = _callbackData
+               Callee = callee,
+               IsConstructCall = isConstructCall,
+               Arguments = arguments,
+               ArgumentCount = argumentCount,
+               CallbackData = callbackData
             });
             return JsValue.Undefined;
          });
-      public JsValue New(Func<JsNativeFunctionArgs, JsValue> _handler)
-         => New((_callee, _isConstructCall, _arguments, _argumentCount, _callbackData)
-            => _handler(new JsNativeFunctionArgs
+      public JsValue New(Func<JsNativeFunctionArgs, JsValue> handler)
+         => New((callee, isConstructCall, arguments, argumentCount, callbackData)
+            => handler(new JsNativeFunctionArgs
             {
-               Callee = _callee,
-               IsConstructCall = _isConstructCall,
-               Arguments = _arguments,
-               ArgumentCount = _argumentCount,
-               CallbackData = _callbackData
+               Callee = callee,
+               IsConstructCall = isConstructCall,
+               Arguments = arguments,
+               ArgumentCount = argumentCount,
+               CallbackData = callbackData
             }));
    }
 }

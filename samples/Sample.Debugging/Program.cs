@@ -14,12 +14,12 @@ namespace Sample.Debugging
       {
          using (var jsrt = JsRuntime.Create())
          {
-            jsrt.StartDebugging((_event, _data, _state) =>
+            jsrt.StartDebugging((_event, data, state) =>
             {
-               Console.WriteLine($"debugger>\r\n {_event}, {_data.ToJToken().ToString(Formatting.Indented)}");
+               Console.WriteLine($"debugger>\r\n {_event}, {data.ToJToken().ToString(Formatting.Indented)}");
                if (_event == JsDiagDebugEvent.JsDiagDebugEventSourceCompile)
                {
-                  var scriptId = _data.GetProperty("scriptId").ToInt32();
+                  var scriptId = data.GetProperty("scriptId").ToInt32();
                   jsrt.SetBreakpoint((uint)scriptId,5,0,out var breakpoint);
                }
 
@@ -39,7 +39,7 @@ namespace Sample.Debugging
 
                globalObject // Register Global Functions
                   .SetProperty("loginfo", // loginfo
-                     fn.New(_x => Console.WriteLine(BuildMsg(_x.Arguments, _x.ArgumentCount).ToString())),
+                     fn.New(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())),
                      true);
 
                foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
@@ -56,18 +56,18 @@ namespace Sample.Debugging
          Console.WriteLine("Finished... Press enter to exit...");
          Console.ReadLine();
       }
-      private static StringBuilder BuildMsg(JsValue[] _arguments, ushort _count)
+      private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
       {
          var build = new StringBuilder();
          build.Append("js> ");
          for (uint index = 1;
-            index < _count;
+            index < count;
             index++)
          {
             if (index > 1)
                build.Append(" ");
 
-            build.Append(_arguments[index].ConvertToString().ToString());
+            build.Append(arguments[index].ConvertToString().ToString());
          }
          return build;
       }
