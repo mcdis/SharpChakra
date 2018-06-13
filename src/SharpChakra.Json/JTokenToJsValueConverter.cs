@@ -15,9 +15,7 @@ namespace SharpChakra.Json
             _context = context;
         }
 
-        public JsValue Convert(JToken _token) => Visit(_token);
-
-        private JsValue Visit(JToken token)
+        public JsValue Visit(JToken token)
         {
             if (token == null)
                 throw new ArgumentNullException(nameof(token));
@@ -48,11 +46,11 @@ namespace SharpChakra.Json
         private JsValue VisitArray(JArray token)
         {
             var n = token.Count;
-            var array = AddRef(_context.CreateArray((uint) n));
+            var array = AddRef(JsValue.CreateArray((uint) n));
             for (var i = 0; i < n; ++i)
             {
                 var value = Visit(token[i]);
-                array.SetIndexedProperty(_context.CreateInt32(i), value);
+                array.SetIndexedProperty(JsValue.FromInt(i), value);
                 value.Release();
             }
 
@@ -60,19 +58,17 @@ namespace SharpChakra.Json
         }
 
         private JsValue VisitBoolean(JValue token)
-            => token.Value<bool>()
-                ? _context.CreateTrue()
-                : _context.CreateFalse();
+            => token.Value<bool>() ? JsValue.True : JsValue.False;
 
-        private JsValue VisitFloat(JValue token) => AddRef(_context.CreateDouble(token.Value<double>()));
+        private JsValue VisitFloat(JValue token) => AddRef(JsValue.FromDouble(token.Value<double>()));
 
-        private JsValue VisitInteger(JValue token) => AddRef(_context.CreateDouble(token.Value<double>()));
+        private JsValue VisitInteger(JValue token) => AddRef(JsValue.FromDouble(token.Value<double>()));
 
-        private JsValue VisitNull(JToken token) => _context.CreateNull();
+        private JsValue VisitNull(JToken token) => JsValue.Null;
 
         private JsValue VisitObject(JObject token)
         {
-            var jsonObject = AddRef(_context.CreateObject());
+            var jsonObject = AddRef(JsValue.CreateObject());
             foreach (var entry in token)
             {
                 var value = Visit(entry.Value);
@@ -84,9 +80,9 @@ namespace SharpChakra.Json
             return jsonObject;
         }
 
-        private JsValue VisitString(JValue token) => AddRef(_context.CreateString(token.Value<string>()));
+        private JsValue VisitString(JValue token) => AddRef(JsValue.FromString(token.Value<string>()));
 
-        private JsValue VisitUndefined(JToken token) => _context.CreateUndefined();
+        private JsValue VisitUndefined(JToken token) => JsValue.Undefined;
 
         private JsValue AddRef(JsValue value)
         {

@@ -1,120 +1,15 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SharpChakra.Parts
+namespace SharpChakra.Natives
 {
     /// <summary>
     ///     Native interfaces.
     /// </summary>
-    internal static class Native64
+    internal static class Native32
     {
-        private const string DllName = @"runtimes\win-x64\native\ChakraCore.dll";
-
-        internal static void ThrowIfError(JsErrorCode error)
-        {
-            if (error != JsErrorCode.NoError)
-            {
-                switch (error)
-                {
-                    case JsErrorCode.InvalidArgument:
-                        throw new JsUsageException(error, "Invalid argument.");
-
-                    case JsErrorCode.NullArgument:
-                        throw new JsUsageException(error, "Null argument.");
-
-                    case JsErrorCode.NoCurrentContext:
-                        throw new JsUsageException(error, "No current context.");
-
-                    case JsErrorCode.InExceptionState:
-                        throw new JsUsageException(error, "Runtime is in exception state.");
-
-                    case JsErrorCode.NotImplemented:
-                        throw new JsUsageException(error, "Method is not implemented.");
-
-                    case JsErrorCode.WrongThread:
-                        throw new JsUsageException(error, "Runtime is active on another thread.");
-
-                    case JsErrorCode.RuntimeInUse:
-                        throw new JsUsageException(error, "Runtime is in use.");
-
-                    case JsErrorCode.BadSerializedScript:
-                        throw new JsUsageException(error, "Bad serialized script.");
-
-                    case JsErrorCode.InDisabledState:
-                        throw new JsUsageException(error, "Runtime is disabled.");
-
-                    case JsErrorCode.CannotDisableExecution:
-                        throw new JsUsageException(error, "Cannot disable execution.");
-
-                    case JsErrorCode.AlreadyDebuggingContext:
-                        throw new JsUsageException(error, "Context is already in debug mode.");
-
-                    case JsErrorCode.HeapEnumInProgress:
-                        throw new JsUsageException(error, "Heap enumeration is in progress.");
-
-                    case JsErrorCode.ArgumentNotObject:
-                        throw new JsUsageException(error, "Argument is not an object.");
-
-                    case JsErrorCode.InProfileCallback:
-                        throw new JsUsageException(error, "In a profile callback.");
-
-                    case JsErrorCode.InThreadServiceCallback:
-                        throw new JsUsageException(error, "In a thread service callback.");
-
-                    case JsErrorCode.CannotSerializeDebugScript:
-                        throw new JsUsageException(error, "Cannot serialize a debug script.");
-
-                    case JsErrorCode.AlreadyProfilingContext:
-                        throw new JsUsageException(error, "Already profiling this context.");
-
-                    case JsErrorCode.IdleNotEnabled:
-                        throw new JsUsageException(error, "Idle is not enabled.");
-
-                    case JsErrorCode.OutOfMemory:
-                        throw new JsEngineException(error, "Out of memory.");
-
-                    case JsErrorCode.ScriptException:
-                    {
-                        JsValue errorObject;
-                        var innerError = JsGetAndClearException(out errorObject);
-
-                        if (innerError != JsErrorCode.NoError)
-                        {
-                            throw new JsFatalException(innerError);
-                        }
-
-                        throw new JsScriptException(error, errorObject, "Script threw an exception.");
-                    }
-
-                    case JsErrorCode.ScriptCompile:
-                    {
-                        JsValue errorObject;
-                        var innerError = JsGetAndClearException(out errorObject);
-
-                        if (innerError != JsErrorCode.NoError)
-                        {
-                            throw new JsFatalException(innerError);
-                        }
-
-                        throw new JsScriptException(error, errorObject, "Compile error.");
-                    }
-
-                    case JsErrorCode.ScriptTerminated:
-                        throw new JsScriptException(error, JsValue.Invalid, "Script was terminated.");
-
-                    case JsErrorCode.ScriptEvalDisabled:
-                        throw new JsScriptException(error, JsValue.Invalid,
-                            "Eval of strings is disabled in this runtime.");
-
-                    case JsErrorCode.Fatal:
-                        throw new JsFatalException(error);
-
-                    default:
-                        throw new JsFatalException(error);
-                }
-            }
-        }
-
+        private const string DllName = @"runtimes\win-x86\native\ChakraCore.dll";
+        
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCreateRuntime(JsRuntimeAttributes attributes,
             JavaScriptThreadServiceCallback threadService,
@@ -173,11 +68,15 @@ namespace SharpChakra.Parts
         internal static extern JsErrorCode JsIdle(out uint nextIdleTick);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        internal static extern JsErrorCode JsParseScript(string script, JsSourceContext sourceContext, string sourceUrl,
+        internal static extern JsErrorCode JsParseScript(string script,
+            JsSourceContext sourceContext,
+            string sourceUrl,
             out JsValue result);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
-        internal static extern JsErrorCode JsRunScript(string script, JsSourceContext sourceContext, string sourceUrl,
+        internal static extern JsErrorCode JsRunScript(string script,
+            JsSourceContext sourceContext,
+            string sourceUrl,
             out JsValue result);
 
         [DllImport(DllName, CharSet = CharSet.Unicode)]
@@ -260,8 +159,8 @@ namespace SharpChakra.Parts
         internal static extern JsErrorCode JsCreateObject(out JsValue obj);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsCreateExternalObject(IntPtr data,
-            JsObjectFinalizeCallback finalizeCallback, out JsValue obj);
+        internal static extern JsErrorCode
+            JsCreateExternalObject(IntPtr data, JsObjectFinalizeCallback finalizeCallback, out JsValue obj);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsConvertValueToObject(JsValue value, out JsValue obj);
@@ -282,26 +181,31 @@ namespace SharpChakra.Parts
         internal static extern JsErrorCode JsGetProperty(JsValue obj, JsPropertyId propertyId, out JsValue value);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsGetOwnPropertyDescriptor(JsValue obj, JsPropertyId propertyId,
+        internal static extern JsErrorCode JsGetOwnPropertyDescriptor(JsValue obj,
+            JsPropertyId propertyId,
             out JsValue propertyDescriptor);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsGetOwnPropertyNames(JsValue obj, out JsValue propertyNames);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsSetProperty(JsValue obj, JsPropertyId propertyId, JsValue value,
-            bool useStrictRules);
+        internal static extern JsErrorCode
+            JsSetProperty(JsValue obj, JsPropertyId propertyId, JsValue value, bool useStrictRules);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsHasProperty(JsValue obj, JsPropertyId propertyId, out bool hasProperty);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsDeleteProperty(JsValue obj, JsPropertyId propertyId, bool useStrictRules,
+        internal static extern JsErrorCode JsDeleteProperty(JsValue obj,
+            JsPropertyId propertyId,
+            bool useStrictRules,
             out JsValue result);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsDefineProperty(JsValue obj, JsPropertyId propertyId,
-            JsValue propertyDescriptor, out bool result);
+        internal static extern JsErrorCode JsDefineProperty(JsValue obj,
+            JsPropertyId propertyId,
+            JsValue propertyDescriptor,
+            out bool result);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsHasIndexedProperty(JsValue obj, JsValue index, out bool result);
@@ -334,12 +238,19 @@ namespace SharpChakra.Parts
         internal static extern JsErrorCode JsCreateArray(uint length, out JsValue result);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsCallFunction(JsValue function, JsValue[] arguments, ushort argumentCount,
+        internal static extern JsErrorCode JsCreatePromise(out JsValue promise, out JsValue resolveFunc, out JsValue rejectFunc);
+
+        [DllImport(DllName)]
+        internal static extern JsErrorCode JsCallFunction(JsValue function,
+            JsValue[] arguments,
+            ushort argumentCount,
             out JsValue result);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsConstructObject(JsValue function, JsValue[] arguments,
-            ushort argumentCount, out JsValue result);
+        internal static extern JsErrorCode JsConstructObject(JsValue function,
+            JsValue[] arguments,
+            ushort argumentCount,
+            out JsValue result);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCreateFunction(JsNativeFunction nativeFunction, IntPtr externalData,
@@ -387,12 +298,15 @@ namespace SharpChakra.Parts
             JsObjectBeforeCollectCallback beforeCollectCallback);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsCreateNamedFunction(JsValue name, JsNativeFunction nativeFunction,
-            IntPtr callbackState, out JsValue function);
+        internal static extern JsErrorCode JsCreateNamedFunction(JsValue name,
+            JsNativeFunction nativeFunction,
+            IntPtr callbackState,
+            out JsValue function);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsSetPromiseContinuationCallback(
-            JsPromiseContinuationCallback promiseContinuationCallback, IntPtr callbackState);
+            JsPromiseContinuationCallback promiseContinuationCallback,
+            IntPtr callbackState);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCreateArrayBuffer(uint byteLength, out JsValue result);
@@ -405,7 +319,9 @@ namespace SharpChakra.Parts
             out JsValue result);
 
         [DllImport(DllName)]
-        internal static extern JsErrorCode JsCreateDataView(JsValue arrayBuffer, uint byteOffset, uint byteOffsetLength,
+        internal static extern JsErrorCode JsCreateDataView(JsValue arrayBuffer,
+            uint byteOffset,
+            uint byteOffsetLength,
             out JsValue result);
 
         [DllImport(DllName)]
@@ -522,6 +438,7 @@ namespace SharpChakra.Parts
             JsModuleHostInfoKind moduleHostInfo,
             JsFetchImportedModuleFromScriptCallback callback);
 
+
         [DllImport(DllName)]
         internal static extern JsErrorCode JsParseModuleSource(
             JsModuleRecord requestModule,
@@ -551,17 +468,15 @@ namespace SharpChakra.Parts
         internal static extern JsErrorCode JsDiagSetBreakpoint(uint scriptId, uint lineNumber, uint column,
             out JsValue breakpoint);
 
-
         [DllImport(DllName)]
         internal static extern JsErrorCode JsDiagRequestAsyncBreak(JsRuntime runtime);
-
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsDiagGetBreakpoints(out JsValue breakpoints);
 
+
         [DllImport(DllName)]
         internal static extern JsErrorCode JsDiagRemoveBreakpoint(uint breakpointId);
-
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsDiagGetScripts(out JsValue scripts);

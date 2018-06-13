@@ -1,28 +1,83 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Diagnostics.Contracts;
-using System.Linq;
+using System.Threading.Tasks;
+using SharpChakra.Tasks;
 
 namespace SharpChakra
 {
     public struct JsContext
     {
-        private readonly IntPtr _pReference;
+        private static readonly TaskFactory TaskFactory = new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1));
+
+        internal readonly IntPtr Reference;
 
         internal JsContext(IntPtr reference)
         {
-            _pReference = reference;
+            Reference = reference;
         }
 
         public static JsContext Current { get; internal set; }
 
         public static JsContext Invalid => new JsContext(IntPtr.Zero);
 
+        public bool IsValid => Reference != IntPtr.Zero;
+
+        public bool IsActive => Current.Reference == Reference;
+
+        public Task RequestScopeAsync(Action<JsContext> action)
+        {
+            var context = this;
+
+            if (Current.Reference == Reference)
+            {
+                action(context);
+                return Task.FromResult(true);
+            }
+
+            return TaskFactory.StartNew(() =>
+            {
+                Native.ThrowIfError(Native.JsSetCurrentContext(context));
+                action(context);
+                Native.ThrowIfError(Native.JsSetCurrentContext(Invalid));
+            });
+        }
+
+        public Task<T> RequestScopeAsync<T>(Func<JsContext, T> action)
+        {
+            var context = this;
+
+            if (Current.Reference == Reference)
+            {
+                return Task.FromResult(action(context));
+            }
+
+            return TaskFactory.StartNew(() =>
+            {
+                Native.ThrowIfError(Native.JsSetCurrentContext(context));
+                var result = action(context);
+                Native.ThrowIfError(Native.JsSetCurrentContext(Invalid));
+
+                return result;
+            });
+        }
+
+        internal void ThrowIfInvalid()
+        {
+            if (!IsValid)
+            {
+                throw new InvalidOperationException("Invalid state");
+            }
+
+            if (!IsActive)
+            {
+                throw new InvalidOperationException("The state is not active");
+            }
+        }
+
         public JsValue Global
         {
             get
             {
-                EnsureCurrent();
+                ThrowIfInvalid();
                 Native.ThrowIfError(Native.JsGetGlobalObject(out var value));
                 return value;
             }
@@ -41,273 +96,111 @@ namespace SharpChakra
         {
             get
             {
+                ThrowIfInvalid();
                 Native.ThrowIfError(Native.JsGetRuntime(this, out var handle));
                 return handle;
             }
         }
 
-        public bool IsValid => _pReference != IntPtr.Zero;
-
-        public bool IsActive => Equals(Current, this);
-
         public uint Idle()
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsIdle(out var ticks));
             return ticks;
         }
 
         public JsModuleRecord CreateModule(JsModuleRecord reference, JsValue specifier)
         {
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsInitializeModuleRecord(reference, specifier, out var module));
             return module;
         }
 
-        public JsModuleRecord CreateModule(JsModuleRecord reference, string specifier = "")
-        {
-            return CreateModule(reference, CreateString(specifier));
-        }
-
         public JsValue ParseScript(string script, JsSourceContext sourceContext, string sourceName)
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsParseScript(script, sourceContext, sourceName, out var result));
             return result;
         }
 
         public JsValue ParseScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsParseSerializedScript(script, buffer, sourceContext, sourceName, out var result));
             return result;
         }
 
         public JsValue ParseScript(string script)
         {
+            ThrowIfInvalid();
             return ParseScript(script, JsSourceContext.None, string.Empty);
         }
 
         public JsValue ParseScript(string script, byte[] buffer)
         {
+            ThrowIfInvalid();
             return ParseScript(script, buffer, JsSourceContext.None, string.Empty);
         }
 
         public JsValue RunScript(string script, JsSourceContext sourceContext, string sourceName)
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsRunScript(script, sourceContext, sourceName, out var result));
             return result;
         }
 
         public JsValue RunScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsRunSerializedScript(script, buffer, sourceContext, sourceName, out var result));
             return result;
         }
 
         public JsValue RunScript(string script)
         {
+            ThrowIfInvalid();
             return RunScript(script, JsSourceContext.None, string.Empty);
         }
 
         public JsValue RunScript(string script, byte[] buffer)
         {
+            ThrowIfInvalid();
             return RunScript(script, buffer, JsSourceContext.None, string.Empty);
         }
 
         public ulong SerializeScript(string script, byte[] buffer)
         {
-            EnsureCurrent();
-            var bufferSize = (ulong) buffer.Length;
+            ThrowIfInvalid();
+            var bufferSize = (ulong)buffer.Length;
             Native.ThrowIfError(Native.JsSerializeScript(script, buffer, ref bufferSize));
             return bufferSize;
         }
 
         public JsValue GetAndClearException()
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsGetAndClearException(out var reference));
             return reference;
         }
 
         public void SetException(JsValue exception)
         {
-            EnsureCurrent();
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsSetException(exception));
-        }
-
-        public void EnsureCurrent()
-        {
-            if (!IsActive)
-            {
-                Native.JsSetCurrentContext(this);
-            }
         }
 
         public uint AddRef()
         {
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsContextAddRef(this, out var count));
             return count;
         }
 
         public uint Release()
         {
+            ThrowIfInvalid();
             Native.ThrowIfError(Native.JsContextRelease(this, out var count));
             return count;
-        }
-        
-        [Pure]
-        public JsValue CreateUndefined()
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsGetUndefinedValue(out var value));
-            return value;
-        }
-
-        [Pure]
-        public JsValue CreateNull()
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsGetNullValue(out var value));
-            return value;
-        }
-
-        [Pure]
-        public JsValue CreateTrue()
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsGetTrueValue(out var value));
-            return value;
-        }
-
-        [Pure]
-        public JsValue CreateFalse()
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsGetFalseValue(out var value));
-            return value;
-        }
-
-
-        [Pure]
-        public JsValue CreateBoolean(bool value)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsBoolToBoolean(value, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateDouble(double value)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsDoubleToNumber(value, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateInt32(int value)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsIntToNumber(value, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateString(string value)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsPointerToString(value, new UIntPtr((uint)value.Length), out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateObject()
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateObject(out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateExternalObject(IntPtr data, JsObjectFinalizeCallback finalizer)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateExternalObject(data, finalizer, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateFunction(JsNativeFunction function)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateFunction(JsNativeFunction function, IntPtr callbackData)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateArray(uint length)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateArray(length, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateError(message, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateRangeError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateRangeError(message, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateReferenceError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateReferenceError(message, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateSyntaxError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateSyntaxError(message, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateTypeError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateTypeError(message, out var reference));
-            return reference;
-        }
-
-        [Pure]
-        public JsValue CreateUriError(JsValue message)
-        {
-            EnsureCurrent();
-            Native.ThrowIfError(Native.JsCreateUriError(message, out var reference));
-            return reference;
         }
     }
 }

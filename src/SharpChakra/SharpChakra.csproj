@@ -10,13 +10,21 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+
   <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
-    <Compile Remove="Parts\Native64Linux.cs" />
-    <Compile Remove="Parts\Native64Mac.cs" />
-    <Compile Remove="Parts\NativeArm.cs" />
-    <None Include="Parts\Native64Linux.cs" />
-    <None Include="Parts\Native64Mac.cs" />
-    <None Include="Parts\NativeArm.cs" />
+    <Compile Remove="Natives\Native64Linux.cs" />
+    <Compile Remove="Natives\Native64Mac.cs" />
+    <Compile Remove="Natives\NativeArm.cs" />
+    <None Include="Natives\Native64Linux.cs" />
+    <None Include="Natives\Native64Mac.cs" />
+    <None Include="Natives\NativeArm.cs" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">

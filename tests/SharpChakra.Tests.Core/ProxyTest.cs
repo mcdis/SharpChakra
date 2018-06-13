@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
 using SharpChakra.Extensions;
 using Xunit;
-using Xunit.Sdk;
 
 namespace SharpChakra.Tests.Core
 {
@@ -20,21 +17,19 @@ namespace SharpChakra.Tests.Core
         }
 
         [Fact]
-        public void TestJsProxy()
+        public async Task TestJsProxy()
         {
             using (var runtime = JsRuntime.Create())
             {
                 var context = runtime.CreateContext();
-
                 var instance = new TestClass();
-                var proxy = context.CreateProxy(instance);
 
-                context.Global.SetProperty("item", proxy);
+                await context.SetGlobalAsync("item", instance);
 
-                context.RunScript("item.Call();");
+                await context.EvalAsync("item.call()");
                 Assert.True(instance.IsCalled);
 
-                context.RunScript("item.IsCalled = false;");
+                await context.EvalAsync("item.isCalled = false");
                 Assert.False(instance.IsCalled);
             }
         }

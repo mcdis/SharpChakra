@@ -8,21 +8,18 @@ namespace SharpChakra.Json
     /// </summary>
     public sealed class JsValueToJTokenConverter
     {
+        private readonly JsContext _session;
         private static readonly JToken STrue = new JValue(true);
         private static readonly JToken SFalse = new JValue(false);
         private static readonly JToken SNull = JValue.CreateNull();
         private static readonly JToken SUndefined = JValue.CreateUndefined();
 
-        private static readonly JsValueToJTokenConverter SInstance =
-            new JsValueToJTokenConverter();
-
-        private JsValueToJTokenConverter()
+        public JsValueToJTokenConverter(JsContext session)
         {
+            _session = session;
         }
 
-        public static JToken Convert(JsValue value) => SInstance.Visit(value);
-
-        private JToken Visit(JsValue value)
+        public JToken Visit(JsValue value)
         {
             switch (value.ValueType)
             {
@@ -52,11 +49,10 @@ namespace SharpChakra.Json
             var array = new JArray();
             var propertyId = JsPropertyId.FromString("length");
             var length = value.GetProperty(propertyId).ToInt32();
-            var context = value.Context;
 
             for (var i = 0; i < length; ++i)
             {
-                var index = context.CreateInt32(i);
+                var index = JsValue.FromInt(i);
                 var element = value.GetIndexedProperty(index);
                 array.Add(Visit(element));
             }

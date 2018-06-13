@@ -42,5 +42,15 @@ namespace SharpChakra
 
         public override int GetHashCode() => _pId.ToInt32();
         public override string ToString() => Name;
+
+        public static implicit operator string(JsPropertyId value)
+        {
+            return value.Name;
+        }
+
+        public static implicit operator JsPropertyId(string value)
+        {
+            return FromString(value);
+        }
     }
 }

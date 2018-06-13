@@ -14,40 +14,41 @@ namespace Sample.Debugging
         {
             using (var jsrt = JsRuntime.Create())
             {
-                var context = jsrt.CreateContext();
-
-                jsrt.StartDebugging((_event, data, state) =>
+                jsrt.CreateContext().Run(context =>
                 {
-                    Console.WriteLine($"debugger>\r\n {_event}, {data.ToJToken().ToString(Formatting.Indented)}");
-                    if (_event == JsDiagDebugEvent.JsDiagDebugEventSourceCompile)
+                    jsrt.StartDebugging((_event, data, state) =>
                     {
-                        var scriptId = data.GetProperty("scriptId").ToInt32();
-                        jsrt.SetBreakpoint((uint) scriptId, 5, 0, out var breakpoint);
-                    }
+                        Console.WriteLine($"debugger>\r\n {_event}, {data.ToJToken().ToString(Formatting.Indented)}");
+                        if (_event == JsDiagDebugEvent.JsDiagDebugEventSourceCompile)
+                        {
+                            var scriptId = data.GetProperty("scriptId").ToInt32();
+                            jsrt.SetBreakpoint((uint) scriptId, 5, 0, out var breakpoint);
+                        }
 
-                    if (_event == JsDiagDebugEvent.JsDiagDebugEventBreakpoint)
+                        if (_event == JsDiagDebugEvent.JsDiagDebugEventBreakpoint)
+                        {
+                            Console.WriteLine(
+                                "debugger> Breakpoint! Enter to continue... (write 'break' to stop the script)");
+                            var res = jsrt.DiagEvaluate(context.CreateString("debugVar"), 0,
+                                JsParseScriptAttributes.JsParseScriptAttributeNone, false);
+                            Console.WriteLine(
+                                $"debugger> dump 'debugVar' info:\r\n {res.ToJToken().ToString(Formatting.Indented)}");
+                            Console.ReadLine();
+                        }
+                    });
+
+                    context.Global // Register Global Functions
+                        .SetProperty("loginfo", // loginfo
+                            context.CreateFunction(x =>
+                                Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())));
+
+                    foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
                     {
-                        Console.WriteLine(
-                            "debugger> Breakpoint! Enter to continue... (write 'break' to stop the script)");
-                        var res = jsrt.DiagEvaluate(context.CreateString("debugVar"), 0,
-                            JsParseScriptAttributes.JsParseScriptAttributeNone, false);
-                        Console.WriteLine(
-                            $"debugger> dump 'debugVar' info:\r\n {res.ToJToken().ToString(Formatting.Indented)}");
-                        Console.ReadLine();
+                        Console.WriteLine($"Executing '{js}' ... ------------------->");
+                        context.RunScript(File.ReadAllText(js));
+                        Console.WriteLine($"<------------------- '{js}' executed");
                     }
                 });
-
-                context.Global // Register Global Functions
-                    .SetProperty("loginfo", // loginfo
-                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())));
-
-                foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
-                {
-                    Console.WriteLine($"Executing '{js}' ... ------------------->");
-                    context.RunScript(File.ReadAllText(js));
-                    Console.WriteLine($"<------------------- '{js}' executed");
-                }
-
                 //jsrt.StopDebugging();
             }
 
