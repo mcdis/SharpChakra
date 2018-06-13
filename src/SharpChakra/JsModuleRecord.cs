@@ -13,7 +13,9 @@ namespace SharpChakra
         }
 
         public static JsModuleRecord Root => new JsModuleRecord(IntPtr.Zero);
+
         public static JsModuleRecord Invalid => new JsModuleRecord(new IntPtr(-1));
+
         public bool Equals(JsModuleRecord other) => _pPtr.Equals(other._pPtr);
 
         public override bool Equals(object obj)
