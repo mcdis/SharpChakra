@@ -1,128 +1,558 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Threading;
 
 namespace SharpChakra
 {
+    public struct JsContext
+    {
+        private static readonly JsSemaphore Semaphore = new JsSemaphore();
+        internal readonly IntPtr Reference;
 
-   public struct JsContext
-   {
-      private readonly IntPtr p_reference;
+        internal JsContext(IntPtr reference)
+        {
+            Reference = reference;
+        }
 
-      internal JsContext(IntPtr _reference)
-      {
-         p_reference = _reference;
-      }
+        public static JsContext Current { get; internal set; }
 
-      public static JsContext Invalid => new JsContext(IntPtr.Zero);
-      public static JsContext Current
-      {
-         get
-         {
-            Native.ThrowIfError(Native.JsGetCurrentContext(out var reference));
-            return reference;
-         }
+        public static JsContext Invalid => new JsContext(IntPtr.Zero);
 
-         set => Native.ThrowIfError(Native.JsSetCurrentContext(value));
-      }
-      public static bool HasException
-      {
-         get
-         {
-            bool hasException;
-            Native.ThrowIfError(Native.JsHasException(out hasException));
-            return hasException;
-         }
-      }
+        public JsValue Global
+        {
+            get
+            {
+                try
+                {
+                    Semaphore.WaitOne(this);
+                    EnsureCurrent();
+                    Native.ThrowIfError(Native.JsGetGlobalObject(out var value));
+                    return value;
+                }
+                finally
+                {
+                    Semaphore.Release();
+                }
+            }
+        }
 
-      public JsRuntime Runtime
-      {
-         get
-         {
-            JsRuntime handle;
-            Native.ThrowIfError(Native.JsGetRuntime(this, out handle));
-            return handle;
-         }
-      }
+        public JsRuntime Runtime
+        {
+            get
+            {
+                Native.ThrowIfError(Native.JsGetRuntime(this, out var handle));
+                return handle;
+            }
+        }
 
-      public bool IsValid => p_reference != IntPtr.Zero;
-      public static uint Idle()
-      {
-         uint ticks;
-         Native.ThrowIfError(Native.JsIdle(out ticks));
-         return ticks;
-      }
-      public static JsValue ParseScript(string _script, JsSourceContext _sourceContext, string _sourceName)
-      {
-         JsValue result;
-         Native.ThrowIfError(Native.JsParseScript(_script, _sourceContext, _sourceName, out result));
-         return result;
-      }
-      public static JsValue ParseScript(string _script, byte[] _buffer, JsSourceContext _sourceContext, string _sourceName)
-      {
-         Native.ThrowIfError(Native.JsParseSerializedScript(_script, _buffer, _sourceContext, _sourceName, out var result));
-         return result;
-      }
+        public static bool HasException
+        {
+            get
+            {
+                Native.ThrowIfError(Native.JsHasException(out var hasException));
+                return hasException;
+            }
+        }
 
-      public static JsValue ParseScript(string _script) => ParseScript(_script, JsSourceContext.None, string.Empty);
-      public static JsValue ParseScript(string _script, byte[] _buffer) => ParseScript(_script, _buffer, JsSourceContext.None, string.Empty);
-      public static JsValue RunScript(string _script, JsSourceContext _sourceContext, string _sourceName)
-      {
-         Native.ThrowIfError(Native.JsRunScript(_script, _sourceContext, _sourceName, out var result));
-         return result;
-      }
+        public bool IsValid => Reference != IntPtr.Zero;
 
-      public static JsValue RunScript(string _script, byte[] _buffer, JsSourceContext _sourceContext, string _sourceName)
-      {
-         Native.ThrowIfError(Native.JsRunSerializedScript(_script, _buffer, _sourceContext, _sourceName, out var result));
-         return result;
-      }
+        public bool IsActive => Equals(Current, this);
 
-      public static JsValue RunScript(string _script) => RunScript(_script, JsSourceContext.None, string.Empty);
-      public static JsValue RunScript(string _script, byte[] _buffer) => RunScript(_script, _buffer, JsSourceContext.None, string.Empty);
-      public static ulong SerializeScript(string _script, byte[] _buffer)
-      {
-         var bufferSize = (ulong)_buffer.Length;
-         Native.ThrowIfError(Native.JsSerializeScript(_script, _buffer, ref bufferSize));
-         return bufferSize;
-      }
+        public uint Idle()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsIdle(out var ticks));
+                return ticks;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
 
-      public static JsValue GetAndClearException()
-      {
-         JsValue reference;
-         Native.ThrowIfError(Native.JsGetAndClearException(out reference));
-         return reference;
-      }
+        public JsModuleRecord CreateModule(JsModuleRecord reference, JsValue specifier)
+        {
+            Native.ThrowIfError(Native.JsInitializeModuleRecord(reference, specifier, out var module));
+            return module;
+        }
 
-      public static void SetException(JsValue _exception) => Native.ThrowIfError(Native.JsSetException(_exception));
-      public uint AddRef()
-      {
-         Native.ThrowIfError(Native.JsContextAddRef(this, out var count));
-         return count;
-      }
-      public uint Release()
-      {
-         Native.ThrowIfError(Native.JsContextRelease(this, out var count));
-         return count;
-      }
+        public JsModuleRecord CreateModule(JsModuleRecord reference, string specifier = "")
+        {
+            return CreateModule(reference, CreateString(specifier));
+        }
 
-      public struct Scope : IDisposable
-      {
-         private readonly JsContext p_previousContext;
-         private bool p_disposed;
-         public Scope(JsContext _context)
-         {
-            p_disposed = false;
-            p_previousContext = Current;
-            Current = _context;
-         }
+        public JsValue ParseScript(string script, JsSourceContext sourceContext, string sourceName)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsParseScript(script, sourceContext, sourceName, out var result));
+                return result;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
 
-         public void Dispose()
-         {
-            if (p_disposed)
-               return;
+        public JsValue ParseScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsParseSerializedScript(script, buffer, sourceContext, sourceName, out var result));
+                return result;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
 
-            Current = p_previousContext;
-            p_disposed = true;
-         }
-      }
-   }
+        public JsValue ParseScript(string script)
+        {
+            return ParseScript(script, JsSourceContext.None, string.Empty);
+        }
+
+        public JsValue ParseScript(string script, byte[] buffer)
+        {
+            return ParseScript(script, buffer, JsSourceContext.None, string.Empty);
+        }
+
+        public JsValue RunScript(string script, JsSourceContext sourceContext, string sourceName)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsRunScript(script, sourceContext, sourceName, out var result));
+                return result;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        public JsValue RunScript(string script, byte[] buffer, JsSourceContext sourceContext, string sourceName)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsRunSerializedScript(script, buffer, sourceContext, sourceName, out var result));
+                return result;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        public JsValue RunScript(string script)
+        {
+            return RunScript(script, JsSourceContext.None, string.Empty);
+        }
+
+        public JsValue RunScript(string script, byte[] buffer)
+        {
+            return RunScript(script, buffer, JsSourceContext.None, string.Empty);
+        }
+
+        public ulong SerializeScript(string script, byte[] buffer)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                var bufferSize = (ulong) buffer.Length;
+                Native.ThrowIfError(Native.JsSerializeScript(script, buffer, ref bufferSize));
+                return bufferSize;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        public JsValue GetAndClearException()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsGetAndClearException(out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        public void SetException(JsValue exception)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsSetException(exception));
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        internal void EnsureCurrent()
+        {
+            if (!IsActive)
+            {
+                Native.JsSetCurrentContext(this);
+            }
+        }
+
+        public uint AddRef()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                Native.ThrowIfError(Native.JsContextAddRef(this, out var count));
+                return count;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        public uint Release()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                Native.ThrowIfError(Native.JsContextRelease(this, out var count));
+                return count;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateUndefined()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsGetUndefinedValue(out var value));
+                return value;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateNull()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsGetNullValue(out var value));
+                return value;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateTrue()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsGetTrueValue(out var value));
+                return value;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateFalse()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsGetFalseValue(out var value));
+                return value;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+
+        [Pure]
+        public JsValue CreateBoolean(bool value)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsBoolToBoolean(value, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateDouble(double value)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsDoubleToNumber(value, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateInt32(int value)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsIntToNumber(value, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateString(string value)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(
+                    Native.JsPointerToString(value, new UIntPtr((uint) value.Length), out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateObject()
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateObject(out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateExternalObject(IntPtr data, JsObjectFinalizeCallback finalizer)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateExternalObject(data, finalizer, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateFunction(JsNativeFunction function)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateFunction(JsNativeFunction function, IntPtr callbackData)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateArray(uint length)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateArray(length, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateRangeError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateRangeError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateReferenceError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateReferenceError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateSyntaxError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateSyntaxError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateTypeError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateTypeError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+
+        [Pure]
+        public JsValue CreateUriError(JsValue message)
+        {
+            try
+            {
+                Semaphore.WaitOne(this);
+                EnsureCurrent();
+                Native.ThrowIfError(Native.JsCreateUriError(message, out var reference));
+                return reference;
+            }
+            finally
+            {
+                Semaphore.Release();
+            }
+        }
+    }
+
+    public struct JsContextLock { }
 }
