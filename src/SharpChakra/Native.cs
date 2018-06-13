@@ -10,23 +10,20 @@ namespace SharpChakra
     public static class Native
     {
 #if NETSTANDARD
-       private static readonly bool Is32 = RuntimeInformation.OSArchitecture == Architecture.X86;
-       private static readonly bool Is64 = RuntimeInformation.OSArchitecture == Architecture.X64;
-       private static readonly bool IsArm = RuntimeInformation.OSArchitecture == Architecture.Arm;
-       private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-       private static readonly bool IsLinux = RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-       private static readonly bool IsMac = RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+       private static bool Is32 => RuntimeInformation.OSArchitecture == Architecture.X86;
+
+       private static bool Is64 => RuntimeInformation.OSArchitecture == Architecture.X64;
+
+       private static bool IsArm => RuntimeInformation.OSArchitecture == Architecture.Arm;
+
+       private static bool IsWindows => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+       private static bool IsLinux => RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+
+       private static bool IsMac => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
 #else
         private static readonly bool Is32 = IntPtr.Size == 4;
 #endif
-
-        public static JsContext DefaultContext { get; }
-
-        static Native()
-        {
-            JsGetCurrentContext(out var context);
-            DefaultContext = context;
-        }
 
         public static void ThrowIfError(JsErrorCode error)
         {
