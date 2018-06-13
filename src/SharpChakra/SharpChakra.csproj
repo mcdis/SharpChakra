@@ -9,15 +9,12 @@
     <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
     <Description>Managed any cpu .net wrapper of Microsoft.ChakraCore</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <LangVersion>7.2</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
     <Compile Remove="Natives\Native64Linux.cs" />
