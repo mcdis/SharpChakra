@@ -65,11 +65,6 @@ namespace SharpChakra
 
         public void Dispose()
         {
-            if (JsContext.Current.IsValid && Equals(JsContext.Current.Runtime, this))
-            {
-                Native.JsSetCurrentContext(Native.DefaultContext);
-            }
-
             if (IsValid)
             {
                 var info = RuntimeInfo.GetOrAdd(Handle, ptr => new JsRuntimeInfo());

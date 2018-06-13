@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using SharpChakra;
 using SharpChakra.Extensions;
 
@@ -8,51 +9,59 @@ namespace Sample
 {
     internal class Program
     {
-        private static void Main()
+        private static async Task Main()
         {
             using (var jsrt = JsRuntime.Create())
             {
                 var context = jsrt.CreateContext();
 
-                context.Global // Register Global Functions
-                    .SetProperty("loginfo", // loginfo
-                        context.CreateFunction(x => Console.WriteLine(BuildMsg(x.Arguments, x.ArgumentCount).ToString())))
-                    .SetProperty("logerror", // logerror
-                        context.CreateFunction(x =>
-                        {
-                            var msg = BuildMsg(x.Arguments, x.ArgumentCount).ToString(); // Build msg
-                            var color = Console.ForegroundColor; // Save color
-                            Console.ForegroundColor = ConsoleColor.DarkRed; // Change color to red
-                            Console.WriteLine(msg); // Output
-                            Console.ForegroundColor = color; // Restore color
-                        }));
+                await context.SetGlobalAsync("console", new JsConsole());
 
-                foreach (var js in Directory.EnumerateFiles("js", "*.js")) // Execute all scripts inside js folder
+                // Execute all scripts inside the js folder
+                foreach (var js in Directory.EnumerateFiles("js", "*.js"))
                 {
-                    Console.WriteLine($"Executing '{js}' ... ------------------->");
-                    context.RunScript(File.ReadAllText(js));
-                    Console.WriteLine($"<------------------- '{js}' executed");
-                }
-            }
+                    Console.WriteLine($"> Executing '{js}'");
 
-            Console.WriteLine("Finished... Press enter to exit...");
-            Console.ReadLine();
+                    await context.EvalAsync(File.ReadAllText(js));
+
+                    var name = await context.GetGlobalAsync("sayHelloWorld");
+
+                    await name.CallFunctionAsync(null);
+                }
+
+                Console.ReadLine();
+            }
         }
 
-        private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
+        public class JsConsole
         {
-            var build = new StringBuilder();
-            for (uint index = 1;
-                index < count;
-                index++)
+            public void Info(JsFunctionArgs args)
             {
-                if (index > 1)
-                    build.Append(" ");
-
-                build.Append(arguments[index].ConvertToString().ToString());
+                Console.WriteLine(BuildMsg(args.Arguments, args.ArgumentCount).ToString());
             }
 
-            return build;
+            public void Error(JsFunctionArgs args)
+            {
+                var msg = BuildMsg(args.Arguments, args.ArgumentCount).ToString(); // Build msg
+                var color = Console.ForegroundColor; // Save color
+                Console.ForegroundColor = ConsoleColor.DarkRed; // Change color to red
+                Console.WriteLine(msg); // Output
+                Console.ForegroundColor = color; // Restore color
+            }
+
+            private static StringBuilder BuildMsg(JsValue[] arguments, ushort count)
+            {
+                var build = new StringBuilder();
+                for (uint index = 1; index < count; index++)
+                {
+                    if (index > 1)
+                        build.Append(" ");
+
+                    build.Append(arguments[index].ConvertToString().ToString());
+                }
+
+                return build;
+            }
         }
     }
 }

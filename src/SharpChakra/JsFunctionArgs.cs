@@ -2,7 +2,7 @@
 
 namespace SharpChakra
 {
-    public struct JsNativeFunctionArgs
+    public struct JsFunctionArgs
     {
         public JsValue Callee { get; set; }
 

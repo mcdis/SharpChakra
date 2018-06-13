@@ -6,43 +6,31 @@ namespace SharpChakra.Extensions
 {
     public static class JsValueExtensions
     {
-        public static JsValue SetProperty(this JsValue _this, string propertyId, JsValue value, bool useStrictRules = true)
-        {
-            _this.SetProperty(JsPropertyId.FromString(propertyId), value, useStrictRules);
-            return _this;
-        }
-
-        public static JsValue GetProperty(this JsValue _this, string propertyId)
-            => _this.GetProperty(JsPropertyId.FromString(propertyId));
-
-        public static bool HasProperty(this JsValue _this, string propertyId)
-            => _this.HasProperty(JsPropertyId.FromString(propertyId));
-
-        public static IEnumerable<string> EnumeratePropertyNames(this JsValue _this)
+        public static IEnumerable<string> EnumeratePropertyNames(this JsValue val)
         {
             var lenId = JsPropertyId.FromString("length");
-            var names = _this.GetOwnPropertyNames();
+            var names = val.GetOwnPropertyNames();
             var len = names.GetProperty(lenId).ToInt32();
             for (var i = 0; i < len; i++)
             {
-                yield return names.GetIndexedProperty(_this.Context.CreateInt32(i)).ToString();
+                yield return names.GetIndexedProperty(JsValue.FromInt(i)).ToString();
             }
         }
 
-        public static IEnumerable<JsValue> EnumerateArrayValues(this JsValue _this)
+        public static IEnumerable<JsValue> EnumerateArrayValues(this JsValue val)
         {
-            if (_this.ValueType != JsValueType.Array)
+            if (val.ValueType != JsValueType.Array)
                 throw new InvalidOperationException("Can't enumerate non array value");
             var lenId = JsPropertyId.FromString("length");
-            var len = _this.GetProperty(lenId).ToInt32();
+            var len = val.GetProperty(lenId).ToInt32();
             for (var i = 0; i < len; i++)
             {
-                yield return _this.GetIndexedProperty(_this.Context.CreateInt32(i));
+                yield return val.GetIndexedProperty(JsValue.FromInt(i));
             }
         }
 
         public static IEnumerable<KeyValuePair<string, JsValue>> EnumerateProperties(this JsValue _this)
-            => from nameVal in _this.GetOwnPropertyNames().EnumerateArrayValues()
+            => from nameVal in EnumerateArrayValues(_this.GetOwnPropertyNames())
                 let name = nameVal.ToString()
                 let propId = JsPropertyId.FromString(name)
                 let val = _this.GetProperty(propId)

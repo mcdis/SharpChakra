@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SharpChakra.Parts
+namespace SharpChakra.Natives
 {
     /// <summary>
     ///     Native interfaces.
     /// </summary>
-    internal static class Native64Linux
+    internal static class NativeArm
     {
-        private const string DllName = @"runtimes\linux-x64\native\libChakraCore.so";
+        private const string DllName = @"runtimes\win-arm\native\ChakraCore.dll";
 
         internal static void ThrowIfError(JsErrorCode error)
         {
@@ -332,6 +332,9 @@ namespace SharpChakra.Parts
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCreateArray(uint length, out JsValue result);
+
+        [DllImport(DllName)]
+        internal static extern JsErrorCode JsCreatePromise(out JsValue promise, out JsValue resolveFunc, out JsValue rejectFunc);
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCallFunction(JsValue function, JsValue[] arguments, ushort argumentCount,

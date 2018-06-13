@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace SharpChakra
 {
@@ -22,6 +25,146 @@ namespace SharpChakra
                 Native.ThrowIfError(Native.JsGetContextOfObject(this, out var context));
                 return context;
             }
+        }
+
+        public static JsValue Undefined
+        {
+            get
+            {
+                JsContext.Current.ThrowIfInvalid();
+                Native.ThrowIfError(Native.JsGetUndefinedValue(out var value));
+                return value;
+            }
+        }
+
+        public static JsValue Null
+        {
+            get
+            {
+                JsContext.Current.ThrowIfInvalid();
+                Native.ThrowIfError(Native.JsGetNullValue(out var value));
+                return value;
+            }
+        }
+
+        public static JsValue True
+        {
+            get
+            {
+                JsContext.Current.ThrowIfInvalid();
+                Native.ThrowIfError(Native.JsGetFalseValue(out var value));
+                return value;
+            }
+        }
+
+        public static JsValue False
+        {
+            get
+            {
+                JsContext.Current.ThrowIfInvalid();
+                Native.ThrowIfError(Native.JsGetFalseValue(out var value));
+                return value;
+            }
+        }
+
+        public static JsValue FromInt(int value)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsIntToNumber(value, out var reference));
+            return reference;
+        }
+
+        public static JsValue CreateObject()
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsCreateObject(out var reference));
+            return reference;
+        }
+
+        public static JsValue CreateArray(uint length)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsCreateArray(length, out var reference));
+            return reference;
+        }
+
+        public static JsValue FromString(string value)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsPointerToString(value, new UIntPtr((uint)value.Length), out var reference));
+            return reference;
+        }
+
+        public static JsValue FromDouble(double value)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsDoubleToNumber(value, out var reference));
+            return reference;
+        }
+
+        public static JsValue FromDelegate(JsNativeFunction function)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out var reference));
+            return reference;
+        }
+
+        public static JsValue FromDelegate(JsNativeFunction function, IntPtr callbackData)
+        {
+            JsContext.Current.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out var reference));
+            return reference;
+        }
+
+        public static JsValue FromDelegate(Action x)
+        {
+            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            {
+                x();
+
+                return Undefined;
+            });
+        }
+
+        public static JsValue FromDelegate(Func<JsValue> func)
+        {
+            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) => func());
+        }
+
+        public static JsValue FromDelegate(Action<JsFunctionArgs> handler)
+        {
+            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            {
+                var args = new JsFunctionArgs
+                {
+                    Callee = callee,
+                    IsConstructCall = isConstructCall,
+                    Arguments = arguments,
+                    ArgumentCount = argumentCount,
+                    CallbackData = callbackData
+                };
+
+                handler(args);
+
+                return Undefined;
+            });
+        }
+
+        public static JsValue FromDelegate(Func<JsFunctionArgs, JsValue> handler)
+        {
+            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            {
+                var args = new JsFunctionArgs
+                {
+                    Callee = callee,
+                    IsConstructCall = isConstructCall,
+                    Arguments = arguments,
+                    ArgumentCount = argumentCount,
+                    CallbackData = callbackData
+                };
+
+                return handler(args);
+            });
         }
 
         public bool IsValid => Reference != IntPtr.Zero;
@@ -171,8 +314,11 @@ namespace SharpChakra
             return propertyReference;
         }
 
-        public void SetProperty(JsPropertyId id, JsValue value, bool useStrictRules = true) =>
+        public JsValue SetProperty(JsPropertyId id, JsValue value, bool useStrictRules = true)
+        {
             Native.ThrowIfError(Native.JsSetProperty(this, id, value, useStrictRules));
+            return this;
+        }
 
         public JsValue DeleteProperty(JsPropertyId propertyId, bool useStrictRules)
         {
@@ -184,6 +330,38 @@ namespace SharpChakra
         {
             Native.ThrowIfError(Native.JsDefineProperty(this, propertyId, propertyDescriptor, out var result));
             return result;
+        }
+
+        public bool DefineProperty(JsPropertyId propertyId, PropertyInfo property, object instance)
+        {
+            var context = Context;
+            var descriptor = CreateObject();
+
+            descriptor.SetProperty("configurable", True);
+            descriptor.SetProperty("enumerable", False);
+
+            if (property.CanRead)
+            {
+                descriptor.SetProperty("get", FromDelegate(() => FromObject(property.GetValue(instance))));
+            }
+
+            if (property.CanWrite)
+            {
+                descriptor.SetProperty("set", FromDelegate(e =>
+                {
+                    if (e.ArgumentCount < 2)
+                    {
+                        return Invalid;
+                    }
+
+                    var value = e.Arguments[1].ToObject(property.PropertyType);
+                    property.SetValue(instance, value);
+
+                    return Undefined;
+                }));
+            }
+
+            return DefineProperty(propertyId, descriptor);
         }
 
         public bool HasIndexedProperty(JsValue index)
@@ -218,13 +396,23 @@ namespace SharpChakra
             return equals;
         }
 
-        public JsValue CallFunction(params JsValue[] arguments)
+        public Task<JsValue> CallFunctionAsync(object thisArg, params object[] args)
         {
-            if (arguments.Length > ushort.MaxValue)
-                throw new ArgumentOutOfRangeException(nameof(arguments));
+            var value = this;
 
-            Native.ThrowIfError(Native.JsCallFunction(this, arguments, (ushort) arguments.Length, out var returnReference));
-            return returnReference;
+            return Context.RequestScopeAsync(_ =>
+            {
+                var arguments = new JsValue[args.Length + 1];
+                arguments[0] = FromObject(thisArg);
+
+                for (var i = 0; i < args.Length; i++)
+                {
+                    arguments[i] = FromObject(args[i]);
+                }
+
+                Native.ThrowIfError(Native.JsCallFunction(value, arguments, (ushort) arguments.Length, out var returnReference));
+                return returnReference;
+            });
         }
 
         public JsValue ConstructObject(params JsValue[] arguments)
@@ -235,6 +423,207 @@ namespace SharpChakra
             Native.ThrowIfError(Native.JsConstructObject(this, arguments, (ushort) arguments.Length,
                 out var returnReference));
             return returnReference;
+        }
+
+        public static JsValue FromMethod<T>(string methodName, BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Static, Type[] types = null)
+        {
+            return FromMethod(typeof(T), methodName, bindingAttr, types);
+        }
+
+        public static JsValue FromMethod(MethodInfo method, object instance)
+        {
+            var parameters = method.GetParameters();
+            var direct = parameters.Length == 1 && parameters[0].ParameterType == typeof(JsFunctionArgs);
+
+            return FromDelegate(args =>
+            {
+                object[] pars;
+
+                if (direct)
+                {
+                    pars = new object[] {args};
+                }
+                else
+                {
+                    if (parameters.Length > args.ArgumentCount - 1)
+                    {
+                        return Invalid;
+                    }
+
+                    pars = new object[parameters.Length];
+                    for (var i = 0; i < pars.Length; i++)
+                    {
+                        pars[i] = args.Arguments[i + 1].ToObject(parameters[i].ParameterType);
+                    }
+                }
+
+                var res = method.Invoke(instance, BindingFlags.Instance | BindingFlags.Public, null, pars, CultureInfo.InvariantCulture);
+
+                if (method.ReturnType == typeof(void))
+                {
+                    return Undefined;
+                }
+
+                if (method.ReturnType == typeof(JsValue))
+                {
+                    return (JsValue) res;
+                }
+
+                return FromObject(res);
+            });
+        }
+
+        public static JsValue FromMethod(Type type, string methodName, BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Static, Type[] types = null)
+        {
+            var method = types == null
+                ? type.GetMethod(methodName, bindingAttr)
+                : type.GetMethod(methodName, bindingAttr, null, types, null);
+
+            if (method == null)
+            {
+                throw new MissingMethodException(type.Name, methodName);
+            }
+
+            return FromMethod(method, null);
+        }
+
+        public static JsValue FromMethod<T>(T instance, string methodName, BindingFlags bindingAttr = BindingFlags.Public | BindingFlags.Instance, Type[] types = null)
+        {
+            var type = typeof(T);
+            var method = types == null
+                ? typeof(T).GetMethod(methodName, bindingAttr)
+                : typeof(T).GetMethod(methodName, bindingAttr, null, types, null);
+
+            if (method == null)
+            {
+                throw new MissingMethodException(type.Name, methodName);
+            }
+
+            return FromMethod(method, instance);
+        }
+
+        public static JsValue CreateProxy(object instance)
+        {
+            var proxy = CreateObject();
+            var type = instance.GetType();
+
+            foreach (var method in type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
+                .Where(m => !m.IsSpecialName))
+            {
+                var name = char.ToLowerInvariant(method.Name[0]) + method.Name.Substring(1);
+
+                proxy.SetProperty(name, FromMethod(method, instance));
+            }
+
+            foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+            {
+                var name = char.ToLowerInvariant(property.Name[0]) + property.Name.Substring(1);
+
+                proxy.DefineProperty(name, property, instance);
+            }
+
+            return proxy;
+        }
+
+        public T ToObject<T>()
+        {
+            return (T)ToObject(typeof(T));
+        }
+
+        public object ToObject(Type parameterType)
+        {
+            if (ValueType == JsValueType.Undefined || ValueType == JsValueType.Null)
+                return parameterType.IsValueType ? Activator.CreateInstance(parameterType) : null;
+            if (parameterType == typeof(short))
+                return (short)ToInt32();
+            if (parameterType == typeof(ushort))
+                return (ushort)ToInt32();
+            if (parameterType == typeof(int))
+                return ToInt32();
+            if (parameterType == typeof(uint))
+                return (uint)ToInt32();
+            if (parameterType == typeof(string))
+                return ToString();
+            if (parameterType == typeof(char))
+                return ToString()[0];
+            if (parameterType == typeof(float))
+                return (float)ToDouble();
+            if (parameterType == typeof(double))
+                return (float)ToDouble();
+            if (parameterType == typeof(bool))
+                return ToBoolean();
+            throw new NotSupportedException();
+        }
+
+        public static JsValue FromObject(object val)
+        {
+            var context = JsContext.Current;
+
+            switch (val)
+            {
+                case null:
+                    return Null;
+                case JsValue jsValue:
+                    return jsValue;
+                case short i16:
+                    return FromInt(i16);
+                case ushort ui16:
+                    return FromInt(ui16);
+                case int i32:
+                    return FromInt(i32);
+                case uint ui32:
+                    return FromInt((int)ui32);
+                case string s:
+                    return FromString(s);
+                case char ch:
+                    return FromString(ch.ToString());
+                case float f32:
+                    return FromDouble(f32);
+                case double f64:
+                    return FromDouble(f64);
+                case bool b:
+                    return b ? True : False;
+                case Action a:
+                    return FromDelegate(a);
+                case Func<JsValue> func:
+                    return FromDelegate(func);
+                case Action<JsFunctionArgs> a:
+                    return FromDelegate(a);
+                case Func<JsFunctionArgs, JsValue> func:
+                    return FromDelegate(func);
+                default:
+                    return CreateProxy(val);
+            }
+        }
+
+        public static implicit operator string(JsValue value)
+        {
+            return value.ToString();
+        }
+
+        public static implicit operator JsValue(string value)
+        {
+            return FromString(value);
+        }
+
+        public static implicit operator int(JsValue value)
+        {
+            return value.ToInt32();
+        }
+
+        public static implicit operator JsValue(int value)
+        {
+            return FromInt(value);
+        }
+
+        public static implicit operator bool(JsValue value)
+        {
+            return value.ToBoolean();
+        }
+
+        public static implicit operator JsValue(bool value)
+        {
+            return value ? True : False;
         }
     }
 }
