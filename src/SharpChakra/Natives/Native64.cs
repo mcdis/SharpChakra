@@ -9,7 +9,6 @@ namespace SharpChakra.Natives
     internal static class Native64
     {
         private const string DllName = @"runtimes\win-x64\native\ChakraCore.dll";
-        
 
         [DllImport(DllName)]
         internal static extern JsErrorCode JsCreateRuntime(JsRuntimeAttributes attributes,

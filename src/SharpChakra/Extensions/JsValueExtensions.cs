@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SharpChakra.Extensions
 {
@@ -35,5 +36,12 @@ namespace SharpChakra.Extensions
                 let propId = JsPropertyId.FromString(name)
                 let val = _this.GetProperty(propId)
                 select new KeyValuePair<string, JsValue>(name, val);
+
+
+
+        public static Task<JsValue> CallFunctionAsync(this JsValue value, object thisArg, params object[] args)
+        {
+            return value.Context.RequestScopeAsync(_ => value.CallFunction(JsValue.FromObject(thisArg), args.Select(JsValue.FromObject).ToArray()));
+        }
     }
 }

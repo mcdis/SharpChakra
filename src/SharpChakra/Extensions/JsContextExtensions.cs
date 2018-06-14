@@ -12,12 +12,12 @@ namespace SharpChakra.Extensions
 
         public static Task DeclareFunctionAsync(this JsContext context, string name, Action action)
         {
-            return context.RequestScopeAsync(session => session.Global.SetProperty(name, JsValue.FromDelegate(action)));
+            return context.RequestScopeAsync(session => session.Global.SetProperty(name, JsValue.CreateFunction(action)));
         }
 
         public static Task DeclareFunctionAsync(this JsContext context, string name, Func<object> func)
         {
-            return context.RequestScopeAsync(session => session.Global.SetProperty(name, JsValue.FromDelegate(() => JsValue.FromObject(func()))));
+            return context.RequestScopeAsync(session => session.Global.SetProperty(name, JsValue.CreateFunction(() => JsValue.FromObject(func()))));
         }
 
         public static Task<JsValue> GetGlobalAsync(this JsContext context, string name)

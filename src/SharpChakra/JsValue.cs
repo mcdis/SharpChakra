@@ -102,23 +102,23 @@ namespace SharpChakra
             return reference;
         }
 
-        public static JsValue FromDelegate(JsNativeFunction function)
+        public static JsValue CreateFunction(JsNativeFunction function)
         {
             JsContext.Current.ThrowIfInvalid();
             Native.ThrowIfError(Native.JsCreateFunction(function, IntPtr.Zero, out var reference));
             return reference;
         }
 
-        public static JsValue FromDelegate(JsNativeFunction function, IntPtr callbackData)
+        public static JsValue CreateFunction(JsNativeFunction function, IntPtr callbackData)
         {
             JsContext.Current.ThrowIfInvalid();
             Native.ThrowIfError(Native.JsCreateFunction(function, callbackData, out var reference));
             return reference;
         }
 
-        public static JsValue FromDelegate(Action x)
+        public static JsValue CreateFunction(Action x)
         {
-            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) =>
             {
                 x();
 
@@ -126,14 +126,14 @@ namespace SharpChakra
             });
         }
 
-        public static JsValue FromDelegate(Func<JsValue> func)
+        public static JsValue CreateFunction(Func<JsValue> func)
         {
-            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) => func());
+            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) => func());
         }
 
-        public static JsValue FromDelegate(Action<JsFunctionArgs> handler)
+        public static JsValue CreateFunction(Action<JsFunctionArgs> handler)
         {
-            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) =>
             {
                 var args = new JsFunctionArgs
                 {
@@ -150,9 +150,9 @@ namespace SharpChakra
             });
         }
 
-        public static JsValue FromDelegate(Func<JsFunctionArgs, JsValue> handler)
+        public static JsValue CreateFunction(Func<JsFunctionArgs, JsValue> handler)
         {
-            return FromDelegate((callee, isConstructCall, arguments, argumentCount, callbackData) =>
+            return CreateFunction((callee, isConstructCall, arguments, argumentCount, callbackData) =>
             {
                 var args = new JsFunctionArgs
                 {
@@ -342,12 +342,12 @@ namespace SharpChakra
 
             if (property.CanRead)
             {
-                descriptor.SetProperty("get", FromDelegate(() => FromObject(property.GetValue(instance))));
+                descriptor.SetProperty("get", CreateFunction(() => FromObject(property.GetValue(instance))));
             }
 
             if (property.CanWrite)
             {
-                descriptor.SetProperty("set", FromDelegate(e =>
+                descriptor.SetProperty("set", CreateFunction(e =>
                 {
                     if (e.ArgumentCount < 2)
                     {
@@ -396,23 +396,13 @@ namespace SharpChakra
             return equals;
         }
 
-        public Task<JsValue> CallFunctionAsync(object thisArg, params object[] args)
+        public JsValue CallFunction(JsValue thisArg, params JsValue[] values)
         {
-            var value = this;
+            var arguments = new[] {thisArg}.Concat(values).ToArray();
 
-            return Context.RequestScopeAsync(_ =>
-            {
-                var arguments = new JsValue[args.Length + 1];
-                arguments[0] = FromObject(thisArg);
-
-                for (var i = 0; i < args.Length; i++)
-                {
-                    arguments[i] = FromObject(args[i]);
-                }
-
-                Native.ThrowIfError(Native.JsCallFunction(value, arguments, (ushort) arguments.Length, out var returnReference));
-                return returnReference;
-            });
+            Context.ThrowIfInvalid();
+            Native.ThrowIfError(Native.JsCallFunction(this, arguments, (ushort)arguments.Length, out var returnReference));
+            return returnReference;
         }
 
         public JsValue ConstructObject(params JsValue[] arguments)
@@ -435,7 +425,7 @@ namespace SharpChakra
             var parameters = method.GetParameters();
             var direct = parameters.Length == 1 && parameters[0].ParameterType == typeof(JsFunctionArgs);
 
-            return FromDelegate(args =>
+            return CreateFunction(args =>
             {
                 object[] pars;
 
@@ -584,13 +574,13 @@ namespace SharpChakra
                 case bool b:
                     return b ? True : False;
                 case Action a:
-                    return FromDelegate(a);
+                    return CreateFunction(a);
                 case Func<JsValue> func:
-                    return FromDelegate(func);
+                    return CreateFunction(func);
                 case Action<JsFunctionArgs> a:
-                    return FromDelegate(a);
+                    return CreateFunction(a);
                 case Func<JsFunctionArgs, JsValue> func:
-                    return FromDelegate(func);
+                    return CreateFunction(func);
                 default:
                     return CreateProxy(val);
             }
