@@ -8,7 +8,7 @@ namespace SharpChakra.Parts
    /// </summary>
    static class Native64
    {
-      const string DllName = @"x64\ChakraCore.dll";
+      const string DllName = @"runtimes\win-x64\native\ChakraCore.dll";
       internal static void ThrowIfError(JsErrorCode _error)
       {
          if (_error != JsErrorCode.NoError)

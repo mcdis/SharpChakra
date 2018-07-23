@@ -1,17 +1,46 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-   <PropertyGroup>
-      <TargetFrameworks>net45;net46</TargetFrameworks>
-      <Product>SharpChakra</Product>
-      <Version>3.0.0</Version>
-      <PackageProjectUrl>https://github.com/mcdis/SharpChakra</PackageProjectUrl>
-      <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
-      <Description>Managed any cpu .net wrapper of Microsoft.ChakraCore</Description>
-      <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-   </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net45;net46;netstandard2.0</TargetFrameworks>
+    <Product>SharpChakra</Product>
+    <Version>3.0.0</Version>
+    <PackageProjectUrl>https://github.com/mcdis/SharpChakra</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/mcdis/SharpChakra/master/icon.png</PackageIconUrl>
+    <Description>Managed any cpu .net wrapper of Microsoft.ChakraCore</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
 
-   <ItemGroup>
-      <PackageReference Include="Microsoft.ChakraCore" Version="1.8.3" />
-   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <Compile Remove="Parts\Native64Linux.cs" />
+    <Compile Remove="Parts\Native64Mac.cs" />
+    <Compile Remove="Parts\NativeArm.cs" />
+    <None Include="Parts\Native64Linux.cs" />
+    <None Include="Parts\Native64Mac.cs" />
+    <None Include="Parts\NativeArm.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <None Update="runtimes\linux-x64\native\libChakraCore.so">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\osx-x64\native\libChakraCore.dylib">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-arm\native\ChakraCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="runtimes\License.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x64\native\ChakraCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="runtimes\win-x86\native\ChakraCore.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
