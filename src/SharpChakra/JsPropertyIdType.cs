@@ -1,8 +1,8 @@
 ﻿namespace SharpChakra
 {
-   public enum JsPropertyIdType
-   {
-      String,
-      Symbol
-   };
+    public enum JsPropertyIdType
+    {
+        String,
+        Symbol
+    };
 }

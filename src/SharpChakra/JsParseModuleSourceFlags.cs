@@ -1,8 +1,8 @@
 ﻿namespace SharpChakra
 {
-   public enum JsParseModuleSourceFlags
-   {
-      DataIsUTF16LE = 0x00000000,
-      DataIsUTF8 = 0x00000001
-   }
+    public enum JsParseModuleSourceFlags
+    {
+        DataIsUtf16Le = 0x00000000,
+        DataIsUtf8 = 0x00000001
+    }
 }

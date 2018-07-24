@@ -27,15 +27,13 @@ The binaries can be found in the directory `src\SharpChakra\runtimes`.
 
 ```csharp
 using (var runtime = JsRuntime.Create())
-using (runtime.CreateContext().Scope())
 {
+  var context = runtime.CreateContext();
   var fn = new JsNativeFunctionBuilder();
-  JsValue.GlobalObject
-    .SetProperty("run", // Register run function
-      fn.New(() =>Console.WriteLine("hello from script!")),
-      true);
 
-  JsContext.RunScript("run();");
+  // Register run function
+  context.Global.SetProperty("run", fn.New(() =>Console.WriteLine("hello from script!")), true);
+  context.RunScript("run();");
 }
 ```
 Output: 'hello from script!'
@@ -43,21 +41,23 @@ Output: 'hello from script!'
 # Newtonsoft.Json Interopability example
 ```csharp
 using (var runtime = JsRuntime.Create())
-using (runtime.CreateContext().Scope())
 {
+  var context = runtime.CreateContext();
   var fn = new JsNativeFunctionBuilder();   
-  JsValue.GlobalObject
-    .SetProperty("dump", // register dump function
-    fn.New(_x =>
-    {
-      Console.WriteLine("-- dump --");
-      Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
-      return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
-    }),
-    true);
+  
+  // register dump function
+  var dumpFunc = fn.New(_x =>
+  {
+    Console.WriteLine("-- dump --");
+    Console.WriteLine(_x.Arguments[1].ToJToken().ToString(Formatting.Indented));
+
+    return JObject.Parse("{status:'ok',error:-1}").ToJsValue();
+  });
+
+  context.Global.SetProperty("dump", dumpFunc, true);
 
   Console.WriteLine("-- executing --");
-  var res = JsContext.RunScript("dump({id:4,name:'chakra'});");
+  var res = context.RunScript("dump({id:4,name:'chakra'});");
 
   Console.WriteLine("-- result --");
   Console.WriteLine(res.ToJToken().ToString(Formatting.Indented));
@@ -81,13 +81,15 @@ Output:
 ```csharp
 var builder = new JsNativeFunctionBuilder();
 using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures, JsRuntimeVersion.VersionEdge))
-using (runtime.CreateContext().Scope())
 {
+   var context = runtime.CreateContext();
    var jsCtx = JsValue.CreateObject();
-   JsValue.GlobalObject
+
+   context.Global
       .SetProperty("ctx", jsCtx, true)
       .SetProperty("proxy", JsProxy.New(new TestProxy(), builder), true);
-   JsContext.RunScript(@"
+
+   context.RunScript(@"
       proxy.EchoHello();
       proxy.Echo(proxy.TestArgs(100,'string',1.0/3.0));
       proxy.EchoComplex(proxy.ConstComplex);
@@ -143,15 +145,16 @@ N | host | Dir | chakracore.dll | Comment
 
 ```csharp
 using (var runtime = JsRuntime.Create(JsRuntimeAttributes.EnableExperimentalFeatures,JsRuntimeVersion.VersionEdge))
-using (runtime.CreateContext().Scope())
 {
+  var context = runtime.CreateContext();
   var fn = new JsNativeFunctionBuilder();   
-  JsValue.GlobalObject
-    .SetProperty("echo", // register echo func
-    fn.New(_x =>Console.WriteLine(_x.Arguments[1].ToString())),true);
 
-  var mainModule = JsModuleRecord.Create(JsModuleRecord.Root,JsValue.FromString("")); // 2. JsInitializeModuleRecord
+  // register echo func
+  context.Global.SetProperty("echo", fn.New(_x => Console.WriteLine(_x.Arguments[1].ToString())), true);
+
+  var mainModule = JsModuleRecord.Create(JsModuleRecord.Root, JsValue.FromString("")); // 2. JsInitializeModuleRecord
   var fooModule = JsModuleRecord.Invalid;
+  
   JsErrorCode onFetch(JsModuleRecord _module, JsValue _specifier, out JsModuleRecord _record) // 4. FetchImportedModuleCallback
   {
     fooModule = JsModuleRecord.Create(_module, _specifier); // 2. JsInitializeModuleRecord (foo.js)                   
